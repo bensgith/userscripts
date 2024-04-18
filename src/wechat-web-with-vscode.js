@@ -26,14 +26,7 @@
     // set title every second
     setInterval(function() {
         var titleNode = document.getElementsByTagName('title')[0];
-        var titleStr = titleNode.innerHTML;
-        if (titleStr.endsWith('Weixin for Web')) {
-            console.log('Setting title to ' + vscode_name);
-            titleNode.innerHTML = vscode_name;
-        } else if (titleStr.startsWith('WeChat') && !titleStr.endsWith('Weixin for Web')) {
-            console.log('Replacing ' + titleStr);
-            titleNode.innerHTML = titleStr.replace('WeChat', vscode_name);
-        };
+        titleNode.innerHTML = vscode_name;
     }, 1000);
 
 
