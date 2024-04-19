@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts-vscode
-// @version      0.4.1
+// @version      0.4.2
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -126,20 +126,36 @@
     /////////////////////////////////////////
     // more compact messages
     GM_addStyle('.message{margin-bottom:0}');
-    // hide avatar in chat
-    GM_addStyle('.message .avatar{display:none}');
     // hide header in chat
     GM_addStyle('.chat .box_hd{display:none}');
+    // chat area color
+    GM_addStyle('#chatArea{background-color:#1E1E1E;color:white}');
+    GM_addStyle('.bubble{background-color:#1E1E1E !important}');
+    GM_addStyle('.bubble.bubble_primary.right.arrow_primary:before, .bubble.bubble_primary.right:after{border-left-color:#0E639C}');
+    GM_addStyle('.bubble_cont .app{background-color:#2D2D2D;padding:8px;margin:0 5px;max-width:500px}');
+    GM_addStyle('.bubble_cont .app .title{color:white}');
+    GM_addStyle('.bubble_cont .app .cover{display:none}');
+    //GM_addStyle('.bubble_cont img{display:none}'); // hide img in links
+    GM_addStyle('.bubble_cont .plain{padding:8px}');
+    GM_addStyle('.bubble:after, .bubble:before{top:12px}');// adjust message triangle
+    // chat reply box
+    GM_addStyle('.chat .box_ft{border-top-color:#414141}');
+    GM_addStyle('.chat .box_ft .action{background-color:#1E1E1E !important}');
+    GM_addStyle('.exp_hd{background-color:#333333}');
+    GM_addStyle('.exp_bd{background-color:#252526}');
+    GM_addStyle('.exp_hd_item{background-color:#333333}');
+    GM_addStyle('.exp_hd_item a{color:white}');
+    GM_addStyle('.exp_hd_item.active{background-color:#252526}');
+    GM_addStyle('.expression{border-color:#414141}');
+    GM_addStyle('.expression:after{border-top-color:#252526}');
+    GM_addStyle('.qq_face a{border-bottom-color:#414141;border-right-color:#414141}');
+    GM_addStyle('.emoji_face a{border-bottom-color:#414141;border-right-color:#414141}');
+    // hide avatar in chat
+    GM_addStyle('.message .avatar{display:none}');
     // hide send button
     GM_addStyle('.btn_send{display:none}');
     // hide copyright
     GM_addStyle('.main .copyright{display:none}');
-    // chat area color
-    GM_addStyle('#chatArea{background-color:#1E1E1E;color:white}');
-    GM_addStyle('.bubble{background-color:#1E1E1E !important}');
-    GM_addStyle('.chat .box_ft{border-top-color:#414141}');
-    GM_addStyle('.chat .box_ft .action{background-color:#1E1E1E !important}');
-    GM_addStyle('.bubble.bubble_primary.right.arrow_primary:before, .bubble.bubble_primary.right:after{border-left-color:#0E639C}');
 
 
     //////////////////////////////////////////////////
