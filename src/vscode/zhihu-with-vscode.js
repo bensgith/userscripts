@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ZhiHu with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts-vscode
-// @version      0.3.1
+// @version      0.3.2
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://www.zhihu.com/*
@@ -47,7 +47,7 @@
     // navigation header
     ///////////////////////////////////////
     // app header background
-    GM_addStyle('.css-17rnw55{background-color:#333333;color:white}');
+    GM_addStyle('.css-17rnw55{background-color:#323233;color:white}');
 
     // change logo
 //     setInterval(function() {
