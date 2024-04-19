@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts-vscode
-// @version      0.4.2
+// @version      0.4.3
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -130,12 +130,12 @@
     GM_addStyle('.chat .box_hd{display:none}');
     // chat area color
     GM_addStyle('#chatArea{background-color:#1E1E1E;color:white}');
-    GM_addStyle('.bubble{background-color:#1E1E1E !important}');
+    GM_addStyle('.bubble{background-color:#1E1E1E !important;margin:3px 10px}'); // more compact messages
+    GM_addStyle('.message_system{margin:0 auto}'); // more compact messages
     GM_addStyle('.bubble.bubble_primary.right.arrow_primary:before, .bubble.bubble_primary.right:after{border-left-color:#0E639C}');
     GM_addStyle('.bubble_cont .app{background-color:#2D2D2D;padding:8px;margin:0 5px;max-width:500px}');
     GM_addStyle('.bubble_cont .app .title{color:white}');
     GM_addStyle('.bubble_cont .app .cover{display:none}');
-    //GM_addStyle('.bubble_cont img{display:none}'); // hide img in links
     GM_addStyle('.bubble_cont .plain{padding:8px}');
     GM_addStyle('.bubble:after, .bubble:before{top:12px}');// adjust message triangle
     // chat reply box
