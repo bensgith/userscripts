@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Official Account with VS Code Style
-// @namespace    https://github.com/bensgith/tampermonkey-scripts-vscode
-// @version      0.1.2
+// @namespace    https://github.com/bensgith/tampermonkey-scripts
+// @version      0.1.3
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://mp.weixin.qq.com/*

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ZhiHu with VS Code Style
-// @namespace    https://github.com/bensgith/tampermonkey-scripts-vscode
-// @version      0.3.2
+// @namespace    https://github.com/bensgith/tampermonkey-scripts
+// @version      0.3.3
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://www.zhihu.com/*

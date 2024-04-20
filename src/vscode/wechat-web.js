@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
-// @namespace    https://github.com/bensgith/tampermonkey-scripts-vscode
-// @version      0.4.3
+// @namespace    https://github.com/bensgith/tampermonkey-scripts
+// @version      0.4.4
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -19,7 +19,7 @@
 
     /////////////////////////////
     // change tab tittle
-    ////////////////////////////
+    ////////////////////////////a
     // favorite icon
     var shortcut_icon = document.getElementsByTagName('link')[0];
     shortcut_icon.href = vscode_favico;
