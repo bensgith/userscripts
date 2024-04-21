@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Feedly with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.1.0
+// @version      0.1.1
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://feedly.com/*
@@ -29,9 +29,11 @@
 
 
     // change logo
-    var logo_links = document.getElementsByClassName('LeftnavDock__button');
+    //var logo_links = document.getElementsByClassName('LeftnavListRow');
+    var logo_links = document.querySelectorAll('#feedlyChrome div .Leftnav');
     console.log(logo_links.length + ' elements found');
     for (let i = 0; i < logo_links.length; i++) {
+        //console.log(logo_links[i].nodeName + ': ' + logo_links[i].src);
         console.log(logo_links[i].nodeName);
     }
 
@@ -62,7 +64,9 @@
     GM_addStyle('.EntryEngagement--hot {color:#007ACC}');
     GM_addStyle('.fx .InterestingMetadata {color:#007ACC}');
     GM_addStyle('.EntryTitle {color:white}');
-    GM_addStyle('.Article__title {color:white}');
+    GM_addStyle('.Article__title {color:white}'); // article title
+    GM_addStyle('.entryBody, .entrySidebar {color:#D4D4D4}'); // article body
+    GM_addStyle('.entryBody .content p {color:#D4D4D4}'); // article body
 
 
 
