@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Inoreader with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.1.2
+// @version      0.1.3
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://www.inoreader.com/*
-// @icon         https://www.inoreader.com/favicon.ico?v=8
+// @icon         https://www.inoreader.com/favicon.ico
 // @grant        GM_addStyle
 // ==/UserScript==
 
