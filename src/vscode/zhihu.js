@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ZhiHu with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.3.3
+// @version      0.3.4
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://www.zhihu.com/*
@@ -108,7 +108,7 @@
     GM_addStyle('.css-1qyytj7{display:none}');
 
     // article cards content
-    GM_addStyle('.Card{background-color:#1E1E1E;color:white}');
+    GM_addStyle('.Card{background-color:#1E1E1E;color:#D4D4D4}');
     // article cards bottom actions background color
     GM_addStyle('.ContentItem-actions{background-color:#1E1E1E}');
 
@@ -132,7 +132,7 @@
     ////////////////////////////
     // comment text editor
     GM_addStyle('.css-kt4t4n{background-color:#1E1E1E}');
-    GM_addStyle('.css-1jpzztt{color:white}');
+    GM_addStyle('.css-1jpzztt{color:#D4D4D4}');
     // hide avatar
     GM_addStyle('.Avatar{display:none}');
     // reply content in reply box in comments
