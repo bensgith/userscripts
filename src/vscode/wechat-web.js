@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.4.5
+// @version      0.4.6
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -23,11 +23,11 @@
     // favorite icon
     var shortcut_icon = document.getElementsByTagName('link')[0];
     shortcut_icon.href = vscode_favico;
-    // set title every second
+    // set title every 0.5 second, never end
     setInterval(function() {
         var titleNode = document.getElementsByTagName('title')[0];
         titleNode.innerHTML = vscode_name;
-    }, 1000);
+    }, 500);
 
 
     ///////////////////////////

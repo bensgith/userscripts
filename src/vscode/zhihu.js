@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ZhiHu with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.3.4
+// @version      0.3.5
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://www.zhihu.com/*
@@ -191,6 +191,8 @@
         GM_addStyle('.Reward{display:none}');
         // article separator line
         GM_addStyle('.List-item+.List-item:after{border-bottom-color:#414141}');
+        // Yanxuan special column meta info
+        GM_addStyle('.KfeCollection-IntroCard-newStyle-mobile, .KfeCollection-IntroCard-newStyle-pc{background-color:#414141}');
     }
 
 
