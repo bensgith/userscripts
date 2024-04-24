@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.4.6
+// @version      0.5.0
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -111,10 +111,8 @@
     // hide msg timestamp in chat list
     GM_addStyle('.chat_item .ext{display:none}');
     // change red dot to blue dot
-    GM_addStyle('.web_wechat_reddot{background:url(' + bg_img_url + ') no-repeat}');
-    GM_addStyle('.web_wechat_reddot{background-position:-473px -380px}');
-    GM_addStyle('.web_wechat_reddot_middle{background:url(' + bg_img_url + ') no-repeat}');
-    GM_addStyle('.web_wechat_reddot_middle{background-position: -451px -380px}');
+    GM_addStyle('.web_wechat_reddot{background:url(' + bg_img_url + ') no-repeat;background-position:-473px -380px}');
+    GM_addStyle('.web_wechat_reddot_middle{background:url(' + bg_img_url + ') no-repeat;background-position: -451px -380px}');
     // hide emoji in chat names
     GM_addStyle('.emoji{display:none}');
     // move chat list up
@@ -157,6 +155,19 @@
     GM_addStyle('.btn_send{display:none}');
     // hide copyright
     GM_addStyle('.main .copyright{display:none}');
+
+
+    //////////////////////////////////////////////////
+    // dialog
+    /////////////////////////////////////////////////
+    GM_addStyle('.ngdialog.default .ngdialog-content{background-color:#252526;color:white}');
+    GM_addStyle('.transpond-dialog .dialog_hd .title{background-color:#252526}');
+    GM_addStyle('.selector{background-color:#2D2D2D}');
+    GM_addStyle('.selector .input_box .input{background-color:#2D2D2D}');
+    GM_addStyle('.chooser .contact_title{background-color:#2D2D2D}');
+    GM_addStyle('.chooser .contact_item{background-color:#252526;border-bottom-color:#414141}');
+    GM_addStyle('.chooser .active .contact_item{background-color:#2D2D2D;border-bottom-color:#414141}');
+    GM_addStyle('.transpond-dialog .dialog_ft .button_primary{background-color:#0E639C}');
 
 
     //////////////////////////////////////////////////
