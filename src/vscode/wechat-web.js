@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.5.0
+// @version      0.5.1
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -163,7 +163,7 @@
     GM_addStyle('.ngdialog.default .ngdialog-content{background-color:#252526;color:white}');
     GM_addStyle('.transpond-dialog .dialog_hd .title{background-color:#252526}');
     GM_addStyle('.selector{background-color:#2D2D2D}');
-    GM_addStyle('.selector .input_box .input{background-color:#2D2D2D}');
+    GM_addStyle('.selector .input_box .input{background-color:#2D2D2D;color:white}');
     GM_addStyle('.chooser .contact_title{background-color:#2D2D2D}');
     GM_addStyle('.chooser .contact_item{background-color:#252526;border-bottom-color:#414141}');
     GM_addStyle('.chooser .active .contact_item{background-color:#2D2D2D;border-bottom-color:#414141}');
