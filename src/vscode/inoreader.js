@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Inoreader with VS Code Style
-// @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.1.3
+// @namespace    https://github.com/bensgith/tampermonkey-scripts-vscode
+// @version      0.1.4
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://www.inoreader.com/*
-// @icon         https://www.inoreader.com/favicon.ico
+// @icon         https://www.inoreader.com/favicon.ico?v=8
 // @grant        GM_addStyle
 // ==/UserScript==
 
@@ -47,10 +47,14 @@
     /////////////////////////////////////
     // basic
     GM_addStyle('#reader_pane {background-color:#1E1E1E;color:white}');
-    GM_addStyle('.article_unreaded, .view_style_0 .article_unreaded {background-color:#1E1E1E}');
-    GM_addStyle('.reader_pane_view_style_0 .article_title_wrapper {color:white}');
+    GM_addStyle('#reader_pane .article_unreaded {background-color:#1E1E1E}');
+    GM_addStyle('#reader_pane .article_unreaded:hover {background-color:#37373D}');
+    GM_addStyle('#reader_pane .article_current_collapsed {background-color:#37373D}');
+    GM_addStyle('#reader_pane .article_title_wrapper {color:#D4D4D4}');
     GM_addStyle('.ar {border-bottom-color:#414141}');
     // expanded article
-    GM_addStyle('.article_full_contents {background-color:#1E1E1E;color:white}');
+    GM_addStyle('.article_full_contents {background-color:#1E1E1E;color:#D4D4D4}');
     GM_addStyle('.reader_pane_view_style_1 .article_subscribed, .reader_pane_view_style_4 .article_subscribed {background-color:#1E1E1E}');
+    GM_addStyle('body.article_alignment_1 .reader_pane_view_style_0 .article_full_contents {margin-left:33%}');
+    GM_addStyle('.article_full_contents .article_footer {display:none}');
 })();
