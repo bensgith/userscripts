@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Inoreader with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts-vscode
-// @version      0.1.4
+// @version      0.1.5
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://www.inoreader.com/*
@@ -55,6 +55,8 @@
     // expanded article
     GM_addStyle('.article_full_contents {background-color:#1E1E1E;color:#D4D4D4}');
     GM_addStyle('.reader_pane_view_style_1 .article_subscribed, .reader_pane_view_style_4 .article_subscribed {background-color:#1E1E1E}');
-    GM_addStyle('body.article_alignment_1 .reader_pane_view_style_0 .article_full_contents {margin-left:33%}');
+    GM_addStyle('body.article_alignment_1 .reader_pane_view_style_0 .article_full_contents {width:1180px}');
+    GM_addStyle('.article_title {width:1180px}');
+    GM_addStyle('.article_content {width:1180px}');
     GM_addStyle('.article_full_contents .article_footer {display:none}');
 })();
