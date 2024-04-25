@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Feedly with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.1.2
+// @version      0.2.0
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://feedly.com/*
@@ -37,40 +37,40 @@
         console.log(logo_links[i].nodeName);
     }
 
-/*     logo_link1.firstElementChild.remove();
-    GM_addElement(logo_link1, 'img', {
-        src: vscode_favico,
-        width: '30px',
-        height: '30px',
-        style: 'margin:0 0 0 25px'
-    }); */
+    // CSS style
+    var css = `
+        .home, #headerBarFX h2 {
+            color:white;
+        }
 
-    // left navigation dock
-    //GM_addStyle('.LeftnavDock {background-color:#333333}'); // var(--semanticColorBackgroundLightest)
+        .TopHeaderBar {
+            display:none;
+        }
 
-    // left navigation list
-    //GM_addStyle('.LeftnavList {background-color:#252526}');
+        #headerBarFX {
+            border-bottom-color:#414141;
+        }
 
-    GM_addStyle('.home {color:white}');
+        #feedlyFrame, #feedlyPageHolderFX, #headerBarFX {
+            background-color:#1E1E1E;
+        }
 
-    // right content panel
-    //GM_addStyle('.TopHeaderBar {background-color:#1E1E1E;border-bottom-color:#414141}');
-    GM_addStyle('.TopHeaderBar {display:none}');
+        .EntryEngagement--hot, .fx .InterestingMetadata {
+            color:#007ACC;
+        }
 
-    GM_addStyle('#headerBarFX {background-color:#1E1E1E;border-bottom-color:#414141}');
-    GM_addStyle('#headerBarFX h2 {color:white}');
-    GM_addStyle('#feedlyFrame {background-color:#1E1E1E}');
-    GM_addStyle('#feedlyPageHolderFX {background-color:#1E1E1E}');
-    GM_addStyle('.EntryEngagement--hot {color:#007ACC}');
-    GM_addStyle('.fx .InterestingMetadata {color:#007ACC}');
-    GM_addStyle('.EntryTitle {color:white}');
-    GM_addStyle('.Article__title {color:white}'); // article title
-    GM_addStyle('.entryBody, .entrySidebar {color:#D4D4D4}'); // article body
-    GM_addStyle('.entryBody h1, .entryBody h2, .entryBody h3, .entryBody h4 {color:#D4D4D4}'); // article body
-    GM_addStyle('.entryBody .content b, .entryBody .content p, .entryBody .content a {color:#D4D4D4}'); // article body
+        /* article title */
+        .EntryTitle, .Article__title {
+            color:white;
+        }
 
+        /* article body */
+        .entryBody h1, .entryBody h2, .entryBody h3, .entryBody h4, 
+        .entryBody .content b, .entryBody .content p, .entryBody .content a, 
+        .entryBody, .entrySidebar {
+            color:#D4D4D4;
+        }
 
-    var style = `
         :root, .theme--light {
             --semanticColorContentBold: #white;
             --semanticColorBorderLightest:#414141;
@@ -79,14 +79,12 @@
             --semanticColorBackgroundStatesLightHover:#2A2D2E;
             --semanticColorBackgroundElevationMedium:#252526;
             --semanticColorBackgroundStatesElevationMediumHover:#04395E;
-            --semanticColorContentAccent:#007ACC;
+            --semanticColorContentAccent:#007ACC; /* VS Code blue */
             --semanticColorBorderAccent:#007ACC;
             --semanticColorContentStatesAccentHover:#007ACC;
             --semanticColorBorderStatesAccentHover:#007ACC;
             --semanticColorBackgroundElevationLight:#1E1E1E;
         }
     `
-    GM_addStyle(style);
-
-
+    GM_addStyle(css);
 })();
