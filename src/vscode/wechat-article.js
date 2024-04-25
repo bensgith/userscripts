@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         WeChat Official Account with VS Code Style
+// @name         WeChat Article with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.1.3
+// @version      0.2.0
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://mp.weixin.qq.com/*
@@ -13,16 +13,40 @@
     'use strict';
 
     let vscode_favico = 'https://code.visualstudio.com/favicon.ico';
-    let vscode_name = 'VS Code';
 
     // favorite icon
     var shortcut_icon = document.getElementsByTagName('link')[0];
     shortcut_icon.href = vscode_favico;
 
-    GM_addStyle('#page-content{background-color:#252526;color:white}');
-    GM_addStyle('#js_content{background-color:#252526;color:white}');
-    GM_addStyle('.rich_media_area_primary_inner{max-width:977px !important}');
-//     GM_addStyle('#meta_content{background-color:#121212;color:white}'); // not working
-    GM_addStyle('#page_bottom_area{display:none}');
-    GM_addStyle('#js_pc_qr_code{display:none !important}');
+    var css = `
+        #page-content {
+            background-color:#252526;
+            color:#D4D4D4;
+        }
+
+        #js_content {
+            background-color:#252526;
+            color:#D4D4D4;
+        }
+
+        .rich_media_meta {
+            color:white;
+        }
+
+        .rich_media_area_primary_inner {
+            max-width:977px !important
+        }
+
+        /* hide bottom area */
+        #page_bottom_area {
+            display:none
+        }
+
+        /* hide qr code */
+        #js_pc_qr_code {
+            display:none !important
+        }
+    `;
+    
+    GM_addStyle(css);
 })();
