@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Feedly with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.2.0
+// @version      0.2.1
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://feedly.com/*
@@ -65,8 +65,8 @@
         }
 
         /* article body */
-        .entryBody h1, .entryBody h2, .entryBody h3, .entryBody h4, 
-        .entryBody .content b, .entryBody .content p, .entryBody .content a, 
+        .entryBody h1, .entryBody h2, .entryBody h3, .entryBody h4,
+        .entryBody .content b, .entryBody .content p, .entryBody .content a,
         .entryBody, .entrySidebar {
             color:#D4D4D4;
         }
