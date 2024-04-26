@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Inoreader with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.2.0
+// @version      0.2.1
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://www.inoreader.com/*
@@ -52,7 +52,8 @@
 
         /* reader panel - collapsed items */
         #reader_pane .article_unreaded:hover,
-        #reader_pane .article_current_collapsed {
+        #reader_pane .article_current_collapsed,
+        .reader_pane_view_style_0 .article:hover {
             background-color:#37373D;
         }
 
@@ -67,8 +68,8 @@
 
         #reader_pane,
         #reader_pane .article_unreaded,
-        .reader_pane_view_style_1 .article_subscribed,
-        .reader_pane_view_style_4 .article_subscribed,
+        .article_subscribed,
+        .article_subscribed,
         .article_full_contents {
             background-color:#1E1E1E;
         }
