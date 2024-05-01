@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.6.0
+// @version      0.6.1
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -14,7 +14,6 @@
 
     let vscode_favico = 'https://code.visualstudio.com/favicon.ico';
     let vscode_name = 'VS Code';
-    let bg_img_url = 'https://img2.imgtp.com/2024/04/18/vNEgsIni.png';
 
 
     // change tab tittle and icon
@@ -38,12 +37,13 @@
 
    var headerAvatarInterval = setInterval(function() {
         var nickname = document.getElementsByClassName('nickname')[0].firstElementChild;
-        if (checkHeaderAvatar() && nickname.innerHTML === vscode_name) {
+        var avatarImg = document.querySelector(".header .avatar .img");
+        if (avatarImg.src != vscode_favico && nickname.innerHTML === vscode_name) {
             // if successfully changed, show avatar and name
             GM_addStyle('.header .avatar .img{display:block;width:27px;height:27px}');
             GM_addStyle('.header .info .nickname .display_name{display:inline-block;width:auto}');
         }
-        setHeaderAvatar();
+        avatarImg.src = vscode_favico;
         nickname.innerHTML = vscode_name;
     }, 500);
 
@@ -272,18 +272,4 @@
         console.log('cleared interval: headerAvatarInterval');
     }, 600000);
 
-
-    // functions
-    function setHeaderAvatar() {
-        var avatar = document.querySelector(".header .avatar .img");
-        avatar.src = vscode_favico;
-    }
-
-    function checkHeaderAvatar() {
-        var avatarImg = document.querySelector(".header .avatar .img");
-        if (avatarImg.src != vscode_favico) {
-            return false;
-        }
-        return true;
-    }
 })();
