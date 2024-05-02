@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ZhiHu with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.4.0
+// @version      0.4.1
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://www.zhihu.com/*
@@ -96,7 +96,7 @@
             .QuestionHeader,
             .QuestionHeader-footer {
                 background-color:#1E1E1E;
-                color:white;
+                color:#D4D4D4;
             }
             .QuestionHeader-title,
             .NumberBoard-itemValue {
@@ -209,6 +209,15 @@
         .css-7wvdjh, /* reply content in reply box in comments */
         .css-1e7fksk /* reply list in reply box in comments */ {
             background-color:#1E1E1E;
+        }
+        /* input box border in comments */
+        .css-14zbeoe,
+        .css-u76jt1 {
+            border-color: #414141;
+        }
+        /* timeline font color in story topic */
+        .css-13brsx3 {
+            color: white;
         }
 
     `;
