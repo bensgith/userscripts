@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.6.1
+// @version      0.6.3
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -121,19 +121,29 @@
         }
         .chat_item {
             padding:6px 20px 6px;
-            border-bottom-color:#414141;
+            border-bottom: none;
+        }
+        .chat_item .avatar {
+            height: 15px;
+            width: 15px;
+            float: left;
+            margin-right: 5px;
+            position: relative;
+            background: url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
+            background-position: -224px -170px;
+            background-size: 478px 462px;
         }
         .chat_item.active {
             background:#37373D;
         }
-        .nav_view{
+        .nav_view {
             top:64px !important;
         }
-        .web_wechat_reddot{
+        .web_wechat_reddot {
             background:url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
             background-position:-473px -380px;
         }
-        .web_wechat_reddot_middle{
+        .web_wechat_reddot_middle {
             background:url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
             background-position: -451px -380px;
         }
@@ -142,8 +152,8 @@
         /* message panel */
         .web_wechat_nomes_icon,
         .message .avatar,
-        .chat .box_hd,
         .bubble_cont .app .cover,
+        .box_hd .title .title_name .emoji,
         .message .nickname .emoji {
             display:none;
         }
@@ -151,7 +161,26 @@
             background-color:#1E1E1E;
             color:white;
         }
-        .bubble{
+        .box_hd {
+            text-align: left;
+        }
+        .box_hd .title_wrap {
+            border-bottom-color: #414141;
+            background-color: #1E1E1E;
+        }
+        .box_hd .title .title_name {
+            color: white;
+        }
+        .members_wrp {
+            box-shadow: none;
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+        }
+        .members {
+            background-color: #252526;
+            border-bottom-color: #414141;
+        }
+        .bubble {
             background-color:#1E1E1E !important;
             margin:3px 10px;
         }
@@ -175,7 +204,7 @@
         .bubble:before {
             top:12px;
         }
-        .message{
+        .message {
             margin-bottom:0;
         }
         .message_system {
@@ -205,7 +234,7 @@
         .exp_hd_item a {
             color:white;
         }
-        .expression{
+        .expression {
             border-color:#414141;
         }
         .expression:after {
@@ -272,4 +301,14 @@
         console.log('cleared interval: headerAvatarInterval');
     }, 600000);
 
+
+    function maskChatItemNames() {
+        setTimeout(function() {
+            var names = document.querySelectorAll(".chat_item .info .nickname_text");
+            for (let i = 0; i < names.length; i++) {
+                console.log(i + ' -> ' + names[i].innerHTML);
+                names[i].innerHTML = i;
+            }
+        }, 10000);
+    }
 })();
