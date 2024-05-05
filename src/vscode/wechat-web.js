@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.6.3
+// @version      0.6.4
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -292,7 +292,6 @@
     `;
     GM_addStyle(css);
 
-
     // clear intervals after 10 mins
     setTimeout(function() {
         clearInterval(loginAvatarInterval);
@@ -301,14 +300,19 @@
         console.log('cleared interval: headerAvatarInterval');
     }, 600000);
 
+    // mask chat item name on the side panel
+    maskChatItemNames();
+
 
     function maskChatItemNames() {
-        setTimeout(function() {
+        var maskedNames = ['Algorithm', 'Database', 'Binary', 'Compiler', 'Encryption', 'Firewall', 'Cloud Computing', 'Kernel', 'Network', 'Protocol',
+        'Cache', 'Artificial Intelligence', 'Machine Learning', 'Cybersecurity', 'Big Data', 'Virtualization', 'Debugging', 'API', 'Recursion', 'Syntax'];
+        setInterval(function() {
             var names = document.querySelectorAll(".chat_item .info .nickname_text");
             for (let i = 0; i < names.length; i++) {
                 console.log(i + ' -> ' + names[i].innerHTML);
-                names[i].innerHTML = i;
+                names[i].innerHTML = maskedNames[i];
             }
-        }, 10000);
+        }, 1000);
     }
 })();
