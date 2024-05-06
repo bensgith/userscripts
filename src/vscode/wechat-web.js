@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.6.4
+// @version      0.6.5
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -310,7 +310,6 @@
         setInterval(function() {
             var names = document.querySelectorAll(".chat_item .info .nickname_text");
             for (let i = 0; i < names.length; i++) {
-                console.log(i + ' -> ' + names[i].innerHTML);
                 names[i].innerHTML = maskedNames[i];
             }
         }, 1000);
