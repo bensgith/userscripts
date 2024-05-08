@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Ad Remover for engineeringtoolbox
-// @namespace    http://tampermonkey.net/
-// @version      0.0.1
+// @namespace    https://github.com/bensgith/tampermonkey-scripts/
+// @version      0.0.2
 // @description  Remove ads and other enhancement
 // @author       Benjamin L
 // @match        https://www.engineeringtoolbox.com/*
