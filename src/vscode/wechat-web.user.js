@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.6.5
+// @version      0.7.0
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -302,6 +302,8 @@
 
     // mask chat item name on the side panel
     maskChatItemNames();
+    // mask media content like pictures, videos
+    maskMessageMediaContent();
 
 
     function maskChatItemNames() {
@@ -311,6 +313,29 @@
             var names = document.querySelectorAll(".chat_item .info .nickname_text");
             for (let i = 0; i < names.length; i++) {
                 names[i].innerHTML = maskedNames[i];
+            }
+        }, 1000);
+    }
+
+    function maskMessageMediaContent() {
+        var maskedHtmlPic = `<div class="plain">
+                            <pre class="js_message_plain ng-binding" ng-bind-html="message.MMActualContent">[IMAGE]</pre>
+                            <img ng-show="message.MMStatus == 1" class="ico_loading ng-hide" src="//res.wx.qq.com/t/wx_fed/webwx/res/static/img/xasUyAI.gif" alt="">
+                            <i class="ico_fail web_wechat_message_fail ng-hide" ng-click="resendMsg(message)" ng-show="message.MMStatus == 5" title="Resend"></i>
+                        </div>`;
+        var maskedHtmlVid = `<div class="plain">
+                            <pre class="js_message_plain ng-binding" ng-bind-html="message.MMActualContent">[VIDEO]</pre>
+                            <img ng-show="message.MMStatus == 1" class="ico_loading ng-hide" src="//res.wx.qq.com/t/wx_fed/webwx/res/static/img/xasUyAI.gif" alt="">
+                            <i class="ico_fail web_wechat_message_fail ng-hide" ng-click="resendMsg(message)" ng-show="message.MMStatus == 5" title="Resend"></i>
+                        </div>`;
+        setInterval(function() {
+            var pictures = document.querySelectorAll(".content .bubble .bubble_cont .picture");
+            for (let i = 0; i < pictures.length; i++) {
+                pictures[i].parentElement.innerHTML = maskedHtmlPic;
+            }
+            var videos = document.querySelectorAll(".content .bubble .bubble_cont .video");
+            for (let i = 0; i < videos.length; i++) {
+                videos[i].parentElement.innerHTML = maskedHtmlVid;
             }
         }, 1000);
     }
