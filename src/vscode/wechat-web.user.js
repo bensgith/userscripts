@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.7.4
+// @version      0.7.5
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -321,6 +321,8 @@
     maskMessageMediaContent();
     // mask emojis, qq emojis, custom emojis
     maskMessageEmojis();
+    // mask system messages
+    maskSystemMessages();
 
 
     function maskChatItemNames() {
@@ -386,6 +388,7 @@
             var pictures = document.querySelectorAll(".content .bubble .bubble_cont .picture");
             var videos = document.querySelectorAll(".content .bubble .bubble_cont .video");
             var locations = document.querySelectorAll(".content .bubble .bubble_cont .location");
+            var plainMsgs = document.querySelectorAll(".content .bubble .bubble_cont .plain pre");
 
             for (let i = 0; i < pictures.length; i++) {
                 pictures[i].parentElement.innerHTML = getMaskHtml('IMAGE');
@@ -395,6 +398,29 @@
             }
             for (let i = 0; i < locations.length; i++) {
                 locations[i].parentElement.innerHTML = getMaskHtml('LOCATION');
+            }
+            for (let i = 0; i < plainMsgs.length; i++) {
+                if (plainMsgs[i].innerHTML.includes("收到一条网页版微信暂不支持的消息类型")) {
+                    plainMsgs[i].innerHTML = '<p class="masked">// UNSUPPORTED MESSAGE</p>';
+                }
+            }
+        }, 1000);
+    }
+
+    function maskSystemMessages() {
+        setInterval(function() {
+            var sysMsgs = document.querySelectorAll(".message .message_system .content");
+            var sysMsgsStr;
+            for (let i = 0; i < sysMsgs.length; i++) {
+                sysMsgsStr = sysMsgs[i].innerHTML;
+                if (!sysMsgsStr.includes("//")) {
+                    sysMsgs[i].innerHTML = "";
+                    GM_addElement(sysMsgs[i], 'p', {
+                        class: 'masked',
+                        textContent: '// ' + sysMsgsStr
+                    });
+                }
+
             }
         }, 1000);
     }
