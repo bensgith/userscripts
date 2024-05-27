@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.7.2
+// @version      0.7.3
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -184,6 +184,7 @@
         .bubble {
             background-color:#1E1E1E !important;
             margin:3px 10px;
+            max-width: none;
         }
         .bubble.bubble_primary.right.arrow_primary:before,
         .bubble.bubble_primary.right:after {
@@ -193,7 +194,7 @@
             background-color:#2D2D2D;
             padding:8px;
             margin:0 5px;
-            max-width:500px;
+            max-width: none;
         }
         .bubble_cont .app .title {
             color:white;
