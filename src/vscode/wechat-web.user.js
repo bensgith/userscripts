@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.7.1
+// @version      0.7.2
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
 // @icon         https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico
 // @grant        GM_addStyle
+// @grant        GM_addElement
 // ==/UserScript==
 
 (function() {
@@ -210,6 +211,9 @@
         .message_system {
             margin:0 auto;
         }
+        .content .masked {
+            color: #6A9955;
+        }
 
 
         /* reply panel */
@@ -304,6 +308,8 @@
     maskChatItemNames();
     // mask media content like pictures, videos
     maskMessageMediaContent();
+    // mask emojis, qq emojis, custom emojis
+    maskMessageEmojis();
 
 
     function maskChatItemNames() {
@@ -317,35 +323,77 @@
         }, 1000);
     }
 
-    function maskMessageMediaContent() {
-        var maskedHtmlPic = `<div class="plain">
-                            <pre class="js_message_plain ng-binding" ng-bind-html="message.MMActualContent">[IMAGE]</pre>
-                            <img ng-show="message.MMStatus == 1" class="ico_loading ng-hide" src="//res.wx.qq.com/t/wx_fed/webwx/res/static/img/xasUyAI.gif" alt="">
-                            <i class="ico_fail web_wechat_message_fail ng-hide" ng-click="resendMsg(message)" ng-show="message.MMStatus == 5" title="Resend"></i>
-                        </div>`;
-        var maskedHtmlVid = `<div class="plain">
-                            <pre class="js_message_plain ng-binding" ng-bind-html="message.MMActualContent">[VIDEO]</pre>
-                            <img ng-show="message.MMStatus == 1" class="ico_loading ng-hide" src="//res.wx.qq.com/t/wx_fed/webwx/res/static/img/xasUyAI.gif" alt="">
-                            <i class="ico_fail web_wechat_message_fail ng-hide" ng-click="resendMsg(message)" ng-show="message.MMStatus == 5" title="Resend"></i>
-                        </div>`;
-        var maskedHtmlLoc = `<div class="plain">
-                            <pre class="js_message_plain ng-binding" ng-bind-html="message.MMActualContent">[LOCATION]</pre>
-                            <img ng-show="message.MMStatus == 1" class="ico_loading ng-hide" src="//res.wx.qq.com/t/wx_fed/webwx/res/static/img/xasUyAI.gif" alt="">
-                            <i class="ico_fail web_wechat_message_fail ng-hide" ng-click="resendMsg(message)" ng-show="message.MMStatus == 5" title="Resend"></i>
-                        </div>`;
+    function maskMessageEmojis() {
         setInterval(function() {
-            var pictures = document.querySelectorAll(".content .bubble .bubble_cont .picture");
-            for (let i = 0; i < pictures.length; i++) {
-                pictures[i].parentElement.innerHTML = maskedHtmlPic;
+            var emojis = document.querySelectorAll(".content .bubble .bubble_cont .plain .emoji");
+            var qqEmojis = document.querySelectorAll(".content .bubble .bubble_cont .plain .qqemoji");
+            var customEmojis = document.querySelectorAll(".content .emoticon .custom_emoji");
+
+            var maskContent = "";
+            for (let i = 0; i < emojis.length; i++) {
+                if (i == 0) {
+                    maskContent += "// emoji";
+                } else {
+                    maskContent += " emoji ";
+                }
+
+                GM_addElement(emojis[i].parentElement, 'span', {
+                    class: 'masked',
+                    textContent: maskContent
+                });
+                emojis[i].remove();
             }
-            var videos = document.querySelectorAll(".content .bubble .bubble_cont .video");
-            for (let i = 0; i < videos.length; i++) {
-                videos[i].parentElement.innerHTML = maskedHtmlVid;
+
+            maskContent = "";
+            for (let i = 0; i < qqEmojis.length; i++) {
+                if (i == 0) {
+                    maskContent += "// " + qqEmojis[i].getAttribute("text");
+                } else {
+                    maskContent += qqEmojis[i].getAttribute("text");
+                }
+
+                GM_addElement(qqEmojis[i].parentElement, 'span', {
+                    class: 'masked',
+                    textContent: maskContent
+                });
+                qqEmojis[i].remove();
             }
-            var locations = document.querySelectorAll(".content .bubble .bubble_cont .location");
-            for (let i = 0; i < locations.length; i++) {
-                locations[i].parentElement.innerHTML = maskedHtmlLoc;
+
+            maskContent = "// custom_emoji";
+            for (let i = 0; i < customEmojis.length; i++) {
+                GM_addElement(customEmojis[i].parentElement, 'span', {
+                    class: 'masked',
+                    textContent: maskContent
+                });
+                customEmojis[i].remove();
             }
         }, 1000);
     }
+
+    function maskMessageMediaContent() {
+        setInterval(function() {
+            var pictures = document.querySelectorAll(".content .bubble .bubble_cont .picture");
+            var videos = document.querySelectorAll(".content .bubble .bubble_cont .video");
+            var locations = document.querySelectorAll(".content .bubble .bubble_cont .location");
+
+            for (let i = 0; i < pictures.length; i++) {
+                pictures[i].parentElement.innerHTML = getMaskHtml('IMAGE');
+            }
+            for (let i = 0; i < videos.length; i++) {
+                videos[i].parentElement.innerHTML = getMaskHtml('VIDEO');
+            }
+            for (let i = 0; i < locations.length; i++) {
+                locations[i].parentElement.innerHTML = getMaskHtml('LOCATION');
+            }
+        }, 1000);
+    }
+
+    function getMaskHtml(maskText) {
+        return `<div class="plain">
+                    <pre class="js_message_plain masked">// ${maskText}</pre>
+                    <img ng-show="message.MMStatus == 1" class="ico_loading ng-hide" src="//res.wx.qq.com/t/wx_fed/webwx/res/static/img/xasUyAI.gif" alt="">
+                    <i class="ico_fail web_wechat_message_fail ng-hide" ng-click="resendMsg(message)" ng-show="message.MMStatus == 5" title="Resend"></i>
+                </div>`;
+    }
+
 })();
