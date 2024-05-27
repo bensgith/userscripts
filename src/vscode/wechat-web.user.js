@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.7.3
+// @version      0.7.4
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -152,10 +152,11 @@
 
         /* message panel */
         .web_wechat_nomes_icon,
-        .message .avatar,
         .bubble_cont .app .cover,
         .box_hd .title .title_name .emoji,
-        .message .nickname .emoji {
+        .message .avatar,
+        .message .nickname .emoji,
+        .message .message_system .content .emoji {
             display:none;
         }
         #chatArea {
@@ -192,25 +193,34 @@
         }
         .bubble_cont .app {
             background-color:#2D2D2D;
-            padding:8px;
-            margin:0 5px;
+            padding: 2px 6px;
+            margin:0 4px;
             max-width: none;
         }
         .bubble_cont .app .title {
             color:white;
+            margin-bottom: 2px;
+        }
+        .bubble_cont .plain {
+            padding: 2px 6px;
         }
         .bubble_cont .picture {
             padding:0 8px;
         }
         .bubble:after,
         .bubble:before {
-            top:12px;
+            top: 7px;
         }
         .message {
             margin-bottom:0;
         }
         .message_system {
             margin:0 auto;
+            text-align: left;
+            max-width: none;
+        }
+        .message_system .content {
+            padding: 1px 16px;
         }
         .content .masked {
             color: #6A9955;
