@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.7.5
+// @version      0.7.6
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -321,10 +321,13 @@
     maskMessageMediaContent();
     // mask emojis, qq emojis, custom emojis
     maskMessageEmojis();
-    // mask system messages
+
     maskSystemMessages();
 
 
+    //////////////////////////////
+    // functions
+    //////////////////////////////
     function maskChatItemNames() {
         var maskedNames = ['Algorithm', 'Database', 'Binary', 'Compiler', 'Encryption', 'Firewall', 'Cloud Computing', 'Kernel', 'Network', 'Protocol',
         'Cache', 'Artificial Intelligence', 'Machine Learning', 'Cybersecurity', 'Big Data', 'Virtualization', 'Debugging', 'API', 'Recursion', 'Syntax'];
@@ -385,24 +388,35 @@
 
     function maskMessageMediaContent() {
         setInterval(function() {
+            // mask images
             var pictures = document.querySelectorAll(".content .bubble .bubble_cont .picture");
-            var videos = document.querySelectorAll(".content .bubble .bubble_cont .video");
-            var locations = document.querySelectorAll(".content .bubble .bubble_cont .location");
-            var plainMsgs = document.querySelectorAll(".content .bubble .bubble_cont .plain pre");
-
             for (let i = 0; i < pictures.length; i++) {
                 pictures[i].parentElement.innerHTML = getMaskHtml('IMAGE');
             }
+            // mask videos
+            var videos = document.querySelectorAll(".content .bubble .bubble_cont .video");
             for (let i = 0; i < videos.length; i++) {
                 videos[i].parentElement.innerHTML = getMaskHtml('VIDEO');
             }
+            // mask location
+            var locations = document.querySelectorAll(".content .bubble .bubble_cont .location");
             for (let i = 0; i < locations.length; i++) {
                 locations[i].parentElement.innerHTML = getMaskHtml('LOCATION');
             }
+            // mask unsupported message hints
+            var plainMsgs = document.querySelectorAll(".content .bubble .bubble_cont .plain pre");
             for (let i = 0; i < plainMsgs.length; i++) {
                 if (plainMsgs[i].innerHTML.includes("收到一条网页版微信暂不支持的消息类型")) {
                     plainMsgs[i].innerHTML = '<p class="masked">// UNSUPPORTED MESSAGE</p>';
+                } else if (plainMsgs[i].innerHTML.includes("Send an emoji, view it on mobile")) {
+                    plainMsgs[i].innerHTML = '<p class="masked">// EMOJI</p>';
                 }
+            }
+            // mask name cards
+            var cards = document.querySelectorAll(".content .bubble .bubble_cont .card");
+            for (let i = 0; i < cards.length; i++) {
+                var name = cards[i].querySelectorAll(".card_bd .info h3")[0];
+                cards[i].parentElement.innerHTML = getMaskHtml('CARD: ' + name.innerText);
             }
         }, 1000);
     }
