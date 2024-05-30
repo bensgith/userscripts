@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.8.2
+// @version      0.8.3
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -153,10 +153,16 @@
         /* message panel */
         .web_wechat_nomes_icon,
         .bubble_cont .app .cover,
+        .bubble_cont .picture img,
+        .bubble_cont .video img,
+        .bubble_cont .video .web_wechat_paly,
+        .bubble_cont .card,
         .box_hd .title .title_name .emoji,
         .box_bd .message_empty,
         .message .avatar,
         .message .nickname .emoji,
+        .message .content .bubble .bubble_cont .plain .js_message_plain img,
+        .message .content .emoticon .custom_emoji,
         .message .message_system .content .emoji {
             display:none;
         }
@@ -205,9 +211,6 @@
         .bubble_cont .plain {
             padding: 2px 6px;
         }
-        .bubble_cont .picture {
-            padding:0 8px;
-        }
         .bubble:after,
         .bubble:before {
             top: 7px;
@@ -221,10 +224,22 @@
             max-width: none;
         }
         .message_system .content {
-            padding: 1px 16px;
+            padding: 1px 0;
+        }
+        .content .comment {
+            color: #6A9955;
+            padding: 2px 4px;
         }
         .content .masked {
-            color: #6A9955;
+            color: #0065A9;
+            padding: 2px 4px;
+            font-size: 14px;
+        }
+        .content .bubble_cont .plain .masked {
+            padding: 0;
+        }
+        .message .content .emoticon {
+            padding: 0 10px;
         }
 
 
@@ -322,8 +337,8 @@
     maskMessageMediaContent();
     // mask emojis, qq emojis, custom emojis
     maskMessageEmojis();
-    maskMessageEmojis2();
-
+    maskMessageCustomEmojis();
+    // mask system messages
     maskSystemMessages();
 
 
@@ -343,44 +358,43 @@
 
     function maskMessageEmojis() {
         setInterval(function() {
-            var customEmojis = document.querySelectorAll(".content .emoticon .custom_emoji");
-            for (let i = 0; i < customEmojis.length; i++) {
-                GM_addElement(customEmojis[i].parentElement, 'span', {
-                    class: 'masked',
-                    textContent: '(custom_emoji)'
-                });
-                customEmojis[i].remove();
+            var plainMsgs = document.querySelectorAll(".message .content .bubble .bubble_cont .plain");
+            for (let i = 0; plainMsgs.length; i++) {
+                // TODO: TypeError: Cannot read properties of undefined (reading 'querySelectorAll')
+                // var emojiImgs = plainMsgs[i].querySelectorAll("pre img");
+
+                if (plainMsgs[i].getElementsByClassName("masked").length == 0) {
+                    var pre = plainMsgs[i].getElementsByTagName("pre")[0];
+                    var imgs = pre.getElementsByTagName("img");
+                    for (let j = 0; imgs.length; j++) {
+                        // get the 2nd class name as emoji ID
+                        var classStr = imgs[j].getAttribute("class").split(" ")[1];
+                        GM_addElement(pre, 'span', {
+                            class: 'masked',
+                            textContent: '(' + getEmojiTextByClass(classStr) + ')'
+                        });
+                    }
+                }
             }
         }, 1000);
     }
 
-    function maskMessageEmojis2() {
+    function maskMessageCustomEmojis() {
         setInterval(function() {
-            var plainMsgs = document.querySelectorAll(".message .content .bubble .bubble_cont .plain");
-            for (let i = 0; plainMsgs.length; i++) {
-                // TODO: TypeError: Cannot read properties of undefined (reading 'querySelectorAll')
-                var emojiImgs = plainMsgs[i].querySelectorAll("pre img");
-                for (let j = 0; emojiImgs.length; j++) {
-                    // get the 2nd class name as emoji ID
-                    var classStr = emojiImgs[j].getAttribute("class").split(" ")[1];
-                    emojiImgs[j].remove();
-                    GM_addElement(plainMsgs[i].getElementsByTagName("pre")[0], 'span', {
+            var customEmojis = document.querySelectorAll(".message .content .emoticon");
+            for (let i = 0; i < customEmojis.length; i++) {
+                if (customEmojis[i].getElementsByClassName("masked").length == 0) {
+                    // extract image link
+                    var img = customEmojis[i].getElementsByTagName("img")[0];
+                    var imgSrc = img.src.replace("&type=big", "");
+                    GM_addElement(customEmojis[i], 'a', {
                         class: 'masked',
-                        textContent: '(' + getEmojiTextByClass(classStr) + ')'
+                        href: imgSrc,
+                        target: '_blank',
+                        textContent: '(CUSTOM_EMOJI)'
                     });
                 }
             }
-
-            // TODO: not working
-            /*
-            var customEmojis = document.querySelectorAll(".content .emoticon .custom_emoji");
-            for (let i = 0; i < customEmojis.length; i++) {
-                GM_addElement(customEmojis[i].parentElement, 'span', {
-                    class: 'masked',
-                    textContent: '(custom_emoji)'
-                });
-                customEmojis[i].remove();
-            }*/
         }, 1000);
     }
 
@@ -389,12 +403,29 @@
             // mask images
             var pictures = document.querySelectorAll(".content .bubble .bubble_cont .picture");
             for (let i = 0; i < pictures.length; i++) {
-                pictures[i].parentElement.innerHTML = getMaskHtml('IMAGE');
+                // extract image link
+                var img = pictures[i].getElementsByTagName("img")[0];
+                var imgSrc = img.src.replace("&type=slave", "");
+                if (pictures[i].getElementsByClassName("masked").length == 0) {
+                    GM_addElement(pictures[i], 'a', {
+                        class: 'masked',
+                        href: imgSrc,
+                        target: '_blank',
+                        textContent: '(IMAGE)'
+                    });
+                }
             }
             // mask videos
             var videos = document.querySelectorAll(".content .bubble .bubble_cont .video");
             for (let i = 0; i < videos.length; i++) {
-                videos[i].parentElement.innerHTML = getMaskHtml('VIDEO');
+                // no need to extract video link
+                if (videos[i].getElementsByClassName("masked").length == 0) {
+                    GM_addElement(videos[i], 'a', {
+                        class: 'masked',
+                        href: '#',
+                        textContent: '(VIDEO)'
+                    });
+                }
             }
             // mask location
             var locations = document.querySelectorAll(".content .bubble .bubble_cont .location");
@@ -413,8 +444,13 @@
             // mask name cards
             var cards = document.querySelectorAll(".content .bubble .bubble_cont .card");
             for (let i = 0; i < cards.length; i++) {
-                var name = cards[i].querySelectorAll(".card_bd .info h3")[0];
-                cards[i].parentElement.innerHTML = getMaskHtml('CARD: ' + name.innerText);
+                if (cards[i].parentElement.getElementsByClassName("masked").length == 0) {
+                    var name = cards[i].querySelectorAll(".card_bd .info h3")[0];
+                    GM_addElement(cards[i].parentElement, 'p', {
+                        class: 'masked',
+                        textContent: '(CARD: ' + name.innerText + ')'
+                    });
+                }
             }
         }, 1000);
     }
@@ -428,11 +464,10 @@
                 if (!sysMsgsStr.includes("//")) {
                     sysMsgs[i].innerHTML = "";
                     GM_addElement(sysMsgs[i], 'p', {
-                        class: 'masked',
+                        class: 'comment',
                         textContent: '// ' + sysMsgsStr
                     });
                 }
-
             }
         }, 1000);
     }
@@ -734,7 +769,8 @@
              ['emoji2122', 'Trademark'],
              // extra (not in qq face or emoji panel)
              ['emoji1f1fa1f1f8', 'America Flag'],
-             ['emoji1f1ec1f1e7', 'Canada Flag']]
+             ['emoji1f1ec1f1e7', 'Canada Flag'],
+             ['emoji1f3ac', 'Film']]
         );
         if (emojiClass.startsWith("qq")) {
             return qqface_names_map.get(emojiClass);
