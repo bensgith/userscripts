@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.8.3
+// @version      0.8.4
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -158,6 +158,7 @@
         .bubble_cont .video .web_wechat_paly,
         .bubble_cont .card,
         .box_hd .title .title_name .emoji,
+        .box_hd .title .title_count,
         .box_bd .message_empty,
         .message .avatar,
         .message .nickname .emoji,
@@ -226,7 +227,7 @@
         .message_system .content {
             padding: 1px 0;
         }
-        .content .comment {
+        .comment {
             color: #6A9955;
             padding: 2px 4px;
         }
@@ -333,6 +334,7 @@
 
     // mask chat item name on the side panel
     maskChatItemNames();
+    maskChatTitleNames();
     // mask media content like pictures, videos
     maskMessageMediaContent();
     // mask emojis, qq emojis, custom emojis
@@ -356,13 +358,24 @@
         }, 1000);
     }
 
+    function maskChatTitleNames() {
+        setInterval(function() {
+            var titles = document.querySelectorAll(".box_hd .title_wrap .title .title_name");
+            for (let i = 0; i < titles.length; i++) {
+                if (titles[i].getElementsByClassName("comment").length == 0) {
+                    titles[i].innerHTML = removeSpecialEmojis(titles[i].innerHTML);
+                }
+            }
+        }, 1000);
+    }
+
     function maskMessageEmojis() {
         setInterval(function() {
             var plainMsgs = document.querySelectorAll(".message .content .bubble .bubble_cont .plain");
+            console.log(plainMsgs.length + ' plainMsgs');
             for (let i = 0; plainMsgs.length; i++) {
-                // TODO: TypeError: Cannot read properties of undefined (reading 'querySelectorAll')
-                // var emojiImgs = plainMsgs[i].querySelectorAll("pre img");
-
+                // TODO: TypeError: Cannot read properties of undefined (reading 'getElementsByClassName')
+                // plainMsgs[i] is undefined, why?
                 if (plainMsgs[i].getElementsByClassName("masked").length == 0) {
                     var pre = plainMsgs[i].getElementsByTagName("pre")[0];
                     var imgs = pre.getElementsByTagName("img");
@@ -403,10 +416,10 @@
             // mask images
             var pictures = document.querySelectorAll(".content .bubble .bubble_cont .picture");
             for (let i = 0; i < pictures.length; i++) {
-                // extract image link
-                var img = pictures[i].getElementsByTagName("img")[0];
-                var imgSrc = img.src.replace("&type=slave", "");
                 if (pictures[i].getElementsByClassName("masked").length == 0) {
+                    // extract image link
+                    var img = pictures[i].getElementsByTagName("img")[0];
+                    var imgSrc = img.src.replace("&type=slave", "");
                     GM_addElement(pictures[i], 'a', {
                         class: 'masked',
                         href: imgSrc,
@@ -776,6 +789,14 @@
             return qqface_names_map.get(emojiClass);
         }
         return emoji_names_map.get(emojiClass);
+    }
+
+    function removeSpecialEmojis(text) {
+        const emojis = ['🧸', '🦋', '🐋', '🌎', '🎊', '★', '☼', '🇪🇺'];
+        for (let i = 0; i < emojis.length; i++) {
+            text = text.replace(emojis[i], "");
+        }
+        return text;
     }
 
 })();
