@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.8.4
+// @version      0.8.5
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -656,6 +656,7 @@
              ['emoji2747', 'Twinkle'],
              ['emoji1f31f', 'Star'],
              ['emoji2755', '!'],
+             ['emoji2757', '!'], // extra
              ['emoji2754', '?'],
              ['emoji1f4a4', 'Asleep'],
              ['emoji1f4a7', 'Drops'],
