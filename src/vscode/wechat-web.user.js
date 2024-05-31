@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.8.6
+// @version      0.8.7
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -12,42 +12,6 @@
 
 (function() {
     'use strict';
-
-    let vscode_favico = 'https://code.visualstudio.com/favicon.ico';
-    let vscode_name = 'VS Code';
-
-
-    // change tab tittle and icon
-    var shortcut_icon = document.getElementsByTagName('link')[0];
-    shortcut_icon.href = vscode_favico;
-    // set title every 0.5 second, never end
-    setInterval(function() {
-        var titleNode = document.getElementsByTagName('title')[0];
-        titleNode.innerHTML = vscode_name;
-    }, 500);
-
-
-    // login page
-    if (document.getElementsByClassName('login').length > 0) {
-        var loginAvatarInterval = setInterval(function() {
-            var association_img = document.getElementsByClassName('association')[0].firstElementChild;
-            association_img.src = vscode_favico;
-        }, 500);
-    }
-
-
-   var headerAvatarInterval = setInterval(function() {
-        var nickname = document.getElementsByClassName('nickname')[0].firstElementChild;
-        var avatarImg = document.querySelector(".header .avatar .img");
-        if (avatarImg.src != vscode_favico && nickname.innerHTML === vscode_name) {
-            // if successfully changed, show avatar and name
-            GM_addStyle('.header .avatar .img{display:block;width:27px;height:27px}');
-            GM_addStyle('.header .info .nickname .display_name{display:inline-block;width:auto}');
-        }
-        avatarImg.src = vscode_favico;
-        nickname.innerHTML = vscode_name;
-    }, 500);
-
 
     var css = `
         /* Common elements */
@@ -157,6 +121,8 @@
         .bubble_cont .video img,
         .bubble_cont .video .web_wechat_paly,
         .bubble_cont .card,
+        .bubble_cont .location .img,
+        .bubble_cont .location .desc,
         .box_hd .title .title_name .emoji,
         .box_hd .title .title_count,
         .box_bd .message_empty,
@@ -324,6 +290,40 @@
     `;
     GM_addStyle(css);
 
+
+    let vscode_favico = 'https://code.visualstudio.com/favicon.ico';
+    let vscode_name = 'VS Code';
+
+    // change tab tittle and icon
+    var shortcut_icon = document.getElementsByTagName('link')[0];
+    shortcut_icon.href = vscode_favico;
+    // set title every 0.5 second, never end
+    setInterval(function() {
+        var titleNode = document.getElementsByTagName('title')[0];
+        titleNode.innerHTML = vscode_name;
+    }, 500);
+
+
+    // login page
+    if (document.getElementsByClassName('login').length > 0) {
+        var loginAvatarInterval = setInterval(function() {
+            var association_img = document.getElementsByClassName('association')[0].firstElementChild;
+            association_img.src = vscode_favico;
+        }, 500);
+    }
+
+   var headerAvatarInterval = setInterval(function() {
+        var nickname = document.getElementsByClassName('nickname')[0].firstElementChild;
+        var avatarImg = document.querySelector(".header .avatar .img");
+        if (avatarImg.src != vscode_favico && nickname.innerHTML === vscode_name) {
+            // if successfully changed, show avatar and name
+            GM_addStyle('.header .avatar .img{display:block;width:27px;height:27px}');
+            GM_addStyle('.header .info .nickname .display_name{display:inline-block;width:auto}');
+        }
+        avatarImg.src = vscode_favico;
+        nickname.innerHTML = vscode_name;
+    }, 500);
+
     // clear intervals after 10 mins
     setTimeout(function() {
         clearInterval(loginAvatarInterval);
@@ -361,25 +361,20 @@
     function maskChatTitleNames() {
         setInterval(function() {
             var titles = document.querySelectorAll(".box_hd .title_wrap .title .title_name");
-            for (let i = 0; i < titles.length; i++) {
-                if (titles[i].getElementsByClassName("comment").length == 0) {
-                    titles[i].innerHTML = removeSpecialEmojis(titles[i].innerHTML);
-                }
-            }
+            titles.forEach((title) => {
+                title.innerHTML = removeSpecialEmojis(title.innerHTML)
+            });
         }, 1000);
     }
 
     function maskMessageEmojis() {
         setInterval(function() {
             var plainMsgs = document.querySelectorAll(".message .content .bubble .bubble_cont .plain");
-            console.log(plainMsgs.length + ' plainMsgs');
-            for (let i = 0; plainMsgs.length; i++) {
-                // TODO: TypeError: Cannot read properties of undefined (reading 'getElementsByClassName')
-                // plainMsgs[i] is undefined, why?
-                if (plainMsgs[i].getElementsByClassName("masked").length == 0) {
-                    var pre = plainMsgs[i].getElementsByTagName("pre")[0];
+            plainMsgs.forEach((plain) => {
+                if (notContainsMaskedElements(plain)) {
+                    var pre = plain.getElementsByTagName("pre")[0];
                     var imgs = pre.getElementsByTagName("img");
-                    for (let j = 0; imgs.length; j++) {
+                    for (let j = 0; j < imgs.length; j++) {
                         // get the 2nd class name as emoji ID
                         var classStr = imgs[j].getAttribute("class").split(" ")[1];
                         GM_addElement(pre, 'span', {
@@ -388,26 +383,26 @@
                         });
                     }
                 }
-            }
+            });
         }, 1000);
     }
 
     function maskMessageCustomEmojis() {
         setInterval(function() {
             var customEmojis = document.querySelectorAll(".message .content .emoticon");
-            for (let i = 0; i < customEmojis.length; i++) {
-                if (customEmojis[i].getElementsByClassName("masked").length == 0) {
+            customEmojis.forEach((emoji) => {
+                if (notContainsMaskedElements(emoji)) {
                     // extract image link
-                    var img = customEmojis[i].getElementsByTagName("img")[0];
+                    var img = emoji.getElementsByTagName("img")[0];
                     var imgSrc = img.src.replace("&type=big", "");
-                    GM_addElement(customEmojis[i], 'a', {
+                    GM_addElement(emoji, 'a', {
                         class: 'masked',
                         href: imgSrc,
                         target: '_blank',
                         textContent: '(CUSTOM_EMOJI)'
                     });
                 }
-            }
+            });
         }, 1000);
     }
 
@@ -415,85 +410,121 @@
         setInterval(function() {
             // mask images
             var pictures = document.querySelectorAll(".content .bubble .bubble_cont .picture");
-            for (let i = 0; i < pictures.length; i++) {
-                if (pictures[i].getElementsByClassName("masked").length == 0) {
+            pictures.forEach((picture) => {
+                if (notContainsMaskedElements(picture)) {
                     // extract image link
-                    var img = pictures[i].getElementsByTagName("img")[0];
+                    var img = picture.getElementsByTagName("img")[0];
                     var imgSrc = img.src.replace("&type=slave", "");
-                    GM_addElement(pictures[i], 'a', {
+                    GM_addElement(picture, 'a', {
                         class: 'masked',
                         href: imgSrc,
                         target: '_blank',
                         textContent: '(IMAGE)'
                     });
                 }
-            }
+            });
             // mask videos
             var videos = document.querySelectorAll(".content .bubble .bubble_cont .video");
+            /*
             for (let i = 0; i < videos.length; i++) {
                 // no need to extract video link
-                if (videos[i].getElementsByClassName("masked").length == 0) {
+                if (notContainsMaskedElements(videos[i])) {
                     GM_addElement(videos[i], 'a', {
                         class: 'masked',
                         href: '#',
                         textContent: '(VIDEO)'
                     });
                 }
-            }
+            }*/
+            videos.forEach((video) => {
+                // no need to extract video link
+                if (notContainsMaskedElements(video)) {
+                    GM_addElement(video, 'a', {
+                        class: 'masked',
+                        href: '#',
+                        textContent: '(VIDEO)'
+                    });
+                }
+            });
             // mask location
             var locations = document.querySelectorAll(".content .bubble .bubble_cont .location");
-            for (let i = 0; i < locations.length; i++) {
-                locations[i].parentElement.innerHTML = getMaskHtml('LOCATION');
-            }
-            // mask plain message hints
-            var plainMsgs = document.querySelectorAll(".content .bubble .bubble_cont .plain pre");
-            for (let i = 0; i < plainMsgs.length; i++) {
-                if (plainMsgs[i].innerHTML.includes("收到一条网页版微信暂不支持的消息类型")) {
-                    plainMsgs[i].innerHTML = '<p class="masked">(UNSUPPORTED MESSAGE)</p>';
-                } else if (plainMsgs[i].innerHTML.includes("Send an emoji, view it on mobile")) {
-                    plainMsgs[i].innerHTML = '<p class="masked">(UNSUPPORTED EMOJI)</p>';
+            locations.forEach((location) => {
+                if (notContainsMaskedElements(location)) {
+                    var a = location.getElementsByTagName("a")[0];
+                    a.setAttribute("class", "masked");
+                    a.innerHTML += "(LOCATION)";
                 }
-            }
+            });
+            // mask plain message hints
+            var plainPres = document.querySelectorAll(".content .bubble .bubble_cont .plain pre");
+            plainPres.forEach((pre) => {
+                if (pre.innerHTML.includes("收到一条网页版微信暂不支持的消息类型")) {
+                    pre.innerHTML = '<p class="masked">(UNSUPPORTED MESSAGE)</p>';
+                } else if (pre.innerHTML.includes("Send an emoji, view it on mobile")) {
+                    pre.innerHTML = '<p class="masked">(UNSUPPORTED EMOJI)</p>';
+                }
+            });
             // mask name cards
             var cards = document.querySelectorAll(".content .bubble .bubble_cont .card");
-            for (let i = 0; i < cards.length; i++) {
-                if (cards[i].parentElement.getElementsByClassName("masked").length == 0) {
-                    var name = cards[i].querySelectorAll(".card_bd .info h3")[0];
-                    GM_addElement(cards[i].parentElement, 'p', {
+            cards.forEach((card) => {
+                if (notContainsMaskedElements(card.parentElement)) {
+                    var name = card.querySelectorAll(".card_bd .info h3")[0];
+                    GM_addElement(card.parentElement, 'p', {
                         class: 'masked',
                         textContent: '(CARD: ' + name.innerText + ')'
                     });
                 }
-            }
+            });
         }, 1000);
     }
 
     function maskSystemMessages() {
         setInterval(function() {
             var sysMsgs = document.querySelectorAll(".message_system .content");
-            for (let i = 0; i < sysMsgs.length; i++) {
-                if (sysMsgs[i].getElementsByClassName("comment").length == 0) {
-                    var sysMsgsStr = sysMsgs[i].innerHTML;
-                    sysMsgs[i].innerHTML = "";
-                    GM_addElement(sysMsgs[i], 'p', {
+            sysMsgs.forEach((sysMsg) => {
+                if (notContainsMaskedElements(sysMsg, "comment")) {
+                    var sysMsgsStr = sysMsg.innerHTML;
+                    sysMsg.innerHTML = "";
+                    GM_addElement(sysMsg, 'p', {
                         class: 'comment',
                         textContent: '// ' + sysMsgsStr
                     });
                 }
-            }
+            });
         }, 1000);
     }
 
-    function getMaskHtml(maskText) {
-        return `<div class="plain">
-                    <pre class="js_message_plain masked">(${maskText})</pre>
-                    <img ng-show="message.MMStatus == 1" class="ico_loading ng-hide" src="//res.wx.qq.com/t/wx_fed/webwx/res/static/img/xasUyAI.gif" alt="">
-                    <i class="ico_fail web_wechat_message_fail ng-hide" ng-click="resendMsg(message)" ng-show="message.MMStatus == 5" title="Resend"></i>
-                </div>`;
+    function notContainsMaskedElements(node, className = "masked") {
+        return node.getElementsByClassName(className).length == 0;
     }
 
     function getEmojiTextByClass(emojiClass) {
-        const qqface_names_map = new Map(
+        if (emojiClass.startsWith("qq")) {
+            return qqface_names_map.get(emojiClass);
+        }
+        return emoji_names_map.get(emojiClass);
+    }
+
+    function removeSpecialEmojis(text) {
+        const emojis = ['🧸', '🦋', '🐋', '🌎', '🌍', '🎊', '★', '☼', '🇪🇺', '🇹🇭', '🇻🇳', '📍', '🦅'];
+        emojis.forEach((emoji) => {
+            text = text.replace(emoji, "")
+        });
+        return text;
+    }
+
+    function translateToEnglish(text) {
+        // "Abby"邀请"LESLIEEE LYA"加入了群聊
+        // "LESLIEEE LYA"与群里其他人都不是朋友关系，请注意隐私安全
+        var parts = text.split("\"");
+        if (text.includes("邀请") && text.endsWith("加入了群聊")) {
+            return parts[1] + " invited " + parts[3];
+        } else if (text.endsWith("与群里其他人都不是朋友关系，请注意隐私安全")) {
+            return parts[1] + " is not friends with anyone";
+        }
+    }
+
+    const qqface_names_map = new Map(
             [['qqemoji0', 'Smile'],
              ['qqemoji1', 'Grimace'],
              ['qqemoji2', 'Drool'],
@@ -609,7 +640,8 @@
              ['qqemoji112', 'Packet'],
              ['qqemoji111', 'Chicken']]
         );
-        const emoji_names_map = new Map(
+
+    const emoji_names_map = new Map(
             [['emoji1f604', 'Laugh'],
              ['emoji1f637', 'Sick'],
              ['emoji1f639', 'Lol'],
@@ -786,18 +818,4 @@
              ['emoji1f3ac', 'Film'],
              ['emoji1f3c4', 'Surfing']]
         );
-        if (emojiClass.startsWith("qq")) {
-            return qqface_names_map.get(emojiClass);
-        }
-        return emoji_names_map.get(emojiClass);
-    }
-
-    function removeSpecialEmojis(text) {
-        const emojis = ['🧸', '🦋', '🐋', '🌎', '🎊', '★', '☼', '🇪🇺', '🇹🇭', '🇻🇳', '📍'];
-        for (let i = 0; i < emojis.length; i++) {
-            text = text.replace(emojis[i], "");
-        }
-        return text;
-    }
-
 })();
