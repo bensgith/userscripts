@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.8.5
+// @version      0.8.6
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -471,10 +471,9 @@
     function maskSystemMessages() {
         setInterval(function() {
             var sysMsgs = document.querySelectorAll(".message_system .content");
-            var sysMsgsStr;
             for (let i = 0; i < sysMsgs.length; i++) {
-                sysMsgsStr = sysMsgs[i].innerHTML;
-                if (!sysMsgsStr.includes("//")) {
+                if (sysMsgs[i].getElementsByClassName("comment").length == 0) {
+                    var sysMsgsStr = sysMsgs[i].innerHTML;
                     sysMsgs[i].innerHTML = "";
                     GM_addElement(sysMsgs[i], 'p', {
                         class: 'comment',
@@ -611,21 +610,21 @@
              ['qqemoji111', 'Chicken']]
         );
         const emoji_names_map = new Map(
-            [['emoji1f637', 'Laugh'],
-             ['emoji1f604', 'Sick'],
+            [['emoji1f604', 'Laugh'],
+             ['emoji1f637', 'Sick'],
              ['emoji1f639', 'Lol'],
              ['emoji1f602', 'Lol'], // extra
              ['emoji1f61d', 'Tongue'],
              ['emoji1f633', 'Blush'],
              ['emoji1f631', 'Terror'],
-             ['emoji1f64d', 'Let Down'],
+             ['emoji1f64d', 'LetDown'],
              ['emoji1f612', 'Speechless'],
              ['emoji1f47b', 'Ghost'],
              ['emoji1f4aa', 'Strong'],
              ['emoji1f389', 'Party'],
              ['emoji1f4e6', 'Gift'],
              ['emoji1f60a', 'Happy'],
-             ['emoji1f63a', 'Big Smile'],
+             ['emoji1f63a', 'BigSmile'],
              ['emoji263a', 'Glowing'],
              ['emoji1f609', 'Wink'],
              ['emoji1f63b', 'Drool'],
@@ -716,15 +715,15 @@
              ['emoji1f33a', 'Flower'],
              ['emoji1f334', 'Palm'],
              ['emoji1f335', 'Cactus'],
-             ['emoji1f49d', 'Candy Box'],
+             ['emoji1f49d', 'CandyBox'],
              ['emoji1f383', 'Jack-o-lantern'],
              ['emoji1f385', 'Santa'],
-             ['emoji1f384', 'Xmas Tree'],
+             ['emoji1f384', 'XmasTree'],
              ['emoji1f514', 'Bell'],
              ['emoji1f388', 'Balloon'],
              ['emoji1f4bf', 'CD'],
              ['emoji1f4f7', 'Camera'],
-             ['emoji1f4f9', 'Film Camera'],
+             ['emoji1f4f9', 'FilmCamera'],
              ['emoji1f4bb', 'Computer'],
              ['emoji1f4fa', 'TV'],
              ['emoji1f4de', 'Phone'],
@@ -732,7 +731,7 @@
              ['emoji1f510', 'Locked'],
              ['emoji1f511', 'Key'],
              ['emoji1f528', 'Judgement'],
-             ['emoji1f4a1', 'Light bulb'],
+             ['emoji1f4a1', 'LightBulb'],
              ['emoji1f4eb', 'Mail'],
              ['emoji1f6c0', 'Wash'],
              ['emoji1f4b5', 'Money'],
@@ -765,13 +764,13 @@
              ['emoji1f363', 'Sushi'],
              ['emoji1f35c', 'Noodles'],
              ['emoji1f373', 'Eggs'],
-             ['emoji1f366', 'Ice Cream'],
+             ['emoji1f366', 'IceCream'],
              ['emoji1f382', 'Cake'],
              ['emoji1f34f', 'Apple'],
              ['emoji2708', 'Plane'],
-             ['emoji1f680', 'Rocket ship'],
+             ['emoji1f680', 'RocketShip'],
              ['emoji1f6b2', 'Bike'],
-             ['emoji1f684', 'Bullet Train'],
+             ['emoji1f684', 'BulletTrain'],
              ['emoji26a0', 'Warning'],
              ['emoji1f3c1', 'Flag'],
              ['emoji1f6b9', 'Men'],
@@ -779,12 +778,13 @@
              ['emoji2b55', 'O'],
              ['emoji2716', 'X'],
              ['emojia9', 'Copyright'],
-             ['emojiae', 'Registered TM'],
+             ['emojiae', 'RegisteredTM'],
              ['emoji2122', 'Trademark'],
              // extra (not in qq face or emoji panel)
-             ['emoji1f1fa1f1f8', 'America Flag'],
-             ['emoji1f1ec1f1e7', 'Canada Flag'],
-             ['emoji1f3ac', 'Film']]
+             ['emoji1f1fa1f1f8', 'AmericaFlag'],
+             ['emoji1f1ec1f1e7', 'CanadaFlag'],
+             ['emoji1f3ac', 'Film'],
+             ['emoji1f3c4', 'Surfing']]
         );
         if (emojiClass.startsWith("qq")) {
             return qqface_names_map.get(emojiClass);
@@ -793,7 +793,7 @@
     }
 
     function removeSpecialEmojis(text) {
-        const emojis = ['🧸', '🦋', '🐋', '🌎', '🎊', '★', '☼', '🇪🇺'];
+        const emojis = ['🧸', '🦋', '🐋', '🌎', '🎊', '★', '☼', '🇪🇺', '🇹🇭', '🇻🇳', '📍'];
         for (let i = 0; i < emojis.length; i++) {
             text = text.replace(emojis[i], "");
         }
