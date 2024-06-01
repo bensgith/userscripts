@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.8.8
+// @version      0.8.9
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -374,14 +374,14 @@
                 if (notContainsMaskedElements(plain)) {
                     var pre = plain.getElementsByTagName("pre")[0];
                     var imgs = pre.getElementsByTagName("img");
+                    var preText = pre.innerHTML;
                     for (let j = 0; j < imgs.length; j++) {
                         // get the 2nd class name as emoji ID
                         var classStr = imgs[j].getAttribute("class").split(" ")[1];
-                        GM_addElement(pre, 'span', {
-                            class: 'masked',
-                            textContent: '(' + getEmojiTextByClass(classStr) + ')'
-                        });
+                        var re = new RegExp(`<img class=.*?${classStr}.*?spacer.gif\">`);
+                        preText = preText.replace(re, '<span class="masked" emoid="' + classStr + '">(' + getEmojiTextByClass(classStr) + ')</span>');
                     }
+                    pre.innerHTML = preText;
                 }
             });
         }, 1000);
@@ -497,7 +497,7 @@
     }
 
     function removeSpecialEmojis(text) {
-        const emojis = ['🧸', '🦋', '🐋', '🌎', '🌍', '🎊', '★', '☼', '🇪🇺', '🇹🇭', '🇻🇳', '📍', '🦅'];
+        const emojis = ['🧸', '🦋', '🐋', '🌎', '🌍', '🎊', '★', '☼', '🇪🇺', '🇹🇭', '🇻🇳', '📍', '🦅', '🌘', '✅', '💯', '🖥️', '➕', '🤣', '💮'];
         emojis.forEach((emoji) => {
             text = text.replace(emoji, "")
         });
@@ -805,11 +805,20 @@
              ['emojiae', 'RegisteredTM'],
              ['emoji2122', 'Trademark'],
              // extra (not in qq face or emoji panel)
-             ['emoji1f1e81f1f3', 'ChinaFlag'],
-             ['emoji1f1fa1f1f8', 'AmericaFlag'],
-             ['emoji1f1ec1f1e7', 'CanadaFlag'],
+             ['emoji1f1e81f1f3', 'China'],
+             ['emoji1f1fa1f1f8', 'America'],
+             ['emoji1f1ec1f1e7', 'Canada'],
              ['emoji1f3ac', 'Film'],
              ['emoji1f3c4', 'Surfing'],
-             ['emoji1f33f', 'LuckyClover']]
+             ['emoji1f33f', 'FourLeafClover'],
+             ['emoji1f483', 'Dancer'],
+             ['emoji1f49c', 'PurpleHeart'],
+             ['emoji1f49e', 'SparklingHeart'],
+             ['emoji1f490', 'Bouquet'],
+             ['emoji1f4e7', 'LoveLetter'],
+             ['emoji1f48c', 'LoveLetter'],
+             ['emoji1f4d2', 'TextBook'],
+             ['emoji2733', 'EightSpokedAsterisk'],
+             ['emoji1f6a8', 'RotatingLight']]
         );
 })();
