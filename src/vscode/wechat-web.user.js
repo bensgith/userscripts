@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.8.7
+// @version      0.8.8
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -425,17 +425,6 @@
             });
             // mask videos
             var videos = document.querySelectorAll(".content .bubble .bubble_cont .video");
-            /*
-            for (let i = 0; i < videos.length; i++) {
-                // no need to extract video link
-                if (notContainsMaskedElements(videos[i])) {
-                    GM_addElement(videos[i], 'a', {
-                        class: 'masked',
-                        href: '#',
-                        textContent: '(VIDEO)'
-                    });
-                }
-            }*/
             videos.forEach((video) => {
                 // no need to extract video link
                 if (notContainsMaskedElements(video)) {
@@ -463,6 +452,7 @@
                 } else if (pre.innerHTML.includes("Send an emoji, view it on mobile")) {
                     pre.innerHTML = '<p class="masked">(UNSUPPORTED EMOJI)</p>';
                 }
+                pre.innerHTML = removeSpecialEmojis(pre.innerHTML);
             });
             // mask name cards
             var cards = document.querySelectorAll(".content .bubble .bubble_cont .card");
@@ -483,7 +473,8 @@
             var sysMsgs = document.querySelectorAll(".message_system .content");
             sysMsgs.forEach((sysMsg) => {
                 if (notContainsMaskedElements(sysMsg, "comment")) {
-                    var sysMsgsStr = sysMsg.innerHTML;
+                    sysMsg.querySelectorAll("img").forEach((img) => img.remove());
+                    var sysMsgsStr = translateIntoEnglish(sysMsg.innerHTML);
                     sysMsg.innerHTML = "";
                     GM_addElement(sysMsg, 'p', {
                         class: 'comment',
@@ -513,15 +504,16 @@
         return text;
     }
 
-    function translateToEnglish(text) {
-        // "Abby"邀请"LESLIEEE LYA"加入了群聊
-        // "LESLIEEE LYA"与群里其他人都不是朋友关系，请注意隐私安全
+    function translateIntoEnglish(text) {
         var parts = text.split("\"");
+        // "Abby"邀请"LESLIEEE LYA"加入了群聊
         if (text.includes("邀请") && text.endsWith("加入了群聊")) {
             return parts[1] + " invited " + parts[3];
+        // "LESLIEEE LYA"与群里其他人都不是朋友关系，请注意隐私安全
         } else if (text.endsWith("与群里其他人都不是朋友关系，请注意隐私安全")) {
             return parts[1] + " is not friends with anyone";
         }
+        return text;
     }
 
     const qqface_names_map = new Map(
@@ -813,9 +805,11 @@
              ['emojiae', 'RegisteredTM'],
              ['emoji2122', 'Trademark'],
              // extra (not in qq face or emoji panel)
+             ['emoji1f1e81f1f3', 'ChinaFlag'],
              ['emoji1f1fa1f1f8', 'AmericaFlag'],
              ['emoji1f1ec1f1e7', 'CanadaFlag'],
              ['emoji1f3ac', 'Film'],
-             ['emoji1f3c4', 'Surfing']]
+             ['emoji1f3c4', 'Surfing'],
+             ['emoji1f33f', 'LuckyClover']]
         );
 })();
