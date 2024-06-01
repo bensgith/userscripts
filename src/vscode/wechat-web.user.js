@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.8.9
+// @version      0.8.10
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -362,7 +362,7 @@
         setInterval(function() {
             var titles = document.querySelectorAll(".box_hd .title_wrap .title .title_name");
             titles.forEach((title) => {
-                title.innerHTML = removeSpecialEmojis(title.innerHTML)
+                title.innerHTML = maskSpecialEmojis(title.innerHTML)
             });
         }, 1000);
     }
@@ -379,9 +379,9 @@
                         // get the 2nd class name as emoji ID
                         var classStr = imgs[j].getAttribute("class").split(" ")[1];
                         var re = new RegExp(`<img class=.*?${classStr}.*?spacer.gif\">`);
-                        preText = preText.replace(re, '<span class="masked" emoid="' + classStr + '">(' + getEmojiTextByClass(classStr) + ')</span>');
+                        preText = preText.replace(re, '<span class="masked" emoid="' + classStr + '">(' + getEmojiText(classStr) + ')</span>');
                     }
-                    pre.innerHTML = preText;
+                    pre.innerHTML = maskSpecialEmojis(preText);
                 }
             });
         }, 1000);
@@ -452,7 +452,6 @@
                 } else if (pre.innerHTML.includes("Send an emoji, view it on mobile")) {
                     pre.innerHTML = '<p class="masked">(UNSUPPORTED EMOJI)</p>';
                 }
-                pre.innerHTML = removeSpecialEmojis(pre.innerHTML);
             });
             // mask name cards
             var cards = document.querySelectorAll(".content .bubble .bubble_cont .card");
@@ -489,18 +488,20 @@
         return node.getElementsByClassName(className).length == 0;
     }
 
-    function getEmojiTextByClass(emojiClass) {
-        if (emojiClass.startsWith("qq")) {
-            return qqface_names_map.get(emojiClass);
+    function getEmojiText(id) {
+        if (id.startsWith("qqemoji")) {
+            return qqface_names_map.get(id);
+        } else if (id.startsWith("emoji")) {
+            return emoji_names_map.get(id);
         }
-        return emoji_names_map.get(emojiClass);
+        return special_emoji_map.get(id);
     }
 
-    function removeSpecialEmojis(text) {
-        const emojis = ['🧸', '🦋', '🐋', '🌎', '🌍', '🎊', '★', '☼', '🇪🇺', '🇹🇭', '🇻🇳', '📍', '🦅', '🌘', '✅', '💯', '🖥️', '➕', '🤣', '💮'];
-        emojis.forEach((emoji) => {
-            text = text.replace(emoji, "")
-        });
+    function maskSpecialEmojis(text) {
+        //const emojis = ['🧸', '🦋', '🐋', '🌎', '🌍', '🎊', '★', '☼', '🇪🇺', '🇹🇭', '🇻🇳', '📍', '🦅', '🌘', '✅', '💯', '🖥️', '➕', '🤣', '💮'];
+        for (let [key, value] of special_emoji_map) {
+            text = text.replaceAll(key, '<span class="masked">(' + value + ')</span>')
+        }
         return text;
     }
 
@@ -512,6 +513,8 @@
         // "LESLIEEE LYA"与群里其他人都不是朋友关系，请注意隐私安全
         } else if (text.endsWith("与群里其他人都不是朋友关系，请注意隐私安全")) {
             return parts[1] + " is not friends with anyone";
+        } else if (text.includes("拍了拍")) {
+            return parts[1] + " patted " + parts[3];
         }
         return text;
     }
@@ -821,4 +824,29 @@
              ['emoji2733', 'EightSpokedAsterisk'],
              ['emoji1f6a8', 'RotatingLight']]
         );
+
+    //https://github.com/ikatyang/emoji-cheat-sheet
+    const special_emoji_map = new Map(
+        [['🧸', 'teddy_bear'],
+         ['🦋', 'butterfly'],
+         ['🐋', 'whale2'],
+         ['🌎', 'earth_americas'],
+         ['🌍', 'earth_africa'],
+         ['🎊', 'confetti_ball'],
+         ['★', 'star'],
+         ['☼', 'sunny'],
+         ['🇪🇺', 'eu'],
+         ['🇹🇭', 'thailand'],
+         ['🇻🇳', 'vietnam'],
+         ['🇨🇦', 'canada'],
+         ['📍', 'round_pushpin'],
+         ['🦅', 'eagle'],
+         ['🌘', 'waning_crescent_moon'],
+         ['✅', 'white_check_mark'],
+         ['💯', '100'],
+         ['🖥️', 'desktop_computer'],
+         ['➕', 'heavy_plus_sign'],
+         ['🤣', 'rofl'],
+         ['💮', 'white_flower']]
+    );
 })();
