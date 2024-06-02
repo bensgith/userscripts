@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.8.10
+// @version      0.9.0
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -335,6 +335,7 @@
     // mask chat item name on the side panel
     maskChatItemNames();
     maskChatTitleNames();
+    maskNickNamesChatGroup();
     // mask media content like pictures, videos
     maskMessageMediaContent();
     // mask emojis, qq emojis, custom emojis
@@ -362,7 +363,16 @@
         setInterval(function() {
             var titles = document.querySelectorAll(".box_hd .title_wrap .title .title_name");
             titles.forEach((title) => {
-                title.innerHTML = maskSpecialEmojis(title.innerHTML)
+                title.innerHTML = maskSpecialEmojis(title.innerHTML);
+            });
+        }, 1000);
+    }
+
+    function maskNickNamesChatGroup() {
+        setInterval(function() {
+            var nicknames = document.querySelectorAll(".message .content .nickname");
+            nicknames.forEach((nickname) => {
+                nickname.innerHTML = maskSpecialEmojis(nickname.innerHTML, 'remove');
             });
         }, 1000);
     }
@@ -484,7 +494,7 @@
         }, 1000);
     }
 
-    function notContainsMaskedElements(node, className = "masked") {
+    function notContainsMaskedElements(node, className = 'masked') {
         return node.getElementsByClassName(className).length == 0;
     }
 
@@ -497,10 +507,16 @@
         return special_emoji_map.get(id);
     }
 
-    function maskSpecialEmojis(text) {
-        //const emojis = ['🧸', '🦋', '🐋', '🌎', '🌍', '🎊', '★', '☼', '🇪🇺', '🇹🇭', '🇻🇳', '📍', '🦅', '🌘', '✅', '💯', '🖥️', '➕', '🤣', '💮'];
-        for (let [key, value] of special_emoji_map) {
-            text = text.replaceAll(key, '<span class="masked">(' + value + ')</span>')
+    function maskSpecialEmojis(text, mode = 'replace') {
+        //const emojis = ['🧸', '🦋', '🐋', '🌎', '🌍', '🎊', '★', '☼', '🇪🇺', '🇹🇭', '🇻🇳', '📍', '🦅', '🌘', '✅', '💯', '🖥️', '➕', '🤣', '💮', '🐼', '🦐'];
+        if (mode == 'replace') {
+            for (let [key, value] of special_emoji_map) {
+                text = text.replaceAll(key, '<span class="masked">(' + value + ')</span>');
+            }
+        } else if (mode == 'remove') {
+            for (let [key, value] of special_emoji_map) {
+                text = text.replaceAll(key, '');
+            }
         }
         return text;
     }
@@ -847,6 +863,8 @@
          ['🖥️', 'desktop_computer'],
          ['➕', 'heavy_plus_sign'],
          ['🤣', 'rofl'],
-         ['💮', 'white_flower']]
+         ['💮', 'white_flower'],
+         ['🐼', 'panda_face'],
+         ['🦐', 'shrimp']]
     );
 })();
