@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.9.0
+// @version      0.9.1
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -120,7 +120,9 @@
         .bubble_cont .picture img,
         .bubble_cont .video img,
         .bubble_cont .video .web_wechat_paly,
-        .bubble_cont .card,
+        .bubble_cont .card .card_hd,
+        .bubble_cont .card .card_bd,
+        .bubble_cont .card:after,
         .bubble_cont .location .img,
         .bubble_cont .location .desc,
         .box_hd .title .title_name .emoji,
@@ -177,6 +179,12 @@
         }
         .bubble_cont .plain {
             padding: 2px 6px;
+        }
+        .bubble_cont .card {
+            padding: 0;
+            margin: 0;
+            background-color: #1E1E1E;
+            width: auto;
         }
         .bubble:after,
         .bubble:before {
@@ -334,15 +342,12 @@
 
     // mask chat item name on the side panel
     maskChatItemNames();
+    // mask top title name
     maskChatTitleNames();
-    maskNickNamesChatGroup();
-    // mask media content like pictures, videos
-    maskMessageMediaContent();
-    // mask emojis, qq emojis, custom emojis
-    maskMessageEmojis();
-    maskMessageCustomEmojis();
     // mask system messages
     maskSystemMessages();
+    // mask message content
+    maskChatMessageContent();
 
 
     //////////////////////////////
@@ -363,116 +368,7 @@
         setInterval(function() {
             var titles = document.querySelectorAll(".box_hd .title_wrap .title .title_name");
             titles.forEach((title) => {
-                title.innerHTML = maskSpecialEmojis(title.innerHTML);
-            });
-        }, 1000);
-    }
-
-    function maskNickNamesChatGroup() {
-        setInterval(function() {
-            var nicknames = document.querySelectorAll(".message .content .nickname");
-            nicknames.forEach((nickname) => {
-                nickname.innerHTML = maskSpecialEmojis(nickname.innerHTML, 'remove');
-            });
-        }, 1000);
-    }
-
-    function maskMessageEmojis() {
-        setInterval(function() {
-            var plainMsgs = document.querySelectorAll(".message .content .bubble .bubble_cont .plain");
-            plainMsgs.forEach((plain) => {
-                if (notContainsMaskedElements(plain)) {
-                    var pre = plain.getElementsByTagName("pre")[0];
-                    var imgs = pre.getElementsByTagName("img");
-                    var preText = pre.innerHTML;
-                    for (let j = 0; j < imgs.length; j++) {
-                        // get the 2nd class name as emoji ID
-                        var classStr = imgs[j].getAttribute("class").split(" ")[1];
-                        var re = new RegExp(`<img class=.*?${classStr}.*?spacer.gif\">`);
-                        preText = preText.replace(re, '<span class="masked" emoid="' + classStr + '">(' + getEmojiText(classStr) + ')</span>');
-                    }
-                    pre.innerHTML = maskSpecialEmojis(preText);
-                }
-            });
-        }, 1000);
-    }
-
-    function maskMessageCustomEmojis() {
-        setInterval(function() {
-            var customEmojis = document.querySelectorAll(".message .content .emoticon");
-            customEmojis.forEach((emoji) => {
-                if (notContainsMaskedElements(emoji)) {
-                    // extract image link
-                    var img = emoji.getElementsByTagName("img")[0];
-                    var imgSrc = img.src.replace("&type=big", "");
-                    GM_addElement(emoji, 'a', {
-                        class: 'masked',
-                        href: imgSrc,
-                        target: '_blank',
-                        textContent: '(CUSTOM_EMOJI)'
-                    });
-                }
-            });
-        }, 1000);
-    }
-
-    function maskMessageMediaContent() {
-        setInterval(function() {
-            // mask images
-            var pictures = document.querySelectorAll(".content .bubble .bubble_cont .picture");
-            pictures.forEach((picture) => {
-                if (notContainsMaskedElements(picture)) {
-                    // extract image link
-                    var img = picture.getElementsByTagName("img")[0];
-                    var imgSrc = img.src.replace("&type=slave", "");
-                    GM_addElement(picture, 'a', {
-                        class: 'masked',
-                        href: imgSrc,
-                        target: '_blank',
-                        textContent: '(IMAGE)'
-                    });
-                }
-            });
-            // mask videos
-            var videos = document.querySelectorAll(".content .bubble .bubble_cont .video");
-            videos.forEach((video) => {
-                // no need to extract video link
-                if (notContainsMaskedElements(video)) {
-                    GM_addElement(video, 'a', {
-                        class: 'masked',
-                        href: '#',
-                        textContent: '(VIDEO)'
-                    });
-                }
-            });
-            // mask location
-            var locations = document.querySelectorAll(".content .bubble .bubble_cont .location");
-            locations.forEach((location) => {
-                if (notContainsMaskedElements(location)) {
-                    var a = location.getElementsByTagName("a")[0];
-                    a.setAttribute("class", "masked");
-                    a.innerHTML += "(LOCATION)";
-                }
-            });
-            // mask plain message hints
-            var plainPres = document.querySelectorAll(".content .bubble .bubble_cont .plain pre");
-            plainPres.forEach((pre) => {
-                if (pre.innerHTML.includes("收到一条网页版微信暂不支持的消息类型")) {
-                    pre.innerHTML = '<p class="masked">(UNSUPPORTED MESSAGE)</p>';
-                } else if (pre.innerHTML.includes("Send an emoji, view it on mobile")) {
-                    pre.innerHTML = '<p class="masked">(UNSUPPORTED EMOJI)</p>';
-                }
-            });
-            // mask name cards
-            var cards = document.querySelectorAll(".content .bubble .bubble_cont .card");
-            cards.forEach((card) => {
-                if (notContainsMaskedElements(card.parentElement)) {
-                    var name = card.querySelectorAll(".card_bd .info h3")[0];
-                    GM_addElement(card.parentElement, 'p', {
-                        class: 'masked',
-                        textContent: '(CARD: ' + name.innerText + ')'
-                    });
-                }
+                title.innerHTML = maskSpecialEmojis(title.innerHTML, 'remove');
             });
         }, 1000);
     }
@@ -494,21 +390,113 @@
         }, 1000);
     }
 
+    function maskChatMessageContent() {
+        setInterval(function() {
+            var msgContents = document.querySelectorAll('.message .content');
+            msgContents.forEach((msgCont) => {
+                // nickname
+                var nicknames = msgCont.getElementsByClassName('nickname');
+                if (nicknames.length > 0) {
+                    nicknames[0].innerHTML = maskSpecialEmojis(nicknames[0].innerHTML, 'remove');
+                }
+                // bubble content
+                var bubbleContents = msgCont.querySelectorAll('.bubble .bubble_cont');
+                bubbleContents.forEach((bubbleCont) => {
+                    // plain
+                    var plains = bubbleCont.getElementsByClassName('plain');
+                    if (plains.length > 0 && notContainsMaskedElements(plains[0])) {
+                        var pre = plains[0].getElementsByTagName('pre')[0];
+                        // check for unsportted message
+                        if (pre.innerHTML.includes('收到一条网页版微信暂不支持的消息类型')) {
+                            pre.innerHTML = '<p class="masked">(UNSUPPORTED MESSAGE)</p>';
+                            return;
+                        } else if (pre.innerHTML.includes('Send an emoji, view it on mobile')) {
+                            pre.innerHTML = '<p class="masked">(UNSUPPORTED EMOJI)</p>';
+                            return;
+                        }
+                        // mask emojis on panels
+                        var imgs = pre.getElementsByTagName('img');
+                        var preText = pre.innerHTML;
+                        for (let j = 0; j < imgs.length; j++) {
+                            // get the 2nd class name as emoji ID
+                            var classStr = imgs[j].getAttribute('class').split(' ')[1];
+                            var re = new RegExp(`<img class=.*?${classStr}.*?spacer.gif\">`);
+                            preText = preText.replace(re, '<span class="masked" emoid="' + classStr + '">(' + getEmojiText(classStr) + ')</span>');
+                        }
+                        // mask special emojis that not on panels
+                        pre.innerHTML = maskSpecialEmojis(preText);
+                    }
+                    // picture
+                    var pictures = bubbleCont.getElementsByClassName('picture');
+                    if (pictures.length > 0 && notContainsMaskedElements(pictures[0])) {
+                        // extract image link
+                        var img = pictures[0].getElementsByTagName('img')[0];
+                        var imgSrc = img.src.replace('&type=slave', '');
+                        GM_addElement(pictures[0], 'a', {
+                            class: 'masked',
+                            href: imgSrc,
+                            target: '_blank',
+                            textContent: '(IMAGE)'
+                        });
+                    }
+                    // video
+                    var videos = bubbleCont.getElementsByClassName('video');
+                    if (videos.length > 0 && notContainsMaskedElements(videos[0])) {
+                        // no need to extract video link
+                        GM_addElement(videos[0], 'a', {
+                            class: 'masked',
+                            href: '#',
+                            textContent: '(VIDEO)'
+                        });
+                    }
+                    // location
+                    var locations = bubbleCont.getElementsByClassName('location');
+                    if (locations.length > 0 && notContainsMaskedElements(locations[0])) {
+                        var a = locations[0].getElementsByTagName('a')[0];
+                        a.setAttribute('class', 'masked');
+                        a.innerHTML += '(LOCATION)';
+                    }
+                    // cards
+                    var cards = bubbleCont.getElementsByClassName('card');
+                    if (cards.length > 0 && notContainsMaskedElements(cards[0])) {
+                        var name = cards[0].getElementsByTagName('h3')[0];
+                        GM_addElement(cards[0], 'p', {
+                            class: 'masked',
+                            textContent: '(CARD: ' + name.innerText + ')'
+                        });
+                    }
+                }); // bubbleContents.forEach
+                // emoticon
+                var customEmojis = msgCont.getElementsByClassName('emoticon');
+                if (customEmojis.length > 0 && notContainsMaskedElements(customEmojis[0])) {
+                    // extract image link
+                    var img = customEmojis[0].getElementsByTagName('img')[0];
+                    var imgSrc = img.src.replace('&type=big', '');
+                    GM_addElement(customEmojis[0], 'a', {
+                        class: 'masked',
+                        href: imgSrc,
+                        target: '_blank',
+                        textContent: '(CUSTOM_EMOJI)'
+                    });
+                }
+            });
+        }, 1000);
+    }
+
     function notContainsMaskedElements(node, className = 'masked') {
         return node.getElementsByClassName(className).length == 0;
     }
 
     function getEmojiText(id) {
-        if (id.startsWith("qqemoji")) {
+        if (id.startsWith('qqemoji')) {
             return qqface_names_map.get(id);
-        } else if (id.startsWith("emoji")) {
+        } else if (id.startsWith('emoji')) {
             return emoji_names_map.get(id);
         }
         return special_emoji_map.get(id);
     }
 
     function maskSpecialEmojis(text, mode = 'replace') {
-        //const emojis = ['🧸', '🦋', '🐋', '🌎', '🌍', '🎊', '★', '☼', '🇪🇺', '🇹🇭', '🇻🇳', '📍', '🦅', '🌘', '✅', '💯', '🖥️', '➕', '🤣', '💮', '🐼', '🦐'];
         if (mode == 'replace') {
             for (let [key, value] of special_emoji_map) {
                 text = text.replaceAll(key, '<span class="masked">(' + value + ')</span>');
@@ -522,15 +510,15 @@
     }
 
     function translateIntoEnglish(text) {
-        var parts = text.split("\"");
+        var parts = text.split('\"');
         // "Abby"邀请"LESLIEEE LYA"加入了群聊
-        if (text.includes("邀请") && text.endsWith("加入了群聊")) {
-            return parts[1] + " invited " + parts[3];
+        if (text.includes('邀请') && text.endsWith('加入了群聊')) {
+            return parts[1] + ' invited ' + parts[3];
         // "LESLIEEE LYA"与群里其他人都不是朋友关系，请注意隐私安全
-        } else if (text.endsWith("与群里其他人都不是朋友关系，请注意隐私安全")) {
-            return parts[1] + " is not friends with anyone";
-        } else if (text.includes("拍了拍")) {
-            return parts[1] + " patted " + parts[3];
+        } else if (text.endsWith('与群里其他人都不是朋友关系，请注意隐私安全')) {
+            return parts[1] + ' is not friends with anyone';
+        } else if (text.includes('拍了拍')) {
+            return parts[1] + ' patted ' + parts[3];
         }
         return text;
     }
@@ -838,7 +826,10 @@
              ['emoji1f48c', 'LoveLetter'],
              ['emoji1f4d2', 'TextBook'],
              ['emoji2733', 'EightSpokedAsterisk'],
-             ['emoji1f6a8', 'RotatingLight']]
+             ['emoji1f6a8', 'RotatingLight'],
+             ['emoji1f338', 'PinkFlower'],
+             ['emoji1f33c', 'YellowFlower'],
+             ['emoji1f496', 'PinkSparklingHeart']]
         );
 
     //https://github.com/ikatyang/emoji-cheat-sheet
@@ -865,6 +856,8 @@
          ['🤣', 'rofl'],
          ['💮', 'white_flower'],
          ['🐼', 'panda_face'],
-         ['🦐', 'shrimp']]
+         ['🦐', 'shrimp'],
+         ['😬', 'grimacing'],
+         ['🐲', 'dragon_face']]
     );
 })();
