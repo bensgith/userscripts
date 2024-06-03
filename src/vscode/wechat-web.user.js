@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.9.1
+// @version      0.9.2
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -359,7 +359,9 @@
         setInterval(function() {
             var names = document.querySelectorAll(".chat_item .info .nickname_text");
             for (let i = 0; i < names.length; i++) {
-                names[i].innerHTML = maskedNames[i];
+                if (names[i].innerHTML != maskedNames[i]) {
+                    names[i].innerHTML = maskedNames[i];
+                }
             }
         }, 1000);
     }
@@ -368,7 +370,10 @@
         setInterval(function() {
             var titles = document.querySelectorAll(".box_hd .title_wrap .title .title_name");
             titles.forEach((title) => {
-                title.innerHTML = maskSpecialEmojis(title.innerHTML, 'remove');
+                var maskedTitle = maskSpecialEmojis(title.innerHTML, 'remove');
+                if (title.innerHTML != maskedTitle) {
+                    title.innerHTML = maskedTitle;
+                }
             });
         }, 1000);
     }
@@ -397,14 +402,17 @@
                 // nickname
                 var nicknames = msgCont.getElementsByClassName('nickname');
                 if (nicknames.length > 0) {
-                    nicknames[0].innerHTML = maskSpecialEmojis(nicknames[0].innerHTML, 'remove');
+                    var maskedNickname = maskSpecialEmojis(nicknames[0].innerHTML, 'remove');
+                    if (nicknames[0].innerHTML != maskedNickname) {
+                        nicknames[0].innerHTML = maskedNickname;
+                    }
                 }
                 // bubble content
                 var bubbleContents = msgCont.querySelectorAll('.bubble .bubble_cont');
                 bubbleContents.forEach((bubbleCont) => {
                     // plain
                     var plains = bubbleCont.getElementsByClassName('plain');
-                    if (plains.length > 0 && notContainsMaskedElements(plains[0])) {
+                    if (nodeIsAvailable(plains)) {
                         var pre = plains[0].getElementsByTagName('pre')[0];
                         // check for unsportted message
                         if (pre.innerHTML.includes('收到一条网页版微信暂不支持的消息类型')) {
@@ -428,7 +436,7 @@
                     }
                     // picture
                     var pictures = bubbleCont.getElementsByClassName('picture');
-                    if (pictures.length > 0 && notContainsMaskedElements(pictures[0])) {
+                    if (nodeIsAvailable(pictures)) {
                         // extract image link
                         var img = pictures[0].getElementsByTagName('img')[0];
                         var imgSrc = img.src.replace('&type=slave', '');
@@ -441,7 +449,7 @@
                     }
                     // video
                     var videos = bubbleCont.getElementsByClassName('video');
-                    if (videos.length > 0 && notContainsMaskedElements(videos[0])) {
+                    if (nodeIsAvailable(videos)) {
                         // no need to extract video link
                         GM_addElement(videos[0], 'a', {
                             class: 'masked',
@@ -451,14 +459,14 @@
                     }
                     // location
                     var locations = bubbleCont.getElementsByClassName('location');
-                    if (locations.length > 0 && notContainsMaskedElements(locations[0])) {
+                    if (nodeIsAvailable(locations)) {
                         var a = locations[0].getElementsByTagName('a')[0];
                         a.setAttribute('class', 'masked');
                         a.innerHTML += '(LOCATION)';
                     }
                     // cards
                     var cards = bubbleCont.getElementsByClassName('card');
-                    if (cards.length > 0 && notContainsMaskedElements(cards[0])) {
+                    if (nodeIsAvailable(cards)) {
                         var name = cards[0].getElementsByTagName('h3')[0];
                         GM_addElement(cards[0], 'p', {
                             class: 'masked',
@@ -468,7 +476,7 @@
                 }); // bubbleContents.forEach
                 // emoticon
                 var customEmojis = msgCont.getElementsByClassName('emoticon');
-                if (customEmojis.length > 0 && notContainsMaskedElements(customEmojis[0])) {
+                if (nodeIsAvailable(customEmojis)) {
                     // extract image link
                     var img = customEmojis[0].getElementsByTagName('img')[0];
                     var imgSrc = img.src.replace('&type=big', '');
@@ -481,6 +489,10 @@
                 }
             });
         }, 1000);
+    }
+
+    function nodeIsAvailable(nodeList) {
+        return nodeList.length > 0 && notContainsMaskedElements(nodeList[0]);
     }
 
     function notContainsMaskedElements(node, className = 'masked') {
@@ -839,6 +851,7 @@
          ['🐋', 'whale2'],
          ['🌎', 'earth_americas'],
          ['🌍', 'earth_africa'],
+         ['🌏', 'earth_asia'],
          ['🎊', 'confetti_ball'],
          ['★', 'star'],
          ['☼', 'sunny'],
@@ -858,6 +871,16 @@
          ['🐼', 'panda_face'],
          ['🦐', 'shrimp'],
          ['😬', 'grimacing'],
-         ['🐲', 'dragon_face']]
+         ['🐲', 'dragon_face'],
+         ['0️⃣', 'zero'],
+         ['1️⃣', 'one'],
+         ['2️⃣', 'two'],
+         ['3️⃣', 'three'],
+         ['4️⃣', 'four'],
+         ['5️⃣', 'five'],
+         ['6️⃣', 'six'],
+         ['7️⃣', 'seven'],
+         ['8️⃣', 'eight'],
+         ['9️⃣', 'nine']]
     );
 })();
