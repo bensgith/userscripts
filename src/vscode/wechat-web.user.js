@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.9.2
+// @version      0.9.3
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -68,6 +68,12 @@
         .chat_item .ext,
         .chat_item .nickname .emoji {
             display: none;
+        }
+        .header .info {
+            width: 100%;
+        }
+        .header .info .nickname .opt {
+            float: right;
         }
         .panel{
             background-color:#252526;
@@ -197,6 +203,7 @@
             margin:0 auto;
             text-align: left;
             max-width: none;
+            line-height: 1.2;
         }
         .message_system .content {
             padding: 1px 0;
@@ -215,6 +222,11 @@
         }
         .message .content .emoticon {
             padding: 0 10px;
+        }
+        .message .nickname {
+            font-size: 12px;
+            height: 12px;
+            line-height: 12px;
         }
 
 
@@ -308,38 +320,36 @@
     // set title every 0.5 second, never end
     setInterval(function() {
         var titleNode = document.getElementsByTagName('title')[0];
-        titleNode.innerHTML = vscode_name;
+        if (titleNode.innerHTML != vscode_name) {
+            titleNode.innerHTML = vscode_name;
+        }
     }, 500);
 
 
+    ////////////////////////////////////////////
     // login page
+    ////////////////////////////////////////////
     if (document.getElementsByClassName('login').length > 0) {
         var loginAvatarInterval = setInterval(function() {
             var association_img = document.getElementsByClassName('association')[0].firstElementChild;
-            association_img.src = vscode_favico;
+            if (association_img.src != vscode_favico) {
+                association_img.src = vscode_favico;
+            }
         }, 500);
     }
-
-   var headerAvatarInterval = setInterval(function() {
-        var nickname = document.getElementsByClassName('nickname')[0].firstElementChild;
-        var avatarImg = document.querySelector(".header .avatar .img");
-        if (avatarImg.src != vscode_favico && nickname.innerHTML === vscode_name) {
-            // if successfully changed, show avatar and name
-            GM_addStyle('.header .avatar .img{display:block;width:27px;height:27px}');
-            GM_addStyle('.header .info .nickname .display_name{display:inline-block;width:auto}');
-        }
-        avatarImg.src = vscode_favico;
-        nickname.innerHTML = vscode_name;
-    }, 500);
-
     // clear intervals after 10 mins
     setTimeout(function() {
         clearInterval(loginAvatarInterval);
         console.log('cleared interval: loginAvatarInterval');
-        clearInterval(headerAvatarInterval);
-        console.log('cleared interval: headerAvatarInterval');
     }, 600000);
 
+
+    ////////////////////////////////////////////
+    // chat window after logged in
+    ///////////////////////////////////////////
+
+    // mask vavatar and nickname
+    maskAvatarAndNickName();
     // mask chat item name on the side panel
     maskChatItemNames();
     // mask top title name
@@ -350,9 +360,28 @@
     maskChatMessageContent();
 
 
-    //////////////////////////////
+    ////////////////////////////////////////////
     // functions
-    //////////////////////////////
+    ////////////////////////////////////////////
+    function maskAvatarAndNickName() {
+        if (!document.getElementById('vscodeImg')) {
+            var avatar = document.querySelector('.header .avatar');
+            GM_addElement(avatar, 'img', {
+                id: 'vscodeImg',
+                src: vscode_favico,
+                style: 'width:27px;height:27px;'
+            });
+        }
+        if (!document.getElementById('vscodeName')) {
+            var newSpan = document.createElement('span');
+            newSpan.setAttribute('id', 'vscodeName');
+            newSpan.setAttribute('style', 'color:white;');
+            newSpan.textContent = vscode_name;
+            var nickname = document.querySelector('.header .info .nickname');
+            nickname.insertBefore(newSpan, nickname.getElementsByClassName('opt')[0]);
+        }
+    }
+
     function maskChatItemNames() {
         const maskedNames = ['Algorithm', 'Database', 'Binary', 'Compiler', 'Encryption', 'Firewall', 'Cloud Computing', 'Kernel', 'Network', 'Protocol',
         'Cache', 'Artificial Intelligence', 'Machine Learning', 'Cybersecurity', 'Big Data', 'Virtualization', 'Debugging', 'API', 'Recursion', 'Syntax'];
@@ -368,13 +397,11 @@
 
     function maskChatTitleNames() {
         setInterval(function() {
-            var titles = document.querySelectorAll(".box_hd .title_wrap .title .title_name");
-            titles.forEach((title) => {
-                var maskedTitle = maskSpecialEmojis(title.innerHTML, 'remove');
-                if (title.innerHTML != maskedTitle) {
-                    title.innerHTML = maskedTitle;
-                }
-            });
+            var title = document.querySelector(".box_hd .title_wrap .title .title_name");
+            var maskedTitle = maskSpecialEmojis(title.innerHTML, 'remove');
+            if (title.innerHTML != maskedTitle) {
+                title.innerHTML = maskedTitle;
+            }
         }, 1000);
     }
 
@@ -432,7 +459,10 @@
                             preText = preText.replace(re, '<span class="masked" emoid="' + classStr + '">(' + getEmojiText(classStr) + ')</span>');
                         }
                         // mask special emojis that not on panels
-                        pre.innerHTML = maskSpecialEmojis(preText);
+                        var maskedPreText = maskSpecialEmojis(preText);
+                        if (pre.innerHTML != maskedPreText) {
+                            pre.innerHTML = maskedPreText;
+                        }
                     }
                     // picture
                     var pictures = bubbleCont.getElementsByClassName('picture');
@@ -499,13 +529,13 @@
         return node.getElementsByClassName(className).length == 0;
     }
 
-    function getEmojiText(id) {
-        if (id.startsWith('qqemoji')) {
-            return qqface_names_map.get(id);
-        } else if (id.startsWith('emoji')) {
-            return emoji_names_map.get(id);
+    function getEmojiText(key) {
+        if (key.startsWith('qqemoji')) {
+            return qqface_names_map.get(key);
+        } else if (key.startsWith('emoji')) {
+            return emoji_names_map.get(key);
         }
-        return special_emoji_map.get(id);
+        return special_emoji_map.get(key);
     }
 
     function maskSpecialEmojis(text, mode = 'replace') {
@@ -531,6 +561,8 @@
             return parts[1] + ' is not friends with anyone';
         } else if (text.includes('拍了拍')) {
             return parts[1] + ' patted ' + parts[3];
+        } else if (text.includes('Below are new messages')) {
+            return 'Below are new messages';
         }
         return text;
     }
@@ -841,7 +873,10 @@
              ['emoji1f6a8', 'RotatingLight'],
              ['emoji1f338', 'PinkFlower'],
              ['emoji1f33c', 'YellowFlower'],
-             ['emoji1f496', 'PinkSparklingHeart']]
+             ['emoji1f496', 'PinkSparklingHeart'],
+             ['emoji1f17e', 'RedSquareO'],
+             ['emoji1f23a', 'BusinessOpen'],
+             ['emoji1f308', 'Rainbow']]
         );
 
     //https://github.com/ikatyang/emoji-cheat-sheet
@@ -881,6 +916,7 @@
          ['6️⃣', 'six'],
          ['7️⃣', 'seven'],
          ['8️⃣', 'eight'],
-         ['9️⃣', 'nine']]
+         ['9️⃣', 'nine'],
+         ['📬', 'mailbox_with_mail']]
     );
 })();
