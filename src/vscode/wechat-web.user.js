@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.9.3
+// @version      0.9.4
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -12,560 +12,6 @@
 
 (function() {
     'use strict';
-
-    var css = `
-        /* Common elements */
-        .main {
-            min-height:100%;
-            padding-top:0px;
-        }
-        .main .copyright {
-            display:none;
-        }
-        .main_inner {
-            max-width:100%;
-        }
-        .button_primary {
-            background-color:#0E639C !important;
-            border-color:#0E639C !important;
-        }
-        .button_default,
-        .waiting_confirm  {
-            background-color:#333333 !important;
-            color:white !important;
-        }
-
-
-        /* Login Page */
-        .lang,
-        .copyright,
-        .sub_title,
-        .sub_desc,
-        .web_wechat_login_logo {
-            display:none;
-        }
-        .login {
-            background-color:#333333;
-        }
-        .login_box {
-            background-color:#1E1E1E;
-        }
-        .login_box .avatar .action {
-            background-color:#333333 !important;
-            color:white !important;
-        }
-
-
-        /* Chatting Page */
-        /* left panel */
-        #search_bar,
-        .tab,
-        .download_entry,
-        .header .avatar .img,
-        .header .info .nickname .display_name,
-        .chat_item .avatar .img,
-        .chat_item .info .msg,
-        .chat_item .ext,
-        .chat_item .nickname .emoji {
-            display: none;
-        }
-        .header .info {
-            width: 100%;
-        }
-        .header .info .nickname .opt {
-            float: right;
-        }
-        .panel{
-            background-color:#252526;
-            width:220px;
-        }
-        .dropdown_menu {
-            background-color:#333333;
-            border-color:#414141;
-        }
-        .dropdown_menu li a {
-            border-bottom-color:#414141;
-            color:white;
-        }
-        .dropdown_menu li a:hover {
-            background-color:#37373D;
-        }
-        .chat_item {
-            padding:6px 20px 6px;
-            border-bottom: none;
-        }
-        .chat_item .avatar {
-            height: 15px;
-            width: 15px;
-            float: left;
-            margin-right: 5px;
-            position: relative;
-            background: url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
-            background-position: -224px -170px;
-            background-size: 478px 462px;
-        }
-        .chat_item.active {
-            background:#37373D;
-        }
-        .nav_view {
-            top:64px !important;
-        }
-        .web_wechat_reddot {
-            background:url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
-            background-position:-473px -380px;
-        }
-        .web_wechat_reddot_middle {
-            background:url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
-            background-position: -451px -380px;
-        }
-
-
-        /* message panel */
-        .web_wechat_nomes_icon,
-        .bubble_cont .app .cover,
-        .bubble_cont .picture img,
-        .bubble_cont .video img,
-        .bubble_cont .video .web_wechat_paly,
-        .bubble_cont .card .card_hd,
-        .bubble_cont .card .card_bd,
-        .bubble_cont .card:after,
-        .bubble_cont .location .img,
-        .bubble_cont .location .desc,
-        .box_hd .title .title_name .emoji,
-        .box_hd .title .title_count,
-        .box_bd .message_empty,
-        .message .avatar,
-        .message .nickname .emoji,
-        .message .content .bubble .bubble_cont .plain .js_message_plain img,
-        .message .content .emoticon .custom_emoji,
-        .message .message_system .content .emoji {
-            display:none;
-        }
-        #chatArea {
-            background-color:#1E1E1E;
-            color:white;
-        }
-        .box_hd {
-            text-align: left;
-        }
-        .box_hd .title_wrap {
-            border-bottom-color: #414141;
-            background-color: #1E1E1E;
-        }
-        .box_hd .title .title_name {
-            color: white;
-        }
-        .members_wrp {
-            box-shadow: none;
-            -moz-box-shadow: none;
-            -webkit-box-shadow: none;
-        }
-        .members {
-            background-color: #252526;
-            border-bottom-color: #414141;
-        }
-        .bubble {
-            background-color:#1E1E1E !important;
-            margin:3px 10px;
-            max-width: none;
-        }
-        .bubble.bubble_primary.right.arrow_primary:before,
-        .bubble.bubble_primary.right:after {
-            border-left-color:#0E639C;
-        }
-        .bubble_cont .app {
-            background-color:#2D2D2D;
-            padding: 2px 6px;
-            margin:0 4px;
-            max-width: none;
-        }
-        .bubble_cont .app .title {
-            color:white;
-            margin-bottom: 2px;
-        }
-        .bubble_cont .plain {
-            padding: 2px 6px;
-        }
-        .bubble_cont .card {
-            padding: 0;
-            margin: 0;
-            background-color: #1E1E1E;
-            width: auto;
-        }
-        .bubble:after,
-        .bubble:before {
-            top: 7px;
-        }
-        .message {
-            margin-bottom:0;
-        }
-        .message_system {
-            margin:0 auto;
-            text-align: left;
-            max-width: none;
-            line-height: 1.2;
-        }
-        .message_system .content {
-            padding: 1px 0;
-        }
-        .comment {
-            color: #6A9955;
-            padding: 2px 4px;
-        }
-        .content .masked {
-            color: #0065A9;
-            padding: 2px 4px;
-            font-size: 14px;
-        }
-        .content .bubble_cont .plain .masked {
-            padding: 0;
-        }
-        .message .content .emoticon {
-            padding: 0 10px;
-        }
-        .message .nickname {
-            font-size: 12px;
-            height: 12px;
-            line-height: 12px;
-        }
-
-
-        /* reply panel */
-        .btn_send,
-        .chat .box_ft .desc {
-            display:none;
-        }
-        .chat .box_ft {
-            border-top-color:#414141;
-        }
-        .chat .box_ft .action {
-            background-color:#1E1E1E !important;
-        }
-        .exp_hd,
-        .exp_hd_item {
-            background-color:#333333;
-        }
-        .exp_bd,
-        .exp_hd_item.active {
-            background-color:#252526;
-        }
-        .exp_hd_item a {
-            color:white;
-        }
-        .expression {
-            border-color:#414141;
-        }
-        .expression:after {
-            border-top-color:#252526;
-        }
-        .qq_face a,
-        .emoji_face a {
-            border-bottom-color:#414141;
-            border-right-color:#414141;
-        }
-
-
-        /* dialog */
-        .ngdialog.default .ngdialog-content {
-            background-color:#252526;
-            color:white;
-        }
-        .add_chatroom .dialog_hd .title,
-        .create_chatroom_dlg .dialog_hd .title,
-        .transpond-dialog .dialog_hd .title,
-        .selector,
-        .chooser .contact_title {
-            background-color:#252526;
-        }
-        .transpond-dialog .dialog_ft .button_primary {
-            background-color:#0E639C;
-        }
-        .nav_tab,
-        .selector .input_box .input {
-            background-color:#252526;
-            color:white;
-        }
-        .chooser .contact_item {
-            background-color:#252526;
-            border-bottom-color:#414141;
-        }
-        .chooser .active .contact_item {
-            background-color:#2D2D2D;
-            border-bottom-color:#414141;
-        }
-        .nav_tabs {
-            background-color:#252526;
-            border-bottom-color:#414141;
-            color:white;
-        }
-        .dialog_ft {
-            border-top-color:#414141;
-        }
-        .rooms .contact_list .contact_item {
-            border-bottom-color:#414141;
-        }
-        .rooms .contact_list .info .nickname {
-            color:white;
-        }
-    `;
-    GM_addStyle(css);
-
-
-    let vscode_favico = 'https://code.visualstudio.com/favicon.ico';
-    let vscode_name = 'VS Code';
-
-    // change tab tittle and icon
-    var shortcut_icon = document.getElementsByTagName('link')[0];
-    shortcut_icon.href = vscode_favico;
-    // set title every 0.5 second, never end
-    setInterval(function() {
-        var titleNode = document.getElementsByTagName('title')[0];
-        if (titleNode.innerHTML != vscode_name) {
-            titleNode.innerHTML = vscode_name;
-        }
-    }, 500);
-
-
-    ////////////////////////////////////////////
-    // login page
-    ////////////////////////////////////////////
-    if (document.getElementsByClassName('login').length > 0) {
-        var loginAvatarInterval = setInterval(function() {
-            var association_img = document.getElementsByClassName('association')[0].firstElementChild;
-            if (association_img.src != vscode_favico) {
-                association_img.src = vscode_favico;
-            }
-        }, 500);
-    }
-    // clear intervals after 10 mins
-    setTimeout(function() {
-        clearInterval(loginAvatarInterval);
-        console.log('cleared interval: loginAvatarInterval');
-    }, 600000);
-
-
-    ////////////////////////////////////////////
-    // chat window after logged in
-    ///////////////////////////////////////////
-
-    // mask vavatar and nickname
-    maskAvatarAndNickName();
-    // mask chat item name on the side panel
-    maskChatItemNames();
-    // mask top title name
-    maskChatTitleNames();
-    // mask system messages
-    maskSystemMessages();
-    // mask message content
-    maskChatMessageContent();
-
-
-    ////////////////////////////////////////////
-    // functions
-    ////////////////////////////////////////////
-    function maskAvatarAndNickName() {
-        if (!document.getElementById('vscodeImg')) {
-            var avatar = document.querySelector('.header .avatar');
-            GM_addElement(avatar, 'img', {
-                id: 'vscodeImg',
-                src: vscode_favico,
-                style: 'width:27px;height:27px;'
-            });
-        }
-        if (!document.getElementById('vscodeName')) {
-            var newSpan = document.createElement('span');
-            newSpan.setAttribute('id', 'vscodeName');
-            newSpan.setAttribute('style', 'color:white;');
-            newSpan.textContent = vscode_name;
-            var nickname = document.querySelector('.header .info .nickname');
-            nickname.insertBefore(newSpan, nickname.getElementsByClassName('opt')[0]);
-        }
-    }
-
-    function maskChatItemNames() {
-        const maskedNames = ['Algorithm', 'Database', 'Binary', 'Compiler', 'Encryption', 'Firewall', 'Cloud Computing', 'Kernel', 'Network', 'Protocol',
-        'Cache', 'Artificial Intelligence', 'Machine Learning', 'Cybersecurity', 'Big Data', 'Virtualization', 'Debugging', 'API', 'Recursion', 'Syntax'];
-        setInterval(function() {
-            var names = document.querySelectorAll(".chat_item .info .nickname_text");
-            for (let i = 0; i < names.length; i++) {
-                if (names[i].innerHTML != maskedNames[i]) {
-                    names[i].innerHTML = maskedNames[i];
-                }
-            }
-        }, 1000);
-    }
-
-    function maskChatTitleNames() {
-        setInterval(function() {
-            var title = document.querySelector(".box_hd .title_wrap .title .title_name");
-            var maskedTitle = maskSpecialEmojis(title.innerHTML, 'remove');
-            if (title.innerHTML != maskedTitle) {
-                title.innerHTML = maskedTitle;
-            }
-        }, 1000);
-    }
-
-    function maskSystemMessages() {
-        setInterval(function() {
-            var sysMsgs = document.querySelectorAll(".message_system .content");
-            sysMsgs.forEach((sysMsg) => {
-                if (notContainsMaskedElements(sysMsg, "comment")) {
-                    sysMsg.querySelectorAll("img").forEach((img) => img.remove());
-                    var sysMsgsStr = translateIntoEnglish(sysMsg.innerHTML);
-                    sysMsg.innerHTML = "";
-                    GM_addElement(sysMsg, 'p', {
-                        class: 'comment',
-                        textContent: '// ' + sysMsgsStr
-                    });
-                }
-            });
-        }, 1000);
-    }
-
-    function maskChatMessageContent() {
-        setInterval(function() {
-            var msgContents = document.querySelectorAll('.message .content');
-            msgContents.forEach((msgCont) => {
-                // nickname
-                var nicknames = msgCont.getElementsByClassName('nickname');
-                if (nicknames.length > 0) {
-                    var maskedNickname = maskSpecialEmojis(nicknames[0].innerHTML, 'remove');
-                    if (nicknames[0].innerHTML != maskedNickname) {
-                        nicknames[0].innerHTML = maskedNickname;
-                    }
-                }
-                // bubble content
-                var bubbleContents = msgCont.querySelectorAll('.bubble .bubble_cont');
-                bubbleContents.forEach((bubbleCont) => {
-                    // plain
-                    var plains = bubbleCont.getElementsByClassName('plain');
-                    if (nodeIsAvailable(plains)) {
-                        var pre = plains[0].getElementsByTagName('pre')[0];
-                        // check for unsportted message
-                        if (pre.innerHTML.includes('收到一条网页版微信暂不支持的消息类型')) {
-                            pre.innerHTML = '<p class="masked">(UNSUPPORTED MESSAGE)</p>';
-                            return;
-                        } else if (pre.innerHTML.includes('Send an emoji, view it on mobile')) {
-                            pre.innerHTML = '<p class="masked">(UNSUPPORTED EMOJI)</p>';
-                            return;
-                        }
-                        // mask emojis on panels
-                        var imgs = pre.getElementsByTagName('img');
-                        var preText = pre.innerHTML;
-                        for (let j = 0; j < imgs.length; j++) {
-                            // get the 2nd class name as emoji ID
-                            var classStr = imgs[j].getAttribute('class').split(' ')[1];
-                            var re = new RegExp(`<img class=.*?${classStr}.*?spacer.gif\">`);
-                            preText = preText.replace(re, '<span class="masked" emoid="' + classStr + '">(' + getEmojiText(classStr) + ')</span>');
-                        }
-                        // mask special emojis that not on panels
-                        var maskedPreText = maskSpecialEmojis(preText);
-                        if (pre.innerHTML != maskedPreText) {
-                            pre.innerHTML = maskedPreText;
-                        }
-                    }
-                    // picture
-                    var pictures = bubbleCont.getElementsByClassName('picture');
-                    if (nodeIsAvailable(pictures)) {
-                        // extract image link
-                        var img = pictures[0].getElementsByTagName('img')[0];
-                        var imgSrc = img.src.replace('&type=slave', '');
-                        GM_addElement(pictures[0], 'a', {
-                            class: 'masked',
-                            href: imgSrc,
-                            target: '_blank',
-                            textContent: '(IMAGE)'
-                        });
-                    }
-                    // video
-                    var videos = bubbleCont.getElementsByClassName('video');
-                    if (nodeIsAvailable(videos)) {
-                        // no need to extract video link
-                        GM_addElement(videos[0], 'a', {
-                            class: 'masked',
-                            href: '#',
-                            textContent: '(VIDEO)'
-                        });
-                    }
-                    // location
-                    var locations = bubbleCont.getElementsByClassName('location');
-                    if (nodeIsAvailable(locations)) {
-                        var a = locations[0].getElementsByTagName('a')[0];
-                        a.setAttribute('class', 'masked');
-                        a.innerHTML += '(LOCATION)';
-                    }
-                    // cards
-                    var cards = bubbleCont.getElementsByClassName('card');
-                    if (nodeIsAvailable(cards)) {
-                        var name = cards[0].getElementsByTagName('h3')[0];
-                        GM_addElement(cards[0], 'p', {
-                            class: 'masked',
-                            textContent: '(CARD: ' + name.innerText + ')'
-                        });
-                    }
-                }); // bubbleContents.forEach
-                // emoticon
-                var customEmojis = msgCont.getElementsByClassName('emoticon');
-                if (nodeIsAvailable(customEmojis)) {
-                    // extract image link
-                    var img = customEmojis[0].getElementsByTagName('img')[0];
-                    var imgSrc = img.src.replace('&type=big', '');
-                    GM_addElement(customEmojis[0], 'a', {
-                        class: 'masked',
-                        href: imgSrc,
-                        target: '_blank',
-                        textContent: '(CUSTOM_EMOJI)'
-                    });
-                }
-            });
-        }, 1000);
-    }
-
-    function nodeIsAvailable(nodeList) {
-        return nodeList.length > 0 && notContainsMaskedElements(nodeList[0]);
-    }
-
-    function notContainsMaskedElements(node, className = 'masked') {
-        return node.getElementsByClassName(className).length == 0;
-    }
-
-    function getEmojiText(key) {
-        if (key.startsWith('qqemoji')) {
-            return qqface_names_map.get(key);
-        } else if (key.startsWith('emoji')) {
-            return emoji_names_map.get(key);
-        }
-        return special_emoji_map.get(key);
-    }
-
-    function maskSpecialEmojis(text, mode = 'replace') {
-        if (mode == 'replace') {
-            for (let [key, value] of special_emoji_map) {
-                text = text.replaceAll(key, '<span class="masked">(' + value + ')</span>');
-            }
-        } else if (mode == 'remove') {
-            for (let [key, value] of special_emoji_map) {
-                text = text.replaceAll(key, '');
-            }
-        }
-        return text;
-    }
-
-    function translateIntoEnglish(text) {
-        var parts = text.split('\"');
-        // "Abby"邀请"LESLIEEE LYA"加入了群聊
-        if (text.includes('邀请') && text.endsWith('加入了群聊')) {
-            return parts[1] + ' invited ' + parts[3];
-        // "LESLIEEE LYA"与群里其他人都不是朋友关系，请注意隐私安全
-        } else if (text.endsWith('与群里其他人都不是朋友关系，请注意隐私安全')) {
-            return parts[1] + ' is not friends with anyone';
-        } else if (text.includes('拍了拍')) {
-            return parts[1] + ' patted ' + parts[3];
-        } else if (text.includes('Below are new messages')) {
-            return 'Below are new messages';
-        }
-        return text;
-    }
 
     const qqface_names_map = new Map(
             [['qqemoji0', 'Smile'],
@@ -881,42 +327,609 @@
 
     //https://github.com/ikatyang/emoji-cheat-sheet
     const special_emoji_map = new Map(
-        [['🧸', 'teddy_bear'],
-         ['🦋', 'butterfly'],
-         ['🐋', 'whale2'],
-         ['🌎', 'earth_americas'],
-         ['🌍', 'earth_africa'],
-         ['🌏', 'earth_asia'],
-         ['🎊', 'confetti_ball'],
-         ['★', 'star'],
-         ['☼', 'sunny'],
-         ['🇪🇺', 'eu'],
-         ['🇹🇭', 'thailand'],
-         ['🇻🇳', 'vietnam'],
-         ['🇨🇦', 'canada'],
-         ['📍', 'round_pushpin'],
-         ['🦅', 'eagle'],
-         ['🌘', 'waning_crescent_moon'],
-         ['✅', 'white_check_mark'],
-         ['💯', '100'],
-         ['🖥️', 'desktop_computer'],
-         ['➕', 'heavy_plus_sign'],
-         ['🤣', 'rofl'],
-         ['💮', 'white_flower'],
-         ['🐼', 'panda_face'],
-         ['🦐', 'shrimp'],
-         ['😬', 'grimacing'],
-         ['🐲', 'dragon_face'],
-         ['0️⃣', 'zero'],
-         ['1️⃣', 'one'],
-         ['2️⃣', 'two'],
-         ['3️⃣', 'three'],
-         ['4️⃣', 'four'],
-         ['5️⃣', 'five'],
-         ['6️⃣', 'six'],
-         ['7️⃣', 'seven'],
-         ['8️⃣', 'eight'],
-         ['9️⃣', 'nine'],
+        [['🧸', 'teddy_bear'], ['🦋', 'butterfly'], ['🐋', 'whale2'], ['🌎', 'earth_americas'], ['🌍', 'earth_africa'],
+         ['🌏', 'earth_asia'], ['🎊', 'confetti_ball'], ['★', 'star'], ['☼', 'sunny'], ['🇪🇺', 'eu'], ['🇹🇭', 'thailand'],
+         ['🇻🇳', 'vietnam'], ['🇨🇦', 'canada'], ['📍', 'round_pushpin'], ['🦅', 'eagle'], ['🌘', 'waning_crescent_moon'],
+         ['✅', 'white_check_mark'], ['💯', '100'], ['🖥️', 'desktop_computer'], ['➕', 'heavy_plus_sign'], ['🤣', 'rofl'],
+         ['💮', 'white_flower'], ['🐼', 'panda_face'], ['🦐', 'shrimp'], ['😬', 'grimacing'], ['🐲', 'dragon_face'],
+         ['0️⃣', 'zero'], ['1️⃣', 'one'], ['2️⃣', 'two'], ['3️⃣', 'three'], ['4️⃣', 'four'],
+         ['5️⃣', 'five'], ['6️⃣', 'six'], ['7️⃣', 'seven'], ['8️⃣', 'eight'], ['9️⃣', 'nine'],
          ['📬', 'mailbox_with_mail']]
     );
+
+    var css = `
+        /* Common elements */
+        .main {
+            min-height:100%;
+            padding-top:0px;
+        }
+        .main .copyright {
+            display:none;
+        }
+        .main_inner {
+            max-width:100%;
+        }
+        .button_primary {
+            background-color:#0E639C !important;
+            border-color:#0E639C !important;
+        }
+        .button_default,
+        .waiting_confirm  {
+            background-color:#333333 !important;
+            color:white !important;
+        }
+
+
+        /* Login Page */
+        .lang,
+        .copyright,
+        .sub_title,
+        .sub_desc,
+        .web_wechat_login_logo {
+            display:none;
+        }
+        .login {
+            background-color:#333333;
+        }
+        .login_box {
+            background-color:#1E1E1E;
+        }
+        .login_box .avatar .action {
+            background-color:#333333 !important;
+            color:white !important;
+        }
+
+
+        /* Chatting Page */
+        /* left panel */
+        #search_bar,
+        .tab,
+        .download_entry,
+        .header .avatar .img,
+        .header .info .nickname .display_name,
+        .chat_item .avatar .img,
+        .chat_item .info .msg,
+        .chat_item .ext,
+        .chat_item .nickname .emoji {
+            display: none;
+        }
+        .header .info {
+            width: 100%;
+        }
+        .header .info .nickname .opt {
+            float: right;
+        }
+        .panel{
+            background-color:#252526;
+            width:220px;
+        }
+        .dropdown_menu {
+            background-color:#333333;
+            border-color:#414141;
+        }
+        .dropdown_menu li a {
+            border-bottom-color:#414141;
+            color:white;
+        }
+        .dropdown_menu li a:hover {
+            background-color:#37373D;
+        }
+        .chat_item {
+            padding:6px 20px 6px;
+            border-bottom: none;
+        }
+        .chat_item .avatar {
+            height: 15px;
+            width: 15px;
+            float: left;
+            margin-right: 5px;
+            position: relative;
+            background: url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
+            background-position: -224px -170px;
+            background-size: 478px 462px;
+        }
+        .chat_item.active {
+            background:#37373D;
+        }
+        .nav_view {
+            top:64px !important;
+        }
+        .web_wechat_reddot {
+            background:url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
+            background-position:-473px -380px;
+        }
+        .web_wechat_reddot_middle {
+            background:url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
+            background-position: -451px -380px;
+        }
+
+
+        /* message panel */
+        .web_wechat_nomes_icon,
+        .bubble_cont .app .cover,
+        .bubble_cont .picture img,
+        .bubble_cont .video img,
+        .bubble_cont .video .web_wechat_paly,
+        .bubble_cont .card .card_hd,
+        .bubble_cont .card .card_bd,
+        .bubble_cont .card:after,
+        .bubble_cont .location .img,
+        .bubble_cont .location .desc,
+        .box_hd .title .title_name .emoji,
+        .box_hd .title .title_count,
+        .box_bd .message_empty,
+        .message .avatar,
+        .message .nickname .emoji,
+        .message .content .bubble .bubble_cont .plain .js_message_plain img,
+        .message .content .emoticon .custom_emoji,
+        .message .message_system .content .emoji {
+            display:none;
+        }
+        #chatArea {
+            background-color:#1E1E1E;
+            color:white;
+        }
+        .box_hd {
+            text-align: left;
+        }
+        .box_hd .title_wrap {
+            border-bottom-color: #414141;
+            background-color: #1E1E1E;
+        }
+        .box_hd .title .title_name {
+            color: white;
+        }
+        .members_wrp {
+            box-shadow: none;
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+        }
+        .members {
+            background-color: #252526;
+            border-bottom-color: #414141;
+        }
+        .bubble {
+            background-color:#1E1E1E !important;
+            margin:3px 10px;
+            max-width: none;
+        }
+        .bubble.bubble_primary.right.arrow_primary:before,
+        .bubble.bubble_primary.right:after {
+            border-left-color:#0E639C;
+        }
+        .bubble_cont .app {
+            background-color:#2D2D2D;
+            padding: 2px 6px;
+            margin:0 4px;
+            max-width: none;
+        }
+        .bubble_cont .app .title {
+            color:white;
+            margin-bottom: 2px;
+        }
+        .bubble_cont .plain {
+            padding: 2px 6px;
+        }
+        .bubble_cont .card {
+            padding: 0;
+            margin: 0;
+            background-color: #1E1E1E;
+            width: auto;
+        }
+        .bubble:after,
+        .bubble:before {
+            top: 7px;
+        }
+        .message {
+            margin-bottom:0;
+        }
+        .message_system {
+            margin:0 auto;
+            text-align: left;
+            max-width: none;
+            line-height: 1.2;
+        }
+        .message_system .content {
+            padding: 1px 0;
+        }
+        .comment {
+            color: #6A9955;
+            padding: 2px 4px;
+        }
+        .content .masked {
+            color: #0065A9;
+            padding: 2px 4px;
+            font-size: 14px;
+        }
+        .content .bubble_cont .plain .masked {
+            padding: 0;
+        }
+        .message .content .emoticon {
+            padding: 0 10px;
+        }
+        .message .nickname {
+            font-size: 12px;
+            height: 12px;
+            line-height: 12px;
+        }
+
+
+        /* reply panel */
+        .btn_send,
+        .chat .box_ft .desc {
+            display:none;
+        }
+        .chat .box_ft {
+            border-top-color:#414141;
+        }
+        .chat .box_ft .toolbar .masked_tool {
+            font-size: 12px;
+            color: #999;
+            padding-bottom: 4px;
+            text-decoration: none;
+        }
+        .chat .box_ft .toolbar .masked_tool_active {
+            border-bottom: solid 1px white;
+            color: white;
+        }
+        .chat .box_ft .toolbar .webuploader-pick {
+            display: inline;
+        }
+        .chat .box_ft .action {
+            background-color:#1E1E1E !important;
+        }
+        .exp_hd,
+        .exp_hd_item {
+            background-color:#333333;
+        }
+        .exp_bd,
+        .exp_hd_item.active {
+            background-color:#252526;
+        }
+        .exp_hd_item a {
+            color:white;
+        }
+        .expression {
+            border-color:#414141;
+        }
+        .expression:after {
+            border-top-color:#252526;
+        }
+        .qq_face a,
+        .emoji_face a {
+            border-bottom-color:#414141;
+            border-right-color:#414141;
+        }
+
+
+        /* dialog */
+        .ngdialog.default .ngdialog-content {
+            background-color:#252526;
+            color:white;
+        }
+        .add_chatroom .dialog_hd .title,
+        .create_chatroom_dlg .dialog_hd .title,
+        .transpond-dialog .dialog_hd .title,
+        .selector,
+        .chooser .contact_title {
+            background-color:#252526;
+        }
+        .transpond-dialog .dialog_ft .button_primary {
+            background-color:#0E639C;
+        }
+        .nav_tab,
+        .selector .input_box .input {
+            background-color:#252526;
+            color:white;
+        }
+        .chooser .contact_item {
+            background-color:#252526;
+            border-bottom-color:#414141;
+        }
+        .chooser .active .contact_item {
+            background-color:#2D2D2D;
+            border-bottom-color:#414141;
+        }
+        .nav_tabs {
+            background-color:#252526;
+            border-bottom-color:#414141;
+            color:white;
+        }
+        .dialog_ft {
+            border-top-color:#414141;
+        }
+        .rooms .contact_list .contact_item {
+            border-bottom-color:#414141;
+        }
+        .rooms .contact_list .info .nickname {
+            color:white;
+        }
+    `;
+    GM_addStyle(css);
+
+
+    let vscode_favico = 'https://code.visualstudio.com/favicon.ico';
+    let vscode_name = 'VS Code';
+
+    // change tab tittle and icon
+    var shortcut_icon = document.getElementsByTagName('link')[0];
+    shortcut_icon.href = vscode_favico;
+    // set title every 0.5 second, never end
+    setInterval(function() {
+        var titleNode = document.getElementsByTagName('title')[0];
+        if (titleNode.innerHTML != vscode_name) {
+            titleNode.innerHTML = vscode_name;
+        }
+    }, 500);
+
+
+    ////////////////////////////////////////////
+    // login page
+    ////////////////////////////////////////////
+    if (document.getElementsByClassName('login').length > 0) {
+        var loginAvatarInterval = setInterval(function() {
+            var association_img = document.getElementsByClassName('association')[0].firstElementChild;
+            if (association_img.src != vscode_favico) {
+                association_img.src = vscode_favico;
+            }
+        }, 500);
+    }
+    // clear intervals after 10 mins
+    setTimeout(function() {
+        clearInterval(loginAvatarInterval);
+        console.log('cleared interval: loginAvatarInterval');
+    }, 600000);
+
+
+    ////////////////////////////////////////////
+    // chat window after logged in
+    ///////////////////////////////////////////
+
+    // mask vavatar and nickname
+    maskAvatarAndNickName();
+    // mask chat item name on the side panel
+    maskChatItemNames();
+    // mask top title name
+    maskChatTitleNames();
+    // mask system messages
+    maskSystemMessages();
+    // mask message content
+    maskChatMessageContent();
+
+    maskToolbarOptions();
+
+    ////////////////////////////////////////////
+    // functions
+    ////////////////////////////////////////////
+    function maskAvatarAndNickName() {
+        if (!document.getElementById('vscodeImg')) {
+            var avatar = document.querySelector('.header .avatar');
+            GM_addElement(avatar, 'img', {
+                id: 'vscodeImg',
+                src: vscode_favico,
+                style: 'width:27px;height:27px;'
+            });
+        }
+        if (!document.getElementById('vscodeName')) {
+            var newSpan = document.createElement('span');
+            newSpan.setAttribute('id', 'vscodeName');
+            newSpan.setAttribute('style', 'color:white;');
+            newSpan.textContent = vscode_name;
+            var nickname = document.querySelector('.header .info .nickname');
+            nickname.insertBefore(newSpan, nickname.getElementsByClassName('opt')[0]);
+        }
+    }
+
+    function maskToolbarOptions() {
+        var toolbar = document.getElementById('tool_bar');
+        // emoji option
+        var emojiBtn = toolbar.querySelector('.web_wechat_face');
+        emojiBtn.classList.remove('web_wechat_face');
+        emojiBtn.classList.add('masked_tool');
+        emojiBtn.classList.add('masked_tool_active');
+        emojiBtn.innerHTML = 'TERMINAL';
+        // screenshot option
+        var screenShotBtn = toolbar.querySelector('.web_wechat_screencut');
+        screenShotBtn.classList.remove('web_wechat_screencut');
+        screenShotBtn.classList.add('masked_tool');
+        screenShotBtn.innerHTML = 'PROBLEMS';
+        // upload file option
+        var uploadBtn = toolbar.querySelector('.web_wechat_pic');
+        uploadBtn.classList.remove('web_wechat_pic');
+        uploadBtn.classList.add('masked_tool');
+        var waitForUploaderPick = setInterval(function() {
+            if (uploadBtn.querySelector('.webuploader-pick')) {
+                uploadBtn.innerHTML = 'OUTPUT' + uploadBtn.innerHTML;
+                clearInterval(waitForUploaderPick);
+            }
+        }, 500);
+
+    }
+
+    function maskChatItemNames() {
+        const maskedNames = ['Algorithm', 'Database', 'Binary', 'Compiler', 'Encryption', 'Firewall', 'Cloud Computing', 'Kernel', 'Network', 'Protocol',
+        'Cache', 'Artificial Intelligence', 'Machine Learning', 'Cybersecurity', 'Big Data', 'Virtualization', 'Debugging', 'API', 'Recursion', 'Syntax'];
+        setInterval(function() {
+            var names = document.querySelectorAll(".chat_item .info .nickname_text");
+            for (let i = 0; i < names.length; i++) {
+                if (names[i].innerHTML != maskedNames[i]) {
+                    names[i].innerHTML = maskedNames[i];
+                }
+            }
+        }, 1000);
+    }
+
+    function maskChatTitleNames() {
+        setInterval(function() {
+            var title = document.querySelector(".box_hd .title_wrap .title .title_name");
+            var maskedTitle = maskSpecialEmojis(title.innerHTML, 'remove');
+            if (title.innerHTML != maskedTitle) {
+                title.innerHTML = maskedTitle;
+            }
+        }, 1000);
+    }
+
+    function maskSystemMessages() {
+        setInterval(function() {
+            var sysMsgs = document.querySelectorAll(".message_system .content");
+            sysMsgs.forEach((sysMsg) => {
+                if (notContainsMaskedElements(sysMsg, "comment")) {
+                    sysMsg.querySelectorAll("img").forEach((img) => img.remove());
+                    var sysMsgsStr = translateIntoEnglish(sysMsg.innerHTML);
+                    sysMsg.innerHTML = "";
+                    GM_addElement(sysMsg, 'p', {
+                        class: 'comment',
+                        textContent: '// ' + sysMsgsStr
+                    });
+                }
+            });
+        }, 1000);
+    }
+
+    function maskChatMessageContent() {
+        setInterval(function() {
+            var msgContents = document.querySelectorAll('.message .content');
+            msgContents.forEach((msgCont) => {
+                // nickname
+                var nicknames = msgCont.getElementsByClassName('nickname');
+                if (nicknames.length > 0) {
+                    var maskedNickname = maskSpecialEmojis(nicknames[0].innerHTML, 'remove');
+                    if (nicknames[0].innerHTML != maskedNickname) {
+                        nicknames[0].innerHTML = maskedNickname;
+                    }
+                }
+                // bubble content
+                var bubbleContents = msgCont.querySelectorAll('.bubble .bubble_cont');
+                bubbleContents.forEach((bubbleCont) => {
+                    // plain
+                    var plains = bubbleCont.getElementsByClassName('plain');
+                    if (nodeIsAvailable(plains)) {
+                        var pre = plains[0].getElementsByTagName('pre')[0];
+                        // check for unsportted message
+                        if (pre.innerHTML.includes('收到一条网页版微信暂不支持的消息类型')) {
+                            pre.innerHTML = '<p class="masked">(UNSUPPORTED MESSAGE)</p>';
+                            return;
+                        } else if (pre.innerHTML.includes('Send an emoji, view it on mobile')) {
+                            pre.innerHTML = '<p class="masked">(UNSUPPORTED EMOJI)</p>';
+                            return;
+                        }
+                        // mask emojis on panels
+                        var imgs = pre.getElementsByTagName('img');
+                        var preText = pre.innerHTML;
+                        for (let j = 0; j < imgs.length; j++) {
+                            // get the 2nd class name as emoji ID
+                            var classStr = imgs[j].getAttribute('class').split(' ')[1];
+                            var re = new RegExp(`<img class=.*?${classStr}.*?spacer.gif\">`);
+                            preText = preText.replace(re, '<span class="masked" emoid="' + classStr + '">(' + getEmojiText(classStr) + ')</span>');
+                        }
+                        // mask special emojis that not on panels
+                        var maskedPreText = maskSpecialEmojis(preText);
+                        if (pre.innerHTML != maskedPreText) {
+                            pre.innerHTML = maskedPreText;
+                        }
+                    }
+                    // picture
+                    var pictures = bubbleCont.getElementsByClassName('picture');
+                    if (nodeIsAvailable(pictures)) {
+                        // extract image link
+                        var img = pictures[0].getElementsByTagName('img')[0];
+                        var imgSrc = img.src.replace('&type=slave', '');
+                        GM_addElement(pictures[0], 'a', {
+                            class: 'masked',
+                            href: imgSrc,
+                            target: '_blank',
+                            textContent: '(IMAGE)'
+                        });
+                    }
+                    // video
+                    var videos = bubbleCont.getElementsByClassName('video');
+                    if (nodeIsAvailable(videos)) {
+                        // no need to extract video link
+                        GM_addElement(videos[0], 'a', {
+                            class: 'masked',
+                            href: '#',
+                            textContent: '(VIDEO)'
+                        });
+                    }
+                    // location
+                    var locations = bubbleCont.getElementsByClassName('location');
+                    if (nodeIsAvailable(locations)) {
+                        var a = locations[0].getElementsByTagName('a')[0];
+                        a.setAttribute('class', 'masked');
+                        a.innerHTML += '(LOCATION)';
+                    }
+                    // cards
+                    var cards = bubbleCont.getElementsByClassName('card');
+                    if (nodeIsAvailable(cards)) {
+                        var name = cards[0].getElementsByTagName('h3')[0];
+                        GM_addElement(cards[0], 'p', {
+                            class: 'masked',
+                            textContent: '(CARD: ' + name.innerText + ')'
+                        });
+                    }
+                }); // bubbleContents.forEach
+                // emoticon
+                var customEmojis = msgCont.getElementsByClassName('emoticon');
+                if (nodeIsAvailable(customEmojis)) {
+                    // extract image link
+                    var img = customEmojis[0].getElementsByTagName('img')[0];
+                    var imgSrc = img.src.replace('&type=big', '');
+                    GM_addElement(customEmojis[0], 'a', {
+                        class: 'masked',
+                        href: imgSrc,
+                        target: '_blank',
+                        textContent: '(CUSTOM_EMOJI)'
+                    });
+                }
+            });
+        }, 1000);
+    }
+
+    function nodeIsAvailable(nodeList) {
+        return nodeList.length > 0 && notContainsMaskedElements(nodeList[0]);
+    }
+
+    function notContainsMaskedElements(node, className = 'masked') {
+        return node.getElementsByClassName(className).length == 0;
+    }
+
+    function getEmojiText(key) {
+        if (key.startsWith('qqemoji')) {
+            return qqface_names_map.get(key);
+        } else if (key.startsWith('emoji')) {
+            return emoji_names_map.get(key);
+        }
+        return special_emoji_map.get(key);
+    }
+
+    function maskSpecialEmojis(text, mode = 'replace') {
+        if (mode == 'replace') {
+            for (let [key, value] of special_emoji_map) {
+                text = text.replaceAll(key, '<span class="masked">(' + value + ')</span>');
+            }
+        } else if (mode == 'remove') {
+            for (let [key, value] of special_emoji_map) {
+                text = text.replaceAll(key, '');
+            }
+        }
+        return text;
+    }
+
+    function translateIntoEnglish(text) {
+        var parts = text.split('\"');
+        // "Abby"邀请"LESLIEEE LYA"加入了群聊
+        if (text.includes('邀请') && text.endsWith('加入了群聊')) {
+            return parts[1] + ' invited ' + parts[3];
+        // "LESLIEEE LYA"与群里其他人都不是朋友关系，请注意隐私安全
+        } else if (text.endsWith('与群里其他人都不是朋友关系，请注意隐私安全')) {
+            return parts[1] + ' is not friends with anyone';
+        } else if (text.includes('拍了拍')) {
+            return parts[1] + ' patted ' + parts[3];
+        } else if (text.includes('Below are new messages')) {
+            return 'Below are new messages';
+        }
+        return text;
+    }
+
+    
 })();
