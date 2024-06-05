@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.9.4
+// @version      0.9.5
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -308,6 +308,7 @@
              ['emoji1f3ac', 'Film'],
              ['emoji1f3c4', 'Surfing'],
              ['emoji1f33f', 'FourLeafClover'],
+             ['emoji1f340', 'FourLeafClover'], //extra
              ['emoji1f483', 'Dancer'],
              ['emoji1f49c', 'PurpleHeart'],
              ['emoji1f49e', 'SparklingHeart'],
@@ -507,6 +508,9 @@
             color:white;
             margin-bottom: 2px;
         }
+        .bubble_cont .app .desc {
+            font-size: 12px;
+        }
         .bubble_cont .plain {
             padding: 2px 6px;
         }
@@ -556,7 +560,7 @@
 
         /* reply panel */
         .btn_send,
-        .chat .box_ft .desc {
+        .chat .box_ft .action {
             display:none;
         }
         .chat .box_ft {
@@ -566,6 +570,7 @@
             font-size: 12px;
             color: #999;
             padding-bottom: 4px;
+            margin-right: 15px;
             text-decoration: none;
         }
         .chat .box_ft .toolbar .masked_tool_active {
@@ -574,9 +579,6 @@
         }
         .chat .box_ft .toolbar .webuploader-pick {
             display: inline;
-        }
-        .chat .box_ft .action {
-            background-color:#1E1E1E !important;
         }
         .exp_hd,
         .exp_hd_item {
@@ -600,6 +602,18 @@
             border-bottom-color:#414141;
             border-right-color:#414141;
         }
+        #cli_starter {
+	        color: white;
+	        font-size: 14px;
+	        padding-left: 6px;
+	        display: table-cell;
+       }
+       #editArea {
+           padding-left: 4px;
+           display: table-cell;
+           width: 100%;
+           height: 150px;
+       }
 
 
         /* dialog */
@@ -698,6 +712,8 @@
 
     maskToolbarOptions();
 
+    maskEditArea();
+
     ////////////////////////////////////////////
     // functions
     ////////////////////////////////////////////
@@ -738,13 +754,29 @@
         uploadBtn.classList.remove('web_wechat_pic');
         uploadBtn.classList.add('masked_tool');
         var waitForUploaderPick = setInterval(function() {
-            if (uploadBtn.querySelector('.webuploader-pick')) {
-                uploadBtn.innerHTML = 'OUTPUT' + uploadBtn.innerHTML;
+            var webUploader = uploadBtn.querySelector('.webuploader-element-invisible');
+            if (webUploader) {
+                webUploader.parentElement.style.width = "50px";
+                webUploader.parentElement.style.height = "18px";
+                uploadBtn.innerHTML = uploadBtn.innerHTML + 'OUTPUT';
                 clearInterval(waitForUploaderPick);
             }
         }, 500);
 
     }
+
+    function maskEditArea() {
+        if (!document.getElementById('cli_starter')) {
+            var newSpan = document.createElement('span');
+            newSpan.setAttribute('id', 'cli_starter');
+            newSpan.textContent = 'C:\\>';
+            var content = document.getElementsByClassName('content ng-isolate-scope');
+            if (content.length > 0) {
+                content[0].insertBefore(newSpan, document.getElementById('editArea'));
+            }
+        }
+    }
+
 
     function maskChatItemNames() {
         const maskedNames = ['Algorithm', 'Database', 'Binary', 'Compiler', 'Encryption', 'Firewall', 'Cloud Computing', 'Kernel', 'Network', 'Protocol',
@@ -867,6 +899,15 @@
                             textContent: '(CARD: ' + name.innerText + ')'
                         });
                     }
+                    // app
+                    var apps = bubbleCont.getElementsByClassName('app');
+                    if (nodeIsAvailable(apps)) {
+                        var title = apps[0].getElementsByTagName('h4')[0];
+                        var maskedTitle = maskSpecialEmojis(title.innerHTML, 'remove');
+                        if (title.innerHTML != maskedTitle) {
+                            title.innerHTML = maskedTitle;
+                        }
+                    }
                 }); // bubbleContents.forEach
                 // emoticon
                 var customEmojis = msgCont.getElementsByClassName('emoticon');
@@ -931,5 +972,5 @@
         return text;
     }
 
-    
+
 })();
