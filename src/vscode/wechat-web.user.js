@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.9.5
+// @version      0.9.6
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -323,7 +323,8 @@
              ['emoji1f496', 'PinkSparklingHeart'],
              ['emoji1f17e', 'RedSquareO'],
              ['emoji1f23a', 'BusinessOpen'],
-             ['emoji1f308', 'Rainbow']]
+             ['emoji1f308', 'Rainbow'],
+             ['emoji1f4f1', 'MobilePhone']]
         );
 
     //https://github.com/ikatyang/emoji-cheat-sheet
@@ -362,11 +363,12 @@
 
 
         /* Login Page */
-        .lang,
-        .copyright,
-        .sub_title,
-        .sub_desc,
-        .web_wechat_login_logo {
+        .login .lang,
+        .login .copyright,
+        .login .logo .web_wechat_login_logo,
+        .login .login_box .sub_title,
+        .login .login_box .sub_desc,
+        .login .login_box .avatar {
             display:none;
         }
         .login {
@@ -456,6 +458,7 @@
         .bubble_cont .card:after,
         .bubble_cont .location .img,
         .bubble_cont .location .desc,
+        .bubble_cont .attach .attach_bd,
         .box_hd .title .title_name .emoji,
         .box_hd .title .title_count,
         .box_bd .message_empty,
@@ -520,6 +523,13 @@
             background-color: #1E1E1E;
             width: auto;
         }
+        .bubble_cont .attach {
+            padding: 0;
+            background-color: unset;
+            min-height: unset;
+            min-width: unset;
+            max-width: unset;
+        }
         .bubble:after,
         .bubble:before {
             top: 7px;
@@ -566,6 +576,9 @@
         .chat .box_ft {
             border-top-color:#414141;
         }
+        .chat .box_ft .toolbar a:hover {
+            color: white;
+        }
         .chat .box_ft .toolbar .masked_tool {
             font-size: 12px;
             color: #999;
@@ -579,6 +592,7 @@
         }
         .chat .box_ft .toolbar .webuploader-pick {
             display: inline;
+            opacity: unset;
         }
         .exp_hd,
         .exp_hd_item {
@@ -682,9 +696,14 @@
     ////////////////////////////////////////////
     if (document.getElementsByClassName('login').length > 0) {
         var loginAvatarInterval = setInterval(function() {
-            var association_img = document.getElementsByClassName('association')[0].firstElementChild;
-            if (association_img.src != vscode_favico) {
-                association_img.src = vscode_favico;
+            var association = document.getElementsByClassName('association')[0];
+            var associationImg = association.getElementsByClassName('img')[0];
+            if (associationImg.src != vscode_favico) {
+                associationImg.src = vscode_favico;
+            }
+            var waitingConfirm = association.getElementsByClassName('waiting_confirm')[0];
+            if (waitingConfirm.innerHTML != 'Confirm login on mobile') {
+                waitingConfirm.innerHTML = 'Confirm login on mobile';
             }
         }, 500);
     }
@@ -703,15 +722,15 @@
     maskAvatarAndNickName();
     // mask chat item name on the side panel
     maskChatItemNames();
-    // mask top title name
+    // hide emoji in chat title
     maskChatTitleNames();
-    // mask system messages
+    // make system message like comments
     maskSystemMessages();
     // mask message content
     maskChatMessageContent();
-
+    // make tool bar opions like a terminal
     maskToolbarOptions();
-
+    // make reply text area like a terminal
     maskEditArea();
 
     ////////////////////////////////////////////
@@ -753,16 +772,31 @@
         var uploadBtn = toolbar.querySelector('.web_wechat_pic');
         uploadBtn.classList.remove('web_wechat_pic');
         uploadBtn.classList.add('masked_tool');
-        var waitForUploaderPick = setInterval(function() {
-            var webUploader = uploadBtn.querySelector('.webuploader-element-invisible');
-            if (webUploader) {
-                webUploader.parentElement.style.width = "50px";
-                webUploader.parentElement.style.height = "18px";
-                uploadBtn.innerHTML = uploadBtn.innerHTML + 'OUTPUT';
-                clearInterval(waitForUploaderPick);
+        var waitForUploader = setInterval(function() {
+            var webUploaderPick = uploadBtn.querySelector('.webuploader-pick');
+            var webUploaderInvisible = uploadBtn.querySelector('.webuploader-element-invisible');
+            if (webUploaderPick && webUploaderInvisible) {
+                webUploaderPick.innerHTML = 'OUTPUT';
+                var inputWrapper = webUploaderInvisible.parentElement;
+                if (inputWrapper.style.width == '50px' && inputWrapper.style.height == '18px') {
+                    clearInterval(waitForUploader);
+                }
+                webUploaderInvisible.parentElement.style.width = '50px';
+                webUploaderInvisible.parentElement.style.height = '18px';
             }
         }, 500);
-
+        // DEBUG CONSOLE
+        var aDebug = document.createElement('a');
+        aDebug.classList.add('masked_tool');
+        aDebug.setAttribute('href', '#');
+        aDebug.innerHTML = 'DEBUG CONSOLE';
+        toolbar.appendChild(aDebug);
+        // PORTS
+        var aPorts = document.createElement('a');
+        aPorts.classList.add('masked_tool');
+        aPorts.setAttribute('href', '#');
+        aPorts.innerHTML = 'PORTS';
+        toolbar.appendChild(aPorts);
     }
 
     function maskEditArea() {
@@ -844,8 +878,17 @@
                         } else if (pre.innerHTML.includes('Send an emoji, view it on mobile')) {
                             pre.innerHTML = '<p class="masked">(UNSUPPORTED EMOJI)</p>';
                             return;
+                        } else if (pre.innerHTML.includes('该消息类型暂不能展示')) {
+                            pre.innerHTML = pre.innerHTML.replace('[该消息类型暂不能展示]', '<span class="masked">(UNSUPPORTED MESSGE)</span>');
+                            // continue to the logic as below
+                        } else if (pre.innerHTML.includes('[图片]')) {
+                            pre.innerHTML = pre.innerHTML.replace('[图片]', '<span class="masked">(IMAGE)</span>');
+                            // continue to the logic as below
+                        } else if (pre.innerHTML.includes('[视频]')) {
+                            pre.innerHTML = pre.innerHTML.replace('[视频]', '<span class="masked">(VIDEO)</span>');
+                            // continue to the logic as below
                         }
-                        // mask emojis on panels
+                        // mask emojis that are on panels
                         var imgs = pre.getElementsByTagName('img');
                         var preText = pre.innerHTML;
                         for (let j = 0; j < imgs.length; j++) {
@@ -922,6 +965,22 @@
                         textContent: '(CUSTOM_EMOJI)'
                     });
                 }
+                // file
+                var attachments = msgCont.getElementsByClassName('attach');
+                if (nodeIsAvailable(attachments)) {
+                    //var type = attachments[0].querySelector('.attach_bd .cover i').getAttribute('ng-switch-when').toUpperCase();
+                    var title = attachments[0].querySelector('.attach_bd .cont .title').innerHTML;
+                    var size = attachments[0].querySelector('.attach_bd .cont .opr .ng-binding').innerHTML;
+                    var addr = attachments[0].querySelector('.attach_bd .cont .opr a').href;
+                    if (!addr.includes('javascript')) {
+                        GM_addElement(attachments[0], 'a', {
+                            class: 'masked',
+                            href: addr,
+                            target: '_blank',
+                            textContent: '(' + title + ' | ' + size + ')'
+                        });
+                    }
+                }
             });
         }, 1000);
     }
@@ -958,10 +1017,8 @@
 
     function translateIntoEnglish(text) {
         var parts = text.split('\"');
-        // "Abby"邀请"LESLIEEE LYA"加入了群聊
         if (text.includes('邀请') && text.endsWith('加入了群聊')) {
             return parts[1] + ' invited ' + parts[3];
-        // "LESLIEEE LYA"与群里其他人都不是朋友关系，请注意隐私安全
         } else if (text.endsWith('与群里其他人都不是朋友关系，请注意隐私安全')) {
             return parts[1] + ' is not friends with anyone';
         } else if (text.includes('拍了拍')) {
