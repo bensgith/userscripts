@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.9.6
+// @version      0.9.7
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -324,7 +324,8 @@
              ['emoji1f17e', 'RedSquareO'],
              ['emoji1f23a', 'BusinessOpen'],
              ['emoji1f308', 'Rainbow'],
-             ['emoji1f4f1', 'MobilePhone']]
+             ['emoji1f4f1', 'MobilePhone'],
+             ['emoji1f3a3', 'BlueFish']]
         );
 
     //https://github.com/ikatyang/emoji-cheat-sheet
@@ -336,7 +337,7 @@
          ['💮', 'white_flower'], ['🐼', 'panda_face'], ['🦐', 'shrimp'], ['😬', 'grimacing'], ['🐲', 'dragon_face'],
          ['0️⃣', 'zero'], ['1️⃣', 'one'], ['2️⃣', 'two'], ['3️⃣', 'three'], ['4️⃣', 'four'],
          ['5️⃣', 'five'], ['6️⃣', 'six'], ['7️⃣', 'seven'], ['8️⃣', 'eight'], ['9️⃣', 'nine'],
-         ['📬', 'mailbox_with_mail']]
+         ['📬', 'mailbox_with_mail'], ['✍', 'writing_hand']]
     );
 
     var css = `
@@ -388,7 +389,7 @@
         #search_bar,
         .tab,
         .download_entry,
-        .header .avatar .img,
+        .header .avatar,
         .header .info .nickname .display_name,
         .chat_item .avatar .img,
         .chat_item .info .msg,
@@ -396,26 +397,42 @@
         .chat_item .nickname .emoji {
             display: none;
         }
-        .header .info {
-            width: 100%;
+        .header {
+            padding: 6px 18px;
         }
         .header .info .nickname .opt {
             float: right;
         }
-        .panel{
-            background-color:#252526;
-            width:220px;
+        #header_name {
+	        color: #999;
+	        font-size: 12px;
+	        font-weight: 500;
+        }
+        #mmpop_system_menu {
+            top: 50px !important;
+            left: 175px !important;
+        }
+        .panel {
+            background-color: #252526;
+            width: 220px;
+        }
+        .panel.give_me .nav_view {
+            top: 40px;
+        }
+        .panel.give_me .system_menu {
+            width: 145px;
         }
         .dropdown_menu {
-            background-color:#333333;
-            border-color:#414141;
+            background-color: #333333;
+            border-color: #414141;
         }
         .dropdown_menu li a {
-            border-bottom-color:#414141;
-            color:white;
+            border-bottom-color: #414141;
+            color: white;
+            padding: 3px
         }
         .dropdown_menu li a:hover {
-            background-color:#37373D;
+            background-color: #37373D;
         }
         .chat_item {
             padding:6px 20px 6px;
@@ -427,15 +444,12 @@
             float: left;
             margin-right: 5px;
             position: relative;
-            background: url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
+            background: url(//res.wx.qq.com/t/wx_fed/webwx/res/static/css/5af37c4a880a95586cd41c5b251d5562@1x.png) no-repeat;
             background-position: -224px -170px;
             background-size: 478px 462px;
         }
         .chat_item.active {
             background:#37373D;
-        }
-        .nav_view {
-            top:64px !important;
         }
         .web_wechat_reddot {
             background:url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
@@ -479,6 +493,7 @@
         .box_hd .title_wrap {
             border-bottom-color: #414141;
             background-color: #1E1E1E;
+            padding: 4px 0;
         }
         .box_hd .title .title_name {
             color: white;
@@ -737,19 +752,10 @@
     // functions
     ////////////////////////////////////////////
     function maskAvatarAndNickName() {
-        if (!document.getElementById('vscodeImg')) {
-            var avatar = document.querySelector('.header .avatar');
-            GM_addElement(avatar, 'img', {
-                id: 'vscodeImg',
-                src: vscode_favico,
-                style: 'width:27px;height:27px;'
-            });
-        }
-        if (!document.getElementById('vscodeName')) {
+        if (!document.getElementById('header_name')) {
             var newSpan = document.createElement('span');
-            newSpan.setAttribute('id', 'vscodeName');
-            newSpan.setAttribute('style', 'color:white;');
-            newSpan.textContent = vscode_name;
+            newSpan.setAttribute('id', 'header_name');
+            newSpan.textContent = 'EXPLORER';
             var nickname = document.querySelector('.header .info .nickname');
             nickname.insertBefore(newSpan, nickname.getElementsByClassName('opt')[0]);
         }
