@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.9.7
+// @version      0.10.0
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -302,55 +302,72 @@
              ['emojiae', 'RegisteredTM'],
              ['emoji2122', 'Trademark'],
              // extra (not in qq face or emoji panel)
-             ['emoji1f1e81f1f3', 'China'],
-             ['emoji1f1fa1f1f8', 'America'],
-             ['emoji1f1ec1f1e7', 'Canada'],
-             ['emoji1f3ac', 'Film'],
-             ['emoji1f3c4', 'Surfing'],
-             ['emoji1f33f', 'FourLeafClover'],
-             ['emoji1f340', 'FourLeafClover'], //extra
-             ['emoji1f483', 'Dancer'],
-             ['emoji1f49c', 'PurpleHeart'],
-             ['emoji1f49e', 'SparklingHeart'],
-             ['emoji1f490', 'Bouquet'],
-             ['emoji1f4e7', 'LoveLetter'],
-             ['emoji1f48c', 'LoveLetter'],
-             ['emoji1f4d2', 'TextBook'],
-             ['emoji2733', 'EightSpokedAsterisk'],
-             ['emoji1f6a8', 'RotatingLight'],
-             ['emoji1f338', 'PinkFlower'],
-             ['emoji1f33c', 'YellowFlower'],
-             ['emoji1f496', 'PinkSparklingHeart'],
-             ['emoji1f17e', 'RedSquareO'],
-             ['emoji1f23a', 'BusinessOpen'],
-             ['emoji1f308', 'Rainbow'],
-             ['emoji1f4f1', 'MobilePhone'],
-             ['emoji1f3a3', 'BlueFish']]
+            ['emoji1f1e81f1f3', 'China'],
+            ['emoji1f1fa1f1f8', 'America'],
+            ['emoji1f1ec1f1e7', 'Canada'],
+            ['emoji1f3ac', 'Film'],
+            ['emoji1f3c4', 'Surfing'],
+            ['emoji1f33f', 'FourLeafClover'],
+            ['emoji1f340', 'FourLeafClover'], //extra
+            ['emoji1f483', 'Dancer'],
+            ['emoji1f49c', 'PurpleHeart'],
+            ['emoji1f49e', 'SparklingHeart'],
+            ['emoji1f490', 'Bouquet'],
+            ['emoji1f4e7', 'LoveLetter'],
+            ['emoji1f48c', 'LoveLetter'],
+            ['emoji1f4d2', 'TextBook'],
+            ['emoji2733', 'EightSpokedAsterisk'],
+            ['emoji1f6a8', 'RotatingLight'],
+            ['emoji1f338', 'PinkFlower'],
+            ['emoji1f33c', 'YellowFlower'],
+            ['emoji1f496', 'PinkSparklingHeart'],
+            ['emoji1f17e', 'RedSquareO'],
+            ['emoji1f23a', 'BusinessOpen'],
+            ['emoji1f308', 'Rainbow'],
+            ['emoji1f4f1', 'MobilePhone'],
+            ['emoji1f3a3', 'BlueFish'],
+            ['emoji1f3e1', 'House'],
+            ['emoji1f4d1', 'Note'],
+            ['emoji1f3ab', 'Ticket'],
+            //['emoji1f530', ''],
+            ['emoji1f45a', 'BlueT-Shirt'],
+            ['emoji1f393', 'graduation_cap']]
         );
 
     //https://github.com/ikatyang/emoji-cheat-sheet
     const special_emoji_map = new Map(
-        [['🧸', 'teddy_bear'], ['🦋', 'butterfly'], ['🐋', 'whale2'], ['🌎', 'earth_americas'], ['🌍', 'earth_africa'],
-         ['🌏', 'earth_asia'], ['🎊', 'confetti_ball'], ['★', 'star'], ['☼', 'sunny'], ['🇪🇺', 'eu'], ['🇹🇭', 'thailand'],
-         ['🇻🇳', 'vietnam'], ['🇨🇦', 'canada'], ['📍', 'round_pushpin'], ['🦅', 'eagle'], ['🌘', 'waning_crescent_moon'],
-         ['✅', 'white_check_mark'], ['💯', '100'], ['🖥️', 'desktop_computer'], ['➕', 'heavy_plus_sign'], ['🤣', 'rofl'],
-         ['💮', 'white_flower'], ['🐼', 'panda_face'], ['🦐', 'shrimp'], ['😬', 'grimacing'], ['🐲', 'dragon_face'],
+        [['🥺', 'pleading_face'], ['🤣', 'rofl'], ['😬', 'grimacing'], ['🤑', 'money_mouth_face'],
          ['0️⃣', 'zero'], ['1️⃣', 'one'], ['2️⃣', 'two'], ['3️⃣', 'three'], ['4️⃣', 'four'],
          ['5️⃣', 'five'], ['6️⃣', 'six'], ['7️⃣', 'seven'], ['8️⃣', 'eight'], ['9️⃣', 'nine'],
-         ['📬', 'mailbox_with_mail'], ['✍', 'writing_hand']]
+         ['🌎', 'earth_americas'], ['🌍', 'earth_africa'], ['🌏', 'earth_asia'],
+         ['🇪🇺', 'eu'], ['🇹🇭', 'thailand'], ['🇻🇳', 'vietnam'], ['🇨🇦', 'canada'],
+         ['🎊', 'confetti_ball'], ['★', 'star'], ['☼', 'sunny'], ['🏙️', 'cityscape'],
+         ['📍', 'round_pushpin'],['🌘', 'waning_crescent_moon'], ['⛱️', 'parasol_on_ground'],
+         ['✅', 'white_check_mark'], ['💯', '100'], ['🖥️', 'desktop_computer'], ['➕', 'heavy_plus_sign'], ['✔️', 'heavy_check_mark'],
+         ['💮', 'white_flower'], ['💸', 'money_with_wings'], ['💴', 'yen'],
+         ['🐼', 'panda_face'], ['🦐', 'shrimp'], ['🐲', 'dragon_face'], ['🐋', 'whale2'], ['🦋', 'butterfly'],
+         ['🧸', 'teddy_bear'], ['🦅', 'eagle'],
+         ['📬', 'mailbox_with_mail'], ['✍', 'writing_hand'], ['🤍', 'white_heart'], ['⌛', 'hourglass'],
+        // https://emojipedia.org (not in cheat sheet)
+        ['🪪', 'identification_card'], ['🥹', 'face_holding_back_tears']]
     );
 
     var css = `
         /* Common elements */
+        body {
+            background: none;
+            background-size: unset;
+        }
         .main {
-            min-height:100%;
-            padding-top:0px;
+            min-height: 100%;
+            padding-top: 0px;
         }
         .main .copyright {
-            display:none;
+            display: none;
         }
         .main_inner {
-            max-width:100%;
+            max-width: 100%;
+            color: #D4D4D4;
         }
         .button_primary {
             background-color:#0E639C !important;
@@ -369,7 +386,8 @@
         .login .logo .web_wechat_login_logo,
         .login .login_box .sub_title,
         .login .login_box .sub_desc,
-        .login .login_box .avatar {
+        .login .login_box .avatar,
+        .login_box .broken_network .icon-broken-logo {
             display:none;
         }
         .login {
@@ -398,7 +416,7 @@
             display: none;
         }
         .header {
-            padding: 6px 18px;
+            padding: 6px 12px 6px 20px;
         }
         .header .info .nickname .opt {
             float: right;
@@ -409,8 +427,8 @@
 	        font-weight: 500;
         }
         #mmpop_system_menu {
-            top: 50px !important;
-            left: 175px !important;
+            top: 38px !important;
+            left: 190px !important;
         }
         .panel {
             background-color: #252526;
@@ -428,28 +446,32 @@
         }
         .dropdown_menu li a {
             border-bottom-color: #414141;
-            color: white;
+            color: #D4D4D4;
             padding: 3px
         }
         .dropdown_menu li a:hover {
             background-color: #37373D;
         }
         .chat_item {
-            padding:6px 20px 6px;
+            padding:4px 20px;
             border-bottom: none;
         }
         .chat_item .avatar {
             height: 15px;
             width: 15px;
             float: left;
-            margin-right: 5px;
+            margin-right: 2px;
             position: relative;
-            background: url(//res.wx.qq.com/t/wx_fed/webwx/res/static/css/5af37c4a880a95586cd41c5b251d5562@1x.png) no-repeat;
-            background-position: -224px -170px;
-            background-size: 478px 462px;
+            background: url(//res.wx.qq.com/t/wx_fed/webwx/res/static/img/1OvE4o2.png);
+            background-position: -32px 612px;
+            background-size: 150px 2489px;
         }
         .chat_item.active {
             background:#37373D;
+        }
+        .chat_item .info .nickname {
+            font-size: 12px;
+            inline-height: unset;
         }
         .web_wechat_reddot {
             background:url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
@@ -458,6 +480,71 @@
         .web_wechat_reddot_middle {
             background:url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
             background-position: -451px -380px;
+        }
+
+        /* VS Code menu & bars */
+        .vscode_side_bar {
+            position: relative;
+            float: left;
+            width: 38px;
+            height: 100%;
+            background-color: #333;
+            padding: 4px;
+            display: flex;
+            flex-direction: column;
+        }
+        .vscode_side_bar .vscode_side_bar_icon {
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            margin-top: 12px;
+            padding: 6px 0;
+            cursor: pointer;
+        }
+        .vscode_side_bar .vscode_side_bar_icon_active {
+            border-left: solid 2px white;
+        }
+        .vscode_side_bar .vscode_side_bar_icon_bottom {
+            margin-top: auto;
+        }
+        .vscode_side_bar .vscode_side_bar_icon_end {
+            margin-bottom: 68px;
+        }
+        #vscode_bottom_bar {
+        	position: fixed;
+        	bottom: 0px;
+        	height: 22px;
+        	width: 100%;
+            font-size: 12px;
+        	background-color: #007ACC;
+        }
+        #vscode_bottom_bar .vscode_remote {
+            display: block;
+            width: 38px;
+            height: 100%;
+            text-align: center;
+            background-color: #16825D;
+            cursor: pointer;
+            padding-top: 2px;
+        }
+        #vscode_bottom_bar .vscode_status {
+            display: inline-block;
+            width: auto;
+            height: 35px;
+            vertical-align: middle;
+        }
+        #vscode_top_menu_bar {
+            background-color: #323233;
+            font-size: 14px;
+            height: 36px;
+        }
+        #vscode_top_menu_bar li {
+            display: inline;
+            margin: 6px;
+        }
+        #vscode_logo {
+            padding: 6px 10px;
+            float: left;
         }
 
 
@@ -484,11 +571,11 @@
             display:none;
         }
         #chatArea {
-            background-color:#1E1E1E;
-            color:white;
+            background-color: #1E1E1E;
         }
         .box_hd {
             text-align: left;
+            bottom: 260px;
         }
         .box_hd .title_wrap {
             border-bottom-color: #414141;
@@ -497,6 +584,9 @@
         }
         .box_hd .title .title_name {
             color: white;
+        }
+        .chat .box_bd {
+            bottom: 260px;
         }
         .members_wrp {
             box-shadow: none;
@@ -523,7 +613,7 @@
             max-width: none;
         }
         .bubble_cont .app .title {
-            color:white;
+            color: #D4D4D4;
             margin-bottom: 2px;
         }
         .bubble_cont .app .desc {
@@ -586,55 +676,61 @@
         /* reply panel */
         .btn_send,
         .chat .box_ft .action {
-            display:none;
+            display: none;
         }
         .chat .box_ft {
+            height: 260px;
             border-top-color:#414141;
         }
         .chat .box_ft .toolbar a:hover {
-            color: white;
+            color: #D4D4D4;
         }
-        .chat .box_ft .toolbar .masked_tool {
+        .chat .box_ft .toolbar .vscode_term_menu {
             font-size: 12px;
             color: #999;
             padding-bottom: 4px;
             margin-right: 15px;
             text-decoration: none;
         }
-        .chat .box_ft .toolbar .masked_tool_active {
+        .chat .box_ft .toolbar .vscode_term_menu_active {
             border-bottom: solid 1px white;
-            color: white;
+            color: #D4D4D4;
         }
         .chat .box_ft .toolbar .webuploader-pick {
             display: inline;
             opacity: unset;
         }
+        .chat .box_ft .content {
+            padding: 5px 17px;
+            font-family: system-ui;
+            font-size: 14px;
+        }
         .exp_hd,
         .exp_hd_item {
-            background-color:#333333;
+            background-color: #333;
         }
         .exp_bd,
         .exp_hd_item.active {
-            background-color:#252526;
+            background-color: #252526;
         }
         .exp_hd_item a {
-            color:white;
+            color: #D4D4D4;
         }
         .expression {
-            border-color:#414141;
+            border-color: #414141;
         }
         .expression:after {
-            border-top-color:#252526;
+            border-top-color: #252526;
         }
         .qq_face a,
         .emoji_face a {
-            border-bottom-color:#414141;
-            border-right-color:#414141;
+            border-bottom-color: #414141;
+            border-right-color: #414141;
         }
-        #cli_starter {
-	        color: white;
-	        font-size: 14px;
-	        padding-left: 6px;
+        #vscode_cli_hint {
+            margin-bottom: 10px;
+        }
+        #vscode_cli_starter {
 	        display: table-cell;
        }
        #editArea {
@@ -648,44 +744,47 @@
         /* dialog */
         .ngdialog.default .ngdialog-content {
             background-color:#252526;
-            color:white;
+            color: #D4D4D4;
+        }
+        .ngdialog.default .ngdialog-content .ngdialog-close {
+            background-position-y: 1908px;
         }
         .add_chatroom .dialog_hd .title,
         .create_chatroom_dlg .dialog_hd .title,
         .transpond-dialog .dialog_hd .title,
         .selector,
         .chooser .contact_title {
-            background-color:#252526;
+            background-color: #252526;
         }
         .transpond-dialog .dialog_ft .button_primary {
             background-color:#0E639C;
         }
         .nav_tab,
         .selector .input_box .input {
-            background-color:#252526;
-            color:white;
+            background-color: #252526;
+            color: #D4D4D4;
         }
         .chooser .contact_item {
-            background-color:#252526;
-            border-bottom-color:#414141;
+            background-color: #252526;
+            border-bottom-color: #414141;
         }
         .chooser .active .contact_item {
-            background-color:#2D2D2D;
-            border-bottom-color:#414141;
+            background-color: #2D2D2D;
+            border-bottom-color: #414141;
         }
         .nav_tabs {
-            background-color:#252526;
-            border-bottom-color:#414141;
-            color:white;
+            background-color: #252526;
+            border-bottom-color: #414141;
+            color: #D4D4D4;
         }
         .dialog_ft {
-            border-top-color:#414141;
+            border-top-color: #414141;
         }
         .rooms .contact_list .contact_item {
-            border-bottom-color:#414141;
+            border-bottom-color: #414141;
         }
         .rooms .contact_list .info .nickname {
-            color:white;
+            color: #D4D4D4;
         }
     `;
     GM_addStyle(css);
@@ -748,6 +847,12 @@
     // make reply text area like a terminal
     maskEditArea();
 
+    renderTopMenuBar();
+
+    renderLeftSideBar();
+
+    renderBottomStatusBar();
+
     ////////////////////////////////////////////
     // functions
     ////////////////////////////////////////////
@@ -757,7 +862,15 @@
             newSpan.setAttribute('id', 'header_name');
             newSpan.textContent = 'EXPLORER';
             var nickname = document.querySelector('.header .info .nickname');
-            nickname.insertBefore(newSpan, nickname.getElementsByClassName('opt')[0]);
+            var opt = nickname.getElementsByClassName('opt')[0];
+            opt.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 8C4 8.19778 3.94135 8.39112 3.83147 8.55557C3.72159 8.72002 3.56541 8.84819 3.38268 8.92388C3.19996 8.99957 2.99889 9.01937 2.80491 8.98079C2.61093 8.9422 2.43275 8.84696 2.29289 8.70711C2.15304 8.56725 2.0578 8.38907 2.01922 8.19509C1.98063 8.00111 2.00043 7.80004 2.07612 7.61732C2.15181 7.43459 2.27998 7.27841 2.44443 7.16853C2.60888 7.05865 2.80222 7 3 7C3.26522 7 3.51957 7.10536 3.70711 7.29289C3.89464 7.48043 4 7.73478 4 8Z" fill="#999"></path>
+                    <path d="M9 8C9 8.19778 8.94135 8.39112 8.83147 8.55557C8.72159 8.72002 8.56541 8.84819 8.38268 8.92388C8.19996 8.99957 7.99889 9.01937 7.80491 8.98079C7.61093 8.9422 7.43275 8.84696 7.29289 8.70711C7.15304 8.56725 7.0578 8.38907 7.01922 8.19509C6.98063 8.00111 7.00043 7.80004 7.07612 7.61732C7.15181 7.43459 7.27998 7.27841 7.44443 7.16853C7.60888 7.05865 7.80222 7 8 7C8.26522 7 8.51957 7.10536 8.70711 7.29289C8.89464 7.48043 9 7.73478 9 8Z" fill="#999"></path>
+                    <path d="M14 8C14 8.19778 13.9414 8.39112 13.8315 8.55557C13.7216 8.72002 13.5654 8.84819 13.3827 8.92388C13.2 8.99957 12.9989 9.01937 12.8049 8.98079C12.6109 8.9422 12.4327 8.84696 12.2929 8.70711C12.153 8.56725 12.0578 8.38907 12.0192 8.19509C11.9806 8.00111 12.0004 7.80004 12.0761 7.61732C12.1518 7.43459 12.28 7.27841 12.4444 7.16853C12.6089 7.05865 12.8022 7 13 7C13.2652 7 13.5196 7.10536 13.7071 7.29289C13.8946 7.48043 14 7.73478 14 8Z" fill="#999"></path>
+                </svg>
+            `;
+            nickname.insertBefore(newSpan, opt);
         }
     }
 
@@ -766,18 +879,18 @@
         // emoji option
         var emojiBtn = toolbar.querySelector('.web_wechat_face');
         emojiBtn.classList.remove('web_wechat_face');
-        emojiBtn.classList.add('masked_tool');
-        emojiBtn.classList.add('masked_tool_active');
+        emojiBtn.classList.add('vscode_term_menu');
+        emojiBtn.classList.add('vscode_term_menu_active');
         emojiBtn.innerHTML = 'TERMINAL';
         // screenshot option
         var screenShotBtn = toolbar.querySelector('.web_wechat_screencut');
         screenShotBtn.classList.remove('web_wechat_screencut');
-        screenShotBtn.classList.add('masked_tool');
+        screenShotBtn.classList.add('vscode_term_menu');
         screenShotBtn.innerHTML = 'PROBLEMS';
         // upload file option
         var uploadBtn = toolbar.querySelector('.web_wechat_pic');
         uploadBtn.classList.remove('web_wechat_pic');
-        uploadBtn.classList.add('masked_tool');
+        uploadBtn.classList.add('vscode_term_menu');
         var waitForUploader = setInterval(function() {
             var webUploaderPick = uploadBtn.querySelector('.webuploader-pick');
             var webUploaderInvisible = uploadBtn.querySelector('.webuploader-element-invisible');
@@ -793,27 +906,35 @@
         }, 500);
         // DEBUG CONSOLE
         var aDebug = document.createElement('a');
-        aDebug.classList.add('masked_tool');
+        aDebug.classList.add('vscode_term_menu');
         aDebug.setAttribute('href', '#');
         aDebug.innerHTML = 'DEBUG CONSOLE';
         toolbar.appendChild(aDebug);
         // PORTS
         var aPorts = document.createElement('a');
-        aPorts.classList.add('masked_tool');
+        aPorts.classList.add('vscode_term_menu');
         aPorts.setAttribute('href', '#');
         aPorts.innerHTML = 'PORTS';
         toolbar.appendChild(aPorts);
     }
 
     function maskEditArea() {
-        if (!document.getElementById('cli_starter')) {
-            var newSpan = document.createElement('span');
-            newSpan.setAttribute('id', 'cli_starter');
-            newSpan.textContent = 'C:\\>';
-            var content = document.getElementsByClassName('content ng-isolate-scope');
-            if (content.length > 0) {
-                content[0].insertBefore(newSpan, document.getElementById('editArea'));
-            }
+        var content = document.getElementsByClassName('content ng-isolate-scope')[0];
+        if (!document.getElementById('vscode_cli_hint')) {
+            var cliHint = document.createElement('p');
+            cliHint.setAttribute('id', 'vscode_cli_hint');
+            cliHint.innerHTML = `
+                Microsoft Windows [Version 10.0.22631.3593]
+                <br>
+                (c) Microsoft Corporation. All rights reserved.
+            `;
+            content.insertBefore(cliHint, document.getElementById('editArea'));
+        }
+        if (!document.getElementById('vscode_cli_starter')) {
+            var cliStarter = document.createElement('span');
+            cliStarter.setAttribute('id', 'vscode_cli_starter');
+            cliStarter.textContent = 'C:\\Users>';
+            content.insertBefore(cliStarter, document.getElementById('editArea'));
         }
     }
 
@@ -1035,5 +1156,139 @@
         return text;
     }
 
+    function renderVsCodeMenuAndBars() {
+
+    }
+
+    function renderLeftSideBar() {
+        var vscodeSideBar = document.createElement('div');
+        vscodeSideBar.classList.add('vscode_side_bar');
+        vscodeSideBar.innerHTML = `
+    	    <span name="files" class="vscode_side_bar_icon vscode_side_bar_icon_active">
+    	    	<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.5 0H8.5L7 1.5V6H2.5L1 7.5V22.5699L2.5 24H14.5699L16 22.5699V18H20.7L22 16.5699V4.5L17.5 0ZM17.5 2.12L19.88 4.5H17.5V2.12ZM14.5 22.5H2.5V7.5H7V16.5699L8.5 18H14.5V22.5ZM20.5 16.5H8.5V1.5H16V6H20.5V16.5Z" fill="#FFF"/>
+                </svg>
+    	    </span>
+    	    <span name="search" class="vscode_side_bar_icon">
+    	    	<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.25 1.02546e-06C13.6605 -0.000791296 12.1046 0.457574 10.7694 1.32007C9.43422 2.18256 8.37657 3.4124 7.72375 4.8617C7.07094 6.31099 6.85077 7.91801 7.0896 9.4895C7.32843 11.061 8.01604 12.5301 9.06995 13.72L1 22.88L2.12 23.88L10.17 14.76C11.2055 15.5693 12.4192 16.1196 13.7103 16.365C15.0014 16.6104 16.3325 16.5437 17.5927 16.1707C18.8528 15.7976 20.0055 15.1288 20.955 14.2201C21.9044 13.3114 22.623 12.1891 23.0509 10.9465C23.4789 9.70396 23.6038 8.37703 23.4153 7.07642C23.2267 5.77581 22.7302 4.53915 21.967 3.46924C21.2039 2.39933 20.1962 1.52711 19.0278 0.925416C17.8595 0.323719 16.5642 0.00991516 15.25 0.0100108V1.02546e-06ZM15.25 15C13.915 15 12.6099 14.6041 11.4999 13.8624C10.3898 13.1207 9.52469 12.0665 9.01379 10.8331C8.5029 9.59973 8.36919 8.24248 8.62964 6.93311C8.89009 5.62373 9.53305 4.42106 10.4771 3.47705C11.4211 2.53305 12.6237 1.89009 13.9331 1.62964C15.2425 1.36919 16.5997 1.5029 17.8331 2.01379C19.0665 2.52469 20.1207 3.38985 20.8624 4.49988C21.6041 5.60991 22 6.91498 22 8.25C22 10.0402 21.2888 11.7571 20.0229 13.023C18.7571 14.2888 17.0402 15 15.25 15Z" fill="#888"/>
+                </svg>
+    	    </span>
+    	    <span name="source-control" class="vscode_side_bar_icon">
+    	    	<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21.0067 8.22168C21.0102 7.52792 20.8205 6.84689 20.4589 6.25485C20.0971 5.66281 19.5778 5.18315 18.959 4.86957C18.3401 4.556 17.6461 4.42091 16.9548 4.47941C16.2635 4.53793 15.6022 4.78773 15.0448 5.20085C14.4875 5.61397 14.0561 6.17409 13.7991 6.8185C13.5421 7.4629 13.4695 8.16613 13.5895 8.84944C13.7096 9.53274 14.0174 10.1692 14.4787 10.6874C14.94 11.2056 15.5365 11.5852 16.2012 11.7836C15.9558 12.2824 15.576 12.703 15.1047 12.9979C14.6334 13.2929 14.0892 13.4505 13.5331 13.4532H10.5437C9.43702 13.4571 8.37138 13.8727 7.55427 14.6191V7.39809C8.46159 7.21288 9.26783 6.69737 9.81668 5.95151C10.3655 5.20565 10.6178 4.28256 10.5248 3.36121C10.4317 2.43987 9.99985 1.5859 9.31292 0.964873C8.62599 0.343845 7.73295 0 6.80691 0C5.88087 0 4.98783 0.343845 4.3009 0.964873C3.61397 1.5859 3.18211 2.43987 3.08904 3.36121C2.99596 4.28256 3.24831 5.20565 3.79715 5.95151C4.34599 6.69737 5.15223 7.21288 6.05955 7.39809V16.5159C5.15393 16.6891 4.34299 17.1877 3.77969 17.9176C3.21639 18.6476 2.93968 19.5585 3.00173 20.4785C3.06379 21.3984 3.46033 22.2639 4.11656 22.9115C4.77279 23.5592 5.64335 23.9444 6.56403 23.9944C7.48472 24.0445 8.39187 23.7558 9.1144 23.183C9.83693 22.6102 10.3249 21.7928 10.4862 20.885C10.6475 19.9771 10.4712 19.0417 9.99023 18.255C9.50932 17.4683 8.75717 16.8848 7.87564 16.6145C8.12152 16.1162 8.50142 15.6963 8.97272 15.4019C9.44401 15.1074 9.98803 14.9503 10.5437 14.9479H13.5331C14.4658 14.9436 15.3739 14.6486 16.1311 14.1039C16.8882 13.5592 17.4566 12.792 17.7572 11.9091C18.6531 11.7914 19.476 11.3528 20.0735 10.6748C20.671 9.9968 21.0025 9.12533 21.0067 8.22168ZM4.56483 3.73752C4.56483 3.29408 4.69633 2.8606 4.94269 2.4919C5.18906 2.12319 5.53922 1.83581 5.9489 1.66611C6.3586 1.49642 6.8094 1.45202 7.24432 1.53854C7.67924 1.62504 8.07874 1.83857 8.3923 2.15214C8.70586 2.4657 8.9194 2.8652 9.00591 3.30012C9.09241 3.73504 9.04802 4.18585 8.87832 4.59553C8.70862 5.00521 8.42125 5.35539 8.05254 5.60175C7.68383 5.84811 7.25035 5.9796 6.80691 5.9796C6.21227 5.9796 5.642 5.74339 5.22152 5.32291C4.80105 4.90245 4.56483 4.33216 4.56483 3.73752ZM9.04899 20.1794C9.04899 20.6229 8.91749 21.0563 8.67113 21.425C8.42476 21.7937 8.0746 22.0811 7.66492 22.2508C7.25523 22.4205 6.80442 22.4649 6.36951 22.3784C5.93458 22.292 5.53509 22.0784 5.22152 21.7648C4.90796 21.4512 4.69443 21.0517 4.60791 20.6169C4.52141 20.1819 4.5658 19.7311 4.7355 19.3214C4.9052 18.9117 5.19258 18.5615 5.56128 18.3152C5.92999 18.0689 6.36347 17.9373 6.80691 17.9373C7.40155 17.9373 7.97183 18.1736 8.3923 18.594C8.81277 19.0145 9.04899 19.5848 9.04899 20.1794ZM17.2699 10.4638C16.8265 10.4638 16.393 10.3322 16.0243 10.0859C15.6556 9.83954 15.3683 9.48937 15.1986 9.07969C15.0289 8.67 14.9844 8.2192 15.0709 7.78427C15.1574 7.34935 15.3709 6.94985 15.6845 6.63629C15.9981 6.32273 16.3976 6.10919 16.8325 6.02268C17.2674 5.93617 17.7183 5.98058 18.1279 6.15027C18.5377 6.31997 18.8878 6.60734 19.1341 6.97605C19.3805 7.34476 19.512 7.77823 19.512 8.22168C19.512 8.81632 19.2757 9.3866 18.8553 9.80706C18.4348 10.2275 17.8645 10.4638 17.2699 10.4638Z" fill="#888"/>
+                </svg>
+    	    </span>
+    	    <span name="debug-alt" class="vscode_side_bar_icon">
+    	    	<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.94 13.5L9.62 14.82C9.41924 14.0117 8.95376 13.2939 8.29772 12.7809C7.64168 12.2679 6.83282 11.9892 6 11.9892C5.16718 11.9892 4.35832 12.2679 3.70228 12.7809C3.04624 13.2939 2.58076 14.0117 2.38 14.82L1.06 13.5L0 14.56L1.72 16.28L1.5 16.5V18H0V19.5H1.5V19.58C1.5765 20.0687 1.71425 20.5458 1.91 21L0 22.94L1.06 24L2.71 22.35C3.10257 22.8509 3.60118 23.2586 4.17002 23.5438C4.73885 23.8291 5.36381 23.9849 6 24C6.63619 23.9849 7.26115 23.8291 7.82998 23.5438C8.39882 23.2586 8.89743 22.8509 9.29 22.35L10.94 24L12 22.94L10.09 21C10.2882 20.5362 10.426 20.0489 10.5 19.55V19.45H12V18H10.5V16.5L10.28 16.28L12 14.56L10.94 13.5ZM6 13.5C6.59674 13.5 7.16903 13.7371 7.59099 14.159C8.01295 14.581 8.25 15.1533 8.25 15.75H3.75C3.75 15.1533 3.98705 14.581 4.40901 14.159C4.83097 13.7371 5.40326 13.5 6 13.5V13.5ZM9 19.5C8.92674 20.2709 8.58713 20.9921 8.0396 21.5396C7.49207 22.0871 6.77085 22.4267 6 22.5C5.22915 22.4267 4.50793 22.0871 3.9604 21.5396C3.41287 20.9921 3.07326 20.2709 3 19.5V17.25H9V19.5ZM23.76 9.6V10.86L13.5 17.37V15.6L22 10.23L9 2V11.46C8.54306 11.139 8.03624 10.8958 7.5 10.74V0.63L8.64 0L23.76 9.6Z" fill="#888"/>
+                </svg>
+    	    </span>
+    	    <span name="extensions" class="vscode_side_bar_icon">
+    	    	<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5 1.5L15 0H22.5L24 1.5V9L22.5 10.5H15L13.5 9V1.5ZM15 1.5V9H22.5V1.5H15ZM0 15V6L1.5 4.5H9L10.5 6V13.5H18L19.5 15V22.5L18 24H10.5H9H1.5L0 22.5V15ZM9 13.5V6H1.5V13.5H9ZM9 15H1.5V22.5H9V15ZM10.5 22.5H18V15H10.5V22.5Z" fill="#888"/>
+                </svg>
+    	    </span>
+    	    <span name="remote-explorer" class="vscode_side_bar_icon">
+    	    	<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M1.34375 2.125H21.6562L22.4375 2.90625V11.5048C21.9519 11.1401 21.4272 10.8346 20.875 10.593V3.6875H2.125V17.75H9.9375C9.9375 18.2593 9.9873 18.7698 10.0876 19.2741C10.3167 20.4256 10.8012 21.5058 11.5 22.4375H5.25V20.875H9.9375V19.3125H1.34375L0.5625 18.5312V2.90625L1.34375 2.125ZM17.75 11.5C16.5138 11.5 15.3054 11.8665 14.2776 12.5532C13.2498 13.24 12.4487 14.2161 11.9757 15.3582C11.5026 16.5002 11.379 17.757 11.6201 18.9694C11.8613 20.1817 12.4566 21.2952 13.3306 22.1693C14.2047 23.0434 15.3182 23.6387 16.5306 23.8798C17.743 24.121 18.9997 23.9974 20.1418 23.5243C21.2838 23.0513 22.26 22.2501 22.9467 21.2223C23.6335 20.1945 24 18.9861 24 17.75C24 16.0924 23.3414 14.5028 22.1693 13.3307C20.9972 12.1586 19.4076 11.5 17.75 11.5ZM17.75 22.4375C16.8229 22.4375 15.9165 22.1625 15.1457 21.6475C14.3748 21.1324 13.7741 20.4004 13.4193 19.5439C13.0645 18.6873 12.9716 17.7447 13.1525 16.8354C13.3334 15.9261 13.7798 15.091 14.4354 14.4354C15.0909 13.7799 15.9261 13.3334 16.8354 13.1525C17.7447 12.9717 18.6873 13.0646 19.5438 13.4194C20.4004 13.7742 21.1324 14.3749 21.6474 15.1457C22.1625 15.9166 22.4375 16.8229 22.4375 17.75C22.4375 18.9932 21.9436 20.1855 21.0646 21.0646C20.1855 21.9437 18.9932 22.4375 17.75 22.4375ZM20.3527 19.3056L18.1998 17.1526L20.3527 15L21 15.6465L19.4935 17.1526L21 18.6591L20.3527 19.3056ZM15 17.2464L16.5065 18.7528L15 20.2593L15.6473 20.9062L17.7999 18.7528L15.6473 16.5998L15 17.2464Z" fill="#888"/>
+                </svg>
+    	    </span>
+    	    <span name="account" class="vscode_side_bar_icon vscode_side_bar_icon_bottom">
+    	    	<svg width="24" height="24" viewBox="0 0 16 16" fill="#none" xmlns="http://www.w3.org/2000/svg">
+	                <path d="M16 7.99201C16 3.58042 12.416 0 8 0C3.584 0 0 3.58042 0 7.99201C0 10.4216 1.104 12.6114 2.832 14.0819C2.848 14.0979 2.864 14.0979 2.864 14.1139C3.008 14.2258 3.152 14.3377 3.312 14.4496C3.392 14.4975 3.456 14.5614 3.536 14.6254C4.816 15.4885 6.352 16 8.016 16C9.68 16 11.216 15.4885 12.496 14.6254C12.576 14.5774 12.64 14.5135 12.72 14.4655C12.864 14.3536 13.024 14.2418 13.168 14.1299C13.184 14.1139 13.2 14.1139 13.2 14.0979C14.896 12.6114 16 10.4216 16 7.99201ZM8 14.993C6.496 14.993 5.12 14.5135 3.984 13.7143C4 13.5864 4.032 13.4585 4.064 13.3307C4.16 12.979 4.304 12.6434 4.48 12.3397C4.656 12.036 4.864 11.7642 5.12 11.5245C5.36 11.2847 5.648 11.0609 5.936 10.8851C6.24 10.7093 6.56 10.5814 6.912 10.4855C7.264 10.3896 7.632 10.3417 8 10.3417C8.592 10.3417 9.136 10.4535 9.632 10.6613C10.128 10.8691 10.56 11.1568 10.928 11.5085C11.296 11.8761 11.584 12.3077 11.792 12.8032C11.904 13.0909 11.984 13.3946 12.032 13.7143C10.88 14.5135 9.504 14.993 8 14.993ZM5.552 7.59241C5.408 7.27273 5.344 6.92108 5.344 6.56943C5.344 6.21778 5.408 5.86613 5.552 5.54645C5.696 5.22677 5.888 4.93906 6.128 4.6993C6.368 4.45954 6.656 4.26773 6.976 4.12388C7.296 3.98002 7.648 3.91608 8 3.91608C8.368 3.91608 8.704 3.98002 9.024 4.12388C9.344 4.26773 9.632 4.45954 9.872 4.6993C10.112 4.93906 10.304 5.22677 10.448 5.54645C10.592 5.86613 10.656 6.21778 10.656 6.56943C10.656 6.93706 10.592 7.27273 10.448 7.59241C10.304 7.91209 10.112 8.1998 9.872 8.43956C9.632 8.67932 9.344 8.87113 9.024 9.01499C8.384 9.28671 7.6 9.28671 6.96 9.01499C6.64 8.87113 6.352 8.67932 6.112 8.43956C5.872 8.1998 5.68 7.91209 5.552 7.59241ZM12.976 12.8991C12.976 12.8671 12.96 12.8511 12.96 12.8192C12.8 12.3237 12.576 11.8442 12.272 11.4126C11.968 10.981 11.616 10.5974 11.184 10.2777C10.864 10.038 10.512 9.83017 10.144 9.67033C10.32 9.55844 10.48 9.41459 10.608 9.28671C10.848 9.04695 11.056 8.79121 11.232 8.5035C11.408 8.21578 11.536 7.91209 11.632 7.57642C11.728 7.24076 11.76 6.90509 11.76 6.56943C11.76 6.04196 11.664 5.54645 11.472 5.0989C11.28 4.65135 11.008 4.25175 10.656 3.9001C10.32 3.56444 9.904 3.29271 9.456 3.1009C9.008 2.90909 8.512 2.81319 7.984 2.81319C7.456 2.81319 6.96 2.90909 6.512 3.1009C6.064 3.29271 5.648 3.56444 5.312 3.91608C4.976 4.25175 4.704 4.66733 4.512 5.11489C4.32 5.56244 4.224 6.05794 4.224 6.58541C4.224 6.93706 4.272 7.27273 4.368 7.59241C4.464 7.92807 4.592 8.23177 4.768 8.51948C4.928 8.80719 5.152 9.06294 5.392 9.3027C5.536 9.44655 5.696 9.57443 5.872 9.68631C5.488 9.86214 5.136 10.0699 4.832 10.3097C4.416 10.6294 4.048 11.013 3.744 11.4286C3.44 11.8601 3.216 12.3237 3.056 12.8352C3.04 12.8671 3.04 12.8991 3.04 12.9151C1.776 11.6364 0.992 9.91009 0.992 7.99201C0.992 4.13986 4.144 0.991009 8 0.991009C11.856 0.991009 15.008 4.13986 15.008 7.99201C15.008 9.91009 14.224 11.6364 12.976 12.8991Z" fill="#888"/>
+                </svg>
+    	    </span>
+    	    <span name="settings-gear" class="vscode_side_bar_icon vscode_side_bar_icon_end">
+    	    	<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M19.85 8.75L24 9.57996V14.42L19.85 15.25L22.2 18.77L18.77 22.2L15.25 19.85L14.42 24H9.57996L8.75 19.85L5.22998 22.2L1.80005 18.77L4.15002 15.25L0 14.42V9.57996L4.15002 8.75L1.80005 5.22998L5.22998 1.80005L8.75 4.15002L9.57996 0H14.42L15.25 4.15002L18.77 1.80005L22.2 5.22998L19.85 8.75ZM18.28 13.8199L22.28 13.01V11.01L18.28 10.2L17.74 8.90002L20.03 5.46997L18.6 4.04004L15.17 6.32996L13.87 5.79004L13.0601 1.79004H11.0601L10.25 5.79004L8.94995 6.32996L5.52002 4.04004L4.08997 5.46997L6.38 8.90002L5.83997 10.2L1.83997 11.01V13.01L5.83997 13.8199L6.38 15.12L4.08997 18.55L5.52002 19.98L8.94995 17.6899L10.25 18.23L11.0601 22.23H13.0601L13.87 18.23L15.17 17.6899L18.6 19.98L20.03 18.55L17.74 15.12L18.28 13.8199ZM10.0943 9.14807C10.6584 8.77118 11.3216 8.56995 12 8.56995C12.9089 8.57258 13.7798 8.93484 14.4225 9.57751C15.0652 10.2202 15.4274 11.0911 15.43 12C15.43 12.6784 15.2288 13.3416 14.8519 13.9056C14.475 14.4697 13.9394 14.9093 13.3126 15.1689C12.6859 15.4286 11.9962 15.4965 11.3308 15.3641C10.6654 15.2318 10.0543 14.9051 9.57457 14.4254C9.09488 13.9457 8.7682 13.3345 8.63585 12.6692C8.50351 12.0038 8.57143 11.3141 8.83104 10.6874C9.09065 10.0606 9.53029 9.52496 10.0943 9.14807ZM11.0499 13.4218C11.3311 13.6097 11.6618 13.71 12 13.71C12.2249 13.7113 12.4479 13.668 12.656 13.5825C12.8641 13.4971 13.0531 13.3712 13.2121 13.2122C13.3712 13.0531 13.497 12.8641 13.5825 12.656C13.668 12.4479 13.7113 12.2249 13.7099 12C13.7099 11.6618 13.6096 11.3311 13.4217 11.0499C13.2338 10.7687 12.9669 10.5496 12.6544 10.4202C12.3419 10.2907 11.9981 10.2569 11.6664 10.3229C11.3347 10.3889 11.03 10.5517 10.7909 10.7909C10.5517 11.03 10.3888 11.3347 10.3229 11.6664C10.2569 11.9981 10.2907 12.342 10.4202 12.6544C10.5496 12.9669 10.7687 13.2339 11.0499 13.4218Z" fill="#888"/>
+                </svg>
+    	    </span>
+        `;
+        var mainInner = document.getElementsByClassName('main_inner')[0];
+        mainInner.insertBefore(vscodeSideBar, mainInner.getElementsByClassName('panel give_me')[0]);
+    }
+
+    function renderBottomStatusBar() {
+        var remoteSpan = document.createElement('span');
+        remoteSpan.classList.add('vscode_remote');
+        remoteSpan.innerHTML = `
+           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path fill-rule="evenodd" clip-rule="evenodd" d="M12.9041 9.57067L8.9281 5.59463L12.9041 1.6186L12.2854 0.999878L8.00002 5.28527V5.90399L12.2854 10.1894L12.9041 9.57067ZM3 5.61874L7.07191 9.69064L3 13.7626L3.61872 14.3813L7.99999 10V9.38128L3.61872 5.00002L3 5.61874Z" fill="#FFF"></path>
+           </svg>
+        `;
+        var statusDiv = document.createElement('div');
+        statusDiv.classList.add('vscode_status');
+        statusDiv.innerHTML = 'TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT';
+
+        var statusBar = document.createElement('div');
+        statusBar.setAttribute('id', 'vscode_bottom_bar');
+        statusBar.appendChild(remoteSpan);
+        statusBar.appendChild(statusDiv);
+        // add to dom
+        var mainInner = document.getElementsByClassName('main_inner')[0];
+        mainInner.appendChild(statusBar);
+    }
+
+    function renderTopMenuBar() {
+        var logo = document.createElement('span');
+        logo.setAttribute('id', 'vscode_logo');
+        logo.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    	   	    <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+    	   	    	<path fill-rule="evenodd" clip-rule="evenodd" d="M70.9119 99.3171C72.4869 99.9307 74.2828 99.8914 75.8725 99.1264L96.4608 89.2197C98.6242 88.1787 100 85.9892 100 83.5872V16.4133C100 14.0113 98.6243 11.8218 96.4609 10.7808L75.8725 0.873756C73.7862 -0.130129 71.3446 0.11576 69.5135 1.44695C69.252 1.63711 69.0028 1.84943 68.769 2.08341L29.3551 38.0415L12.1872 25.0096C10.589 23.7965 8.35363 23.8959 6.86933 25.2461L1.36303 30.2549C-0.452552 31.9064 -0.454633 34.7627 1.35853 36.417L16.2471 50.0001L1.35853 63.5832C-0.454633 65.2374 -0.452552 68.0938 1.36303 69.7453L6.86933 74.7541C8.35363 76.1043 10.589 76.2037 12.1872 74.9905L29.3551 61.9587L68.769 97.9167C69.3925 98.5406 70.1246 99.0104 70.9119 99.3171ZM75.0152 27.2989L45.1091 50.0001L75.0152 72.7012V27.2989Z" fill="white"></path>
+    	   	    </mask>
+    	   	    <g mask="url(#mask0)">
+    	   	    	<path d="M96.4614 10.7962L75.8569 0.875542C73.4719 -0.272773 70.6217 0.211611 68.75 2.08333L1.29858 63.5832C-0.515693 65.2373 -0.513607 68.0937 1.30308 69.7452L6.81272 74.754C8.29793 76.1042 10.5347 76.2036 12.1338 74.9905L93.3609 13.3699C96.086 11.3026 100 13.2462 100 16.6667V16.4275C100 14.0265 98.6246 11.8378 96.4614 10.7962Z" fill="#0065A9"></path>
+    	   	    	<g filter="url(#filter0_d)">
+    	   	    		<path d="M96.4614 89.2038L75.8569 99.1245C73.4719 100.273 70.6217 99.7884 68.75 97.9167L1.29858 36.4169C-0.515693 34.7627 -0.513607 31.9063 1.30308 30.2548L6.81272 25.246C8.29793 23.8958 10.5347 23.7964 12.1338 25.0095L93.3609 86.6301C96.086 88.6974 100 86.7538 100 83.3334V83.5726C100 85.9735 98.6246 88.1622 96.4614 89.2038Z" fill="#007ACC"></path>
+    	   	    	</g>
+    	   	    	<g filter="url(#filter1_d)">
+    	   	    		<path d="M75.8578 99.1263C73.4721 100.274 70.6219 99.7885 68.75 97.9166C71.0564 100.223 75 98.5895 75 95.3278V4.67213C75 1.41039 71.0564 -0.223106 68.75 2.08329C70.6219 0.211402 73.4721 -0.273666 75.8578 0.873633L96.4587 10.7807C98.6234 11.8217 100 14.0112 100 16.4132V83.5871C100 85.9891 98.6234 88.1786 96.4586 89.2196L75.8578 99.1263Z" fill="#1F9CF0"></path>
+    	   	    	</g>
+    	   	    	<g style="mix-blend-mode:overlay" opacity="0.25">
+    	   	    		<path fill-rule="evenodd" clip-rule="evenodd" d="M70.8511 99.3171C72.4261 99.9306 74.2221 99.8913 75.8117 99.1264L96.4 89.2197C98.5634 88.1787 99.9392 85.9892 99.9392 83.5871V16.4133C99.9392 14.0112 98.5635 11.8217 96.4001 10.7807L75.8117 0.873695C73.7255 -0.13019 71.2838 0.115699 69.4527 1.44688C69.1912 1.63705 68.942 1.84937 68.7082 2.08335L29.2943 38.0414L12.1264 25.0096C10.5283 23.7964 8.29285 23.8959 6.80855 25.246L1.30225 30.2548C-0.513334 31.9064 -0.515415 34.7627 1.29775 36.4169L16.1863 50L1.29775 63.5832C-0.515415 65.2374 -0.513334 68.0937 1.30225 69.7452L6.80855 74.754C8.29285 76.1042 10.5283 76.2036 12.1264 74.9905L29.2943 61.9586L68.7082 97.9167C69.3317 98.5405 70.0638 99.0104 70.8511 99.3171ZM74.9544 27.2989L45.0483 50L74.9544 72.7012V27.2989Z" fill="url(#paint0_linear)"></path>
+    	   	    	</g>
+    	   	    </g>
+    	   	    <defs>
+    	   	    	<filter id="filter0_d" x="-8.39411" y="15.8291" width="116.727" height="92.2456" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    	   	    		<feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+    	   	    		<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"></feColorMatrix>
+    	   	    		<feOffset></feOffset>
+    	   	    		<feGaussianBlur stdDeviation="4.16667"></feGaussianBlur>
+    	   	    		<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
+    	   	    		<feBlend mode="overlay" in2="BackgroundImageFix" result="effect1_dropShadow"></feBlend>
+    	   	    		<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"></feBlend>
+    	   	    	</filter>
+    	   	    	<filter id="filter1_d" x="60.4167" y="-8.07558" width="47.9167" height="116.151" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    	   	    		<feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+    	   	    		<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"></feColorMatrix>
+    	   	    		<feOffset></feOffset>
+    	   	    		<feGaussianBlur stdDeviation="4.16667"></feGaussianBlur>
+    	   	    		<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
+    	   	    		<feBlend mode="overlay" in2="BackgroundImageFix" result="effect1_dropShadow"></feBlend>
+    	   	    		<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"></feBlend>
+    	   	    	</filter>
+    	   	    	<linearGradient id="paint0_linear" x1="49.9392" y1="0.257812" x2="49.9392" y2="99.7423" gradientUnits="userSpaceOnUse">
+    	   	    		<stop stop-color="white"></stop>
+    	   	    		<stop offset="1" stop-color="white" stop-opacity="0"></stop>
+    	   	    	</linearGradient>
+    	   	    </defs>
+    	    </svg>
+        `;
+        var menu = document.createElement('ul');
+        var menuList = ['File', 'Edit', 'Selection', 'View', 'Go', 'Run', 'Terminal', 'Help'];
+        menuList.forEach((e) => {
+            var li = document.createElement('li');
+            li.innerHTML = e;
+            menu.appendChild(li);
+        });
+        var topMenuBar = document.createElement('div');
+        topMenuBar.setAttribute('id', 'vscode_top_menu_bar');
+        topMenuBar.appendChild(logo);
+        topMenuBar.appendChild(menu);
+        var mainInner = document.getElementsByClassName('main_inner')[0];
+        mainInner.insertBefore(topMenuBar, mainInner.getElementsByClassName('panel give_me')[0]);
+    }
 
 })();
