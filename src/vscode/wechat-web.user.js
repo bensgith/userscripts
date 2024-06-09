@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.10.1
+// @version      0.10.2
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -421,6 +421,14 @@
         .header .info .nickname .opt {
             float: right;
         }
+        .header .info .nickname .opt svg {
+            margin-top: 3px;
+            padding: 3px;
+            border-radius: 3px;
+        }
+        .header .info .nickname .opt svg:hover {
+            background-color: #323234;
+        }
         #header_name {
 	        color: #999;
 	        font-size: 12px;
@@ -581,6 +589,14 @@
             font-size: 14px;
             line-height: 1.4;
         }
+        #vscode_close {
+            padding: 3px;
+            border-radius: 3px;
+        }
+        #vscode_close:hover {
+            background-color: #333333;
+        }
+
 
 
         /* message panel */
@@ -616,12 +632,34 @@
             bottom: 260px;
         }
         .box_hd .title_wrap {
-            border-bottom-color: #414141;
+            border-bottom: none;
+            background-color: #252526;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        #vscode_tab_actions {
+            margin-left: auto;
+            align-self: center;
+            padding: 2px 14px 0 0;
+        }
+        #vscode_tab_actions svg {
+            margin: 3px;
+            padding: 3px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        #vscode_tab_actions svg:hover {
+            background-color: #333333;
+        }
+        .box_hd .title {
             background-color: #1E1E1E;
-            padding: 4px 0;
+            height: 36px;
+            padding: 3px 6px 0px 11px;
         }
         .box_hd .title .title_name {
             color: white;
+            vertical-align: text-bottom;
         }
         .chat .box_bd {
             bottom: 260px;
@@ -998,6 +1036,8 @@
                 title.innerHTML = maskedTitle;
             }
         }, 1000);
+        // vscode tab close button
+        /*
         var close = document.createElement('span');
         close.setAttribute('id', 'vscode_close');
         close.innerHTML = `
@@ -1005,7 +1045,34 @@
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M8.00004 8.70711L11.6465 12.3536L12.3536 11.6465L8.70714 8.00001L12.3536 4.35356L11.6465 3.64645L8.00004 7.2929L4.35359 3.64645L3.64648 4.35356L7.29293 8.00001L3.64648 11.6465L4.35359 12.3536L8.00004 8.70711Z"/>
             </svg>
         `;
-        document.getElementsByClassName('title poi')[0].appendChild(close);
+        document.getElementsByClassName('title poi')[0].appendChild(close);*/
+        var template = document.createElement('template');
+        template.innerHTML = `
+            <svg id="vscode_close" width="16" height="16" viewBox="0 0 16 16" fill="#FFF" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.00004 8.70711L11.6465 12.3536L12.3536 11.6465L8.70714 8.00001L12.3536 4.35356L11.6465 3.64645L8.00004 7.2929L4.35359 3.64645L3.64648 4.35356L7.29293 8.00001L3.64648 11.6465L4.35359 12.3536L8.00004 8.70711Z"/>
+            </svg>
+        `;
+        document.getElementsByClassName('title poi')[0].appendChild(template.content);
+        // vscode tab action button
+        var actions = document.createElement('div');
+        actions.setAttribute('id', 'vscode_tab_actions');
+        var svgs = [
+            `<svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 1H3L2 2V13L3 14H14L15 13V2L14 1ZM8 13H3V2H8V13ZM14 13H9V2H14V13Z"/>
+            </svg>`,
+            `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 8C4 8.19778 3.94135 8.39112 3.83147 8.55557C3.72159 8.72002 3.56541 8.84819 3.38268 8.92388C3.19996 8.99957 2.99889 9.01937 2.80491 8.98079C2.61093 8.9422 2.43275 8.84696 2.29289 8.70711C2.15304 8.56725 2.0578 8.38907 2.01922 8.19509C1.98063 8.00111 2.00043 7.80004 2.07612 7.61732C2.15181 7.43459 2.27998 7.27841 2.44443 7.16853C2.60888 7.05865 2.80222 7 3 7C3.26522 7 3.51957 7.10536 3.70711 7.29289C3.89464 7.48043 4 7.73478 4 8Z" fill="#999"></path>
+                <path d="M9 8C9 8.19778 8.94135 8.39112 8.83147 8.55557C8.72159 8.72002 8.56541 8.84819 8.38268 8.92388C8.19996 8.99957 7.99889 9.01937 7.80491 8.98079C7.61093 8.9422 7.43275 8.84696 7.29289 8.70711C7.15304 8.56725 7.0578 8.38907 7.01922 8.19509C6.98063 8.00111 7.00043 7.80004 7.07612 7.61732C7.15181 7.43459 7.27998 7.27841 7.44443 7.16853C7.60888 7.05865 7.80222 7 8 7C8.26522 7 8.51957 7.10536 8.70711 7.29289C8.89464 7.48043 9 7.73478 9 8Z" fill="#999"></path>
+                <path d="M14 8C14 8.19778 13.9414 8.39112 13.8315 8.55557C13.7216 8.72002 13.5654 8.84819 13.3827 8.92388C13.2 8.99957 12.9989 9.01937 12.8049 8.98079C12.6109 8.9422 12.4327 8.84696 12.2929 8.70711C12.153 8.56725 12.0578 8.38907 12.0192 8.19509C11.9806 8.00111 12.0004 7.80004 12.0761 7.61732C12.1518 7.43459 12.28 7.27841 12.4444 7.16853C12.6089 7.05865 12.8022 7 13 7C13.2652 7 13.5196 7.10536 13.7071 7.29289C13.8946 7.48043 14 7.73478 14 8Z" fill="#999"></path>
+            </svg>`
+        ];
+        svgs.forEach((svg) => {
+            template = document.createElement('template');
+            template.innerHTML = svg;
+            actions.appendChild(template.content);
+        });
+        var titleWrap = document.querySelector(".box_hd .title_wrap");
+        titleWrap.appendChild(actions);
     }
 
     function maskSystemMessages() {
