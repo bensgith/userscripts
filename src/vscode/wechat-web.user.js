@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.10.3
+// @version      0.10.4
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -1160,11 +1160,9 @@
     function maskChatTitleNames() {
         setInterval(function() {
             var title = document.querySelector(".box_hd .title_wrap .title .title_name");
-            if (!title.innerHTML) {
-                var maskedTitle = maskSpecialEmojis(title.innerHTML, 'remove');
-                if (title.innerHTML != maskedTitle) {
-                    title.innerHTML = maskedTitle;
-                }
+            var maskedTitle = maskSpecialEmojis(title.innerHTML, 'remove');
+            if (title.innerHTML != maskedTitle) {
+                title.innerHTML = maskedTitle;
             }
         }, 1000);
         // vscode tab close button
