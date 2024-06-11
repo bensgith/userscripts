@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web App with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.10.2
+// @version      0.10.3
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -424,7 +424,7 @@
         .header .info .nickname .opt svg {
             margin-top: 3px;
             padding: 3px;
-            border-radius: 3px;
+            border-radius: 5px;
         }
         .header .info .nickname .opt svg:hover {
             background-color: #323234;
@@ -561,23 +561,65 @@
             background-color: #1A996C;
         }
         #vscode_top_menu_bar {
+            display: flex;
+            align-items: center;
             background-color: #3C3C3C;
             font-size: 14px;
             height: 36px;
-            line-height: 36px;
         }
         #vscode_top_menu_bar li {
             display: inline;
-            padding: 4px 8px;
+            padding: 4px 6px;
             cursor: default;
             border-radius: 5px;
         }
-        #vscode_top_menu_bar li:hover {
+        #vscode_top_menu_bar li:hover,
+        #vscode_top_menu_bar .vscode_nav:hover,
+        #vscode_top_menu_bar .vscode_search:hover,
+        #vscode_top_menu_bar .vscode_chrome_button:hover  {
             background-color: #4D4D4D;
         }
+        #vscode_top_menu_bar .vscode_nav {
+            display: flex;
+            align-items: center;
+            margin-right: 7px;
+            padding: 3px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #vscode_top_menu_bar .vscode_center {
+            margin-left: 7.5%;
+        }
+        #vscode_top_menu_bar .vscode_search {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 592px;
+            height: 18px;
+            padding: 3px;
+            cursor: pointer;
+            border: solid 1px #666;
+            border-radius: 6px;
+            background-color: #464646;
+            font-size: 12px;
+        }
+        #vscode_top_menu_bar .vscode_search_hint {
+            margin-left: 4px;
+        }
+        #vscode_top_menu_bar .vscode_chrome_button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 47px;
+            height: 36px;
+            cursor: default;
+        }
+        #vscode_top_menu_bar .vscode_right {
+            margin-left: auto;
+        }
         #vscode_logo {
+            display: flex;
             padding: 0 10px;
-            float: left;
         }
         #vscode_line_num {
             float: left;
@@ -598,9 +640,10 @@
         }
 
 
-
         /* message panel */
         .web_wechat_nomes_icon,
+        .bubble.left:after,
+        .bubble.bubble_primary.right:after,
         .bubble_cont .app .cover,
         .bubble_cont .picture img,
         .bubble_cont .video img,
@@ -639,6 +682,8 @@
             display: flex;
         }
         #vscode_tab_actions {
+            display: flex;
+            align-items: center;
             margin-left: auto;
             align-self: center;
             padding: 2px 14px 0 0;
@@ -646,20 +691,21 @@
         #vscode_tab_actions svg {
             margin: 3px;
             padding: 3px;
-            border-radius: 3px;
+            border-radius: 5px;
             cursor: pointer;
         }
         #vscode_tab_actions svg:hover {
             background-color: #333333;
         }
         .box_hd .title {
-            background-color: #1E1E1E;
+            display: flex;
+            align-items: center;
             height: 36px;
+            background-color: #1E1E1E;
             padding: 3px 6px 0px 11px;
         }
         .box_hd .title .title_name {
             color: white;
-            vertical-align: text-bottom;
         }
         .chat .box_bd {
             bottom: 260px;
@@ -675,7 +721,7 @@
         }
         .bubble {
             background-color:#1E1E1E !important;
-            margin:3px 10px;
+            margin: 0;
             max-width: none;
         }
         .bubble.bubble_primary.right.arrow_primary:before,
@@ -687,6 +733,7 @@
             padding: 2px 6px;
             margin:0 4px;
             max-width: none;
+            border-radius: 5px;
         }
         .bubble_cont .app .title {
             color: #D4D4D4;
@@ -696,7 +743,7 @@
             font-size: 12px;
         }
         .bubble_cont .plain {
-            padding: 2px 6px;
+            padding: 0 4px;
         }
         .bubble_cont .card {
             padding: 0;
@@ -746,6 +793,7 @@
             font-size: 12px;
             height: 12px;
             line-height: 12px;
+            padding: 2px 4px;
         }
 
 
@@ -755,8 +803,14 @@
             display: none;
         }
         .chat .box_ft {
+            margin-right: 0;
             height: 260px;
             border-top-color:#414141;
+        }
+        .chat .box_ft .toolbar {
+            display: flex;
+            align-items: center;
+            height: unset;
         }
         .chat .box_ft .toolbar a:hover {
             color: #D4D4D4;
@@ -765,12 +819,31 @@
             font-size: 12px;
             color: #999;
             padding-bottom: 4px;
-            margin-right: 15px;
+            margin-right: 18px;
             text-decoration: none;
         }
         .chat .box_ft .toolbar .vscode_term_menu_active {
             border-bottom: solid 1px white;
             color: #D4D4D4;
+        }
+        .chat .box_ft .toolbar .vscode_term_action {
+            display: flex;
+            align-items: center;
+            color: #999;
+            font-size: 12px;
+            padding: 3px;
+            margin-left: 3px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .chat .box_ft .toolbar .vscode_term_action_right {
+            margin-left: auto;
+        }
+        .chat .box_ft .toolbar .vscode_term_action_right svg {
+            margin-right: 2px;
+        }
+        .chat .box_ft .toolbar .vscode_term_action:hover {
+            background-color: #333333;
         }
         .chat .box_ft .toolbar .webuploader-pick {
             display: inline;
@@ -922,12 +995,8 @@
     maskToolbarOptions();
     // make reply text area like a terminal
     maskEditArea();
-
-    renderTopMenuBar();
-
-    renderLeftSideBar();
-
-    renderBottomStatusBar();
+    // add vscode-style activity side bar, menu bar, status bar, and buttons
+    renderVsCodeMenuAndBars();
 
     ////////////////////////////////////////////
     // functions
@@ -992,6 +1061,66 @@
         aPorts.setAttribute('href', '#');
         aPorts.innerHTML = 'PORTS';
         toolbar.appendChild(aPorts);
+
+        // right action buttons
+        var svgs = [
+            // cmd
+            `<div class="vscode_term_action vscode_term_action_right">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M1 1H15V15H1V1ZM2 14H14V2H2V14ZM4.00008 5.70709L4.70718 4.99999L8.24272 8.53552L7.53561 9.24263L7.53558 9.2426L4.70711 12.0711L4 11.364L6.82848 8.53549L4.00008 5.70709Z"/>
+                </svg>
+                cmd
+            <div>`,
+            // plus
+            `<div class="vscode_term_action">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14.0001 7V8H8.00012V14H7.00012V8H1.00012V7H7.00012V1H8.00012V7H14.0001Z"/>
+                </svg>
+            </div>`,
+            // down
+            `<div class="vscode_term_action">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.97612 10.0719L12.3334 5.7146L12.9521 6.33332L8.28548 11L7.66676 11L3.0001 6.33332L3.61882 5.7146L7.97612 10.0719Z"/>
+                </svg>
+            </div>`,
+            // split
+            `<div class="vscode_term_action">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 1H3L2 2V13L3 14H14L15 13V2L14 1ZM8 13H3V2H8V13ZM14 13H9V2H14V13Z"/>
+                </svg>
+            </div>`,
+            // trash
+            `<div class="vscode_term_action">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10 3H12H13V4H12V13L11 14H4L3 13V4H2V3H5V2C5 1.73478 5.10531 1.48038 5.29285 1.29285C5.48038 1.10531 5.73478 1 6 1H9C9.26522 1 9.51962 1.10531 9.70715 1.29285C9.89469 1.48038 10 1.73478 10 2V3ZM9 2H6V3H9V2ZM4 13H11V4H4V13ZM6 5H5V12H6V5ZM7 5H8V12H7V5ZM9 5H10V12H9V5Z"/>
+                </svg>
+            </div>`,
+            // more
+            `<div class="vscode_term_action">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 12C6 12.2967 5.91203 12.5867 5.74721 12.8334C5.58238 13.08 5.34812 13.2723 5.07403 13.3858C4.79994 13.4994 4.49834 13.5291 4.20737 13.4712C3.91639 13.4133 3.64912 13.2704 3.43934 13.0607C3.22956 12.8509 3.0867 12.5836 3.02882 12.2926C2.97094 12.0017 3.00065 11.7001 3.11418 11.426C3.22771 11.1519 3.41997 10.9176 3.66665 10.7528C3.91332 10.588 4.20333 10.5 4.5 10.5C4.89783 10.5 5.27936 10.658 5.56066 10.9393C5.84197 11.2206 6 11.6022 6 12Z"/>
+                    <path d="M13.5 12C13.5 12.2967 13.412 12.5867 13.2472 12.8334C13.0824 13.08 12.8481 13.2723 12.574 13.3858C12.2999 13.4994 11.9983 13.5291 11.7074 13.4712C11.4164 13.4133 11.1491 13.2704 10.9393 13.0607C10.7296 12.8509 10.5867 12.5836 10.5288 12.2926C10.4709 12.0017 10.5006 11.7001 10.6142 11.426C10.7277 11.1519 10.92 10.9176 11.1666 10.7528C11.4133 10.588 11.7033 10.5 12 10.5C12.3978 10.5 12.7794 10.658 13.0607 10.9393C13.342 11.2206 13.5 11.6022 13.5 12Z"/>
+                    <path d="M21 12C21 12.2967 20.912 12.5867 20.7472 12.8334C20.5824 13.08 20.3481 13.2723 20.074 13.3858C19.7999 13.4994 19.4983 13.5291 19.2074 13.4712C18.9164 13.4133 18.6491 13.2704 18.4393 13.0607C18.2296 12.8509 18.0867 12.5836 18.0288 12.2926C17.9709 12.0017 18.0006 11.7001 18.1142 11.426C18.2277 11.1519 18.42 10.9176 18.6666 10.7528C18.9133 10.588 19.2033 10.5 19.5 10.5C19.8978 10.5 20.2794 10.658 20.5607 10.9393C20.842 11.2206 21 11.6022 21 12Z"/>
+                </svg>
+            </div>`,
+            // up
+            `<div class="vscode_term_action">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.02388 5.92809L3.66657 10.2854L3.04785 9.66668L7.71452 5.00001L8.33324 5.00001L12.9999 9.66668L12.3812 10.2854L8.02388 5.92809Z"/>
+                </svg>
+            </div>`,
+            // close
+            `<div class="vscode_term_action">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.00004 8.70711L11.6465 12.3536L12.3536 11.6465L8.70714 8.00001L12.3536 4.35356L11.6465 3.64645L8.00004 7.2929L4.35359 3.64645L3.64648 4.35356L7.29293 8.00001L3.64648 11.6465L4.35359 12.3536L8.00004 8.70711Z"/>
+                </svg>
+            </div>`
+        ];
+        svgs.forEach((svg) => {
+            var template = document.createElement('template');
+            template.innerHTML = svg;
+            toolbar.appendChild(template.content);
+        });
     }
 
     function maskEditArea() {
@@ -1031,9 +1160,11 @@
     function maskChatTitleNames() {
         setInterval(function() {
             var title = document.querySelector(".box_hd .title_wrap .title .title_name");
-            var maskedTitle = maskSpecialEmojis(title.innerHTML, 'remove');
-            if (title.innerHTML != maskedTitle) {
-                title.innerHTML = maskedTitle;
+            if (!title.innerHTML) {
+                var maskedTitle = maskSpecialEmojis(title.innerHTML, 'remove');
+                if (title.innerHTML != maskedTitle) {
+                    title.innerHTML = maskedTitle;
+                }
             }
         }, 1000);
         // vscode tab close button
@@ -1058,12 +1189,15 @@
         actions.setAttribute('id', 'vscode_tab_actions');
         var svgs = [
             `<svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5072 12.3239C14.4749 11.0906 15.0006 9.56812 15 8.00045C15.0001 6.46996 14.4986 4.98161 13.5723 3.76328C12.6459 2.54495 11.3459 1.66378 9.87105 1.25469C8.39624 0.845604 6.828 0.931139 5.40643 1.4982C3.98487 2.06526 2.78832 3.0826 2 4.39445V2.00045H1V5.50045L1.5 6.00045H5V5.00045H2.811C3.47895 3.84546 4.51237 2.94567 5.74827 2.44298C6.98418 1.94028 8.35226 1.86329 9.63676 2.22413C10.9213 2.58498 12.0491 3.36313 12.8425 4.43587C13.6358 5.50862 14.0495 6.81493 14.0182 8.14879C13.987 9.48265 13.5127 10.7682 12.6701 11.8026C11.8274 12.8371 10.6644 13.5616 9.36443 13.862C8.06445 14.1624 6.70147 14.0215 5.49043 13.4615C4.27939 12.9016 3.2892 11.9544 2.676 10.7695L1.789 11.2315C2.51204 12.6224 3.68106 13.7304 5.10876 14.3779C6.53646 15.0254 8.14019 15.1749 9.66297 14.8025C11.1858 14.4301 12.5395 13.5573 13.5072 12.3239ZM10.146 11.3545L10.854 10.6465L8 7.79349V4.00049H7V8.00049L7.146 8.35449L10.146 11.3545Z"/>
+            </svg>`,
+            `<svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
                 <path d="M14 1H3L2 2V13L3 14H14L15 13V2L14 1ZM8 13H3V2H8V13ZM14 13H9V2H14V13Z"/>
             </svg>`,
-            `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 8C4 8.19778 3.94135 8.39112 3.83147 8.55557C3.72159 8.72002 3.56541 8.84819 3.38268 8.92388C3.19996 8.99957 2.99889 9.01937 2.80491 8.98079C2.61093 8.9422 2.43275 8.84696 2.29289 8.70711C2.15304 8.56725 2.0578 8.38907 2.01922 8.19509C1.98063 8.00111 2.00043 7.80004 2.07612 7.61732C2.15181 7.43459 2.27998 7.27841 2.44443 7.16853C2.60888 7.05865 2.80222 7 3 7C3.26522 7 3.51957 7.10536 3.70711 7.29289C3.89464 7.48043 4 7.73478 4 8Z" fill="#999"></path>
-                <path d="M9 8C9 8.19778 8.94135 8.39112 8.83147 8.55557C8.72159 8.72002 8.56541 8.84819 8.38268 8.92388C8.19996 8.99957 7.99889 9.01937 7.80491 8.98079C7.61093 8.9422 7.43275 8.84696 7.29289 8.70711C7.15304 8.56725 7.0578 8.38907 7.01922 8.19509C6.98063 8.00111 7.00043 7.80004 7.07612 7.61732C7.15181 7.43459 7.27998 7.27841 7.44443 7.16853C7.60888 7.05865 7.80222 7 8 7C8.26522 7 8.51957 7.10536 8.70711 7.29289C8.89464 7.48043 9 7.73478 9 8Z" fill="#999"></path>
-                <path d="M14 8C14 8.19778 13.9414 8.39112 13.8315 8.55557C13.7216 8.72002 13.5654 8.84819 13.3827 8.92388C13.2 8.99957 12.9989 9.01937 12.8049 8.98079C12.6109 8.9422 12.4327 8.84696 12.2929 8.70711C12.153 8.56725 12.0578 8.38907 12.0192 8.19509C11.9806 8.00111 12.0004 7.80004 12.0761 7.61732C12.1518 7.43459 12.28 7.27841 12.4444 7.16853C12.6089 7.05865 12.8022 7 13 7C13.2652 7 13.5196 7.10536 13.7071 7.29289C13.8946 7.48043 14 7.73478 14 8Z" fill="#999"></path>
+            `<svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 8C4 8.19778 3.94135 8.39112 3.83147 8.55557C3.72159 8.72002 3.56541 8.84819 3.38268 8.92388C3.19996 8.99957 2.99889 9.01937 2.80491 8.98079C2.61093 8.9422 2.43275 8.84696 2.29289 8.70711C2.15304 8.56725 2.0578 8.38907 2.01922 8.19509C1.98063 8.00111 2.00043 7.80004 2.07612 7.61732C2.15181 7.43459 2.27998 7.27841 2.44443 7.16853C2.60888 7.05865 2.80222 7 3 7C3.26522 7 3.51957 7.10536 3.70711 7.29289C3.89464 7.48043 4 7.73478 4 8Z"></path>
+                <path d="M9 8C9 8.19778 8.94135 8.39112 8.83147 8.55557C8.72159 8.72002 8.56541 8.84819 8.38268 8.92388C8.19996 8.99957 7.99889 9.01937 7.80491 8.98079C7.61093 8.9422 7.43275 8.84696 7.29289 8.70711C7.15304 8.56725 7.0578 8.38907 7.01922 8.19509C6.98063 8.00111 7.00043 7.80004 7.07612 7.61732C7.15181 7.43459 7.27998 7.27841 7.44443 7.16853C7.60888 7.05865 7.80222 7 8 7C8.26522 7 8.51957 7.10536 8.70711 7.29289C8.89464 7.48043 9 7.73478 9 8Z"></path>
+                <path d="M14 8C14 8.19778 13.9414 8.39112 13.8315 8.55557C13.7216 8.72002 13.5654 8.84819 13.3827 8.92388C13.2 8.99957 12.9989 9.01937 12.8049 8.98079C12.6109 8.9422 12.4327 8.84696 12.2929 8.70711C12.153 8.56725 12.0578 8.38907 12.0192 8.19509C11.9806 8.00111 12.0004 7.80004 12.0761 7.61732C12.1518 7.43459 12.28 7.27841 12.4444 7.16853C12.6089 7.05865 12.8022 7 13 7C13.2652 7 13.5196 7.10536 13.7071 7.29289C13.8946 7.48043 14 7.73478 14 8Z"></path>
             </svg>`
         ];
         svgs.forEach((svg) => {
@@ -1170,8 +1304,9 @@
                     var locations = bubbleCont.getElementsByClassName('location');
                     if (nodeIsAvailable(locations)) {
                         var a = locations[0].getElementsByTagName('a')[0];
+                        var desc = a.getElementsByTagName('p')[0].innerHTML;
                         a.setAttribute('class', 'masked');
-                        a.innerHTML += '(LOCATION)';
+                        a.innerHTML += '(LOCATION:' + desc + ')';
                     }
                     // cards
                     var cards = bubbleCont.getElementsByClassName('card');
@@ -1253,6 +1388,9 @@
         }
         return text;
     }
+    function maskSpecialCharaters(text) {
+        return text.replaceAll(' ', '_') + '.js';
+    }
 
     function translateIntoEnglish(text) {
         var parts = text.split('\"');
@@ -1264,12 +1402,16 @@
             return parts[1] + ' patted ' + parts[3];
         } else if (text.includes('Below are new messages')) {
             return 'Below are new messages';
+        } else if (text.includes('开启了朋友验证，你还不是他（她）朋友')) {
+            return 'You are not friends with him/her any more';
         }
         return text;
     }
 
     function renderVsCodeMenuAndBars() {
-
+        renderTopMenuBar();
+        renderLeftSideBar();
+        renderBottomStatusBar();
     }
 
     function renderLeftSideBar() {
@@ -1396,7 +1538,10 @@
     }
 
     function renderTopMenuBar() {
-        var logo = document.createElement('span');
+        var topMenuBar = document.createElement('div');
+        topMenuBar.setAttribute('id', 'vscode_top_menu_bar');
+        // vscode logo
+        var logo = document.createElement('div');
         logo.setAttribute('id', 'vscode_logo');
         logo.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1441,6 +1586,9 @@
     	   	    </defs>
     	    </svg>
         `;
+        topMenuBar.appendChild(logo);
+
+        // vscode menu
         var menu = document.createElement('ul');
         var menuList = ['File', 'Edit', 'Selection', 'View', 'Go', 'Run', 'Terminal', 'Help'];
         menuList.forEach((e) => {
@@ -1448,10 +1596,66 @@
             li.innerHTML = e;
             menu.appendChild(li);
         });
-        var topMenuBar = document.createElement('div');
-        topMenuBar.setAttribute('id', 'vscode_top_menu_bar');
-        topMenuBar.appendChild(logo);
         topMenuBar.appendChild(menu);
+
+        // vscode arrows
+        var vsArrows = [
+            `<div class="vscode_nav vscode_center">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.99999 3.0929L2 8.09288L2 8.79999L6.99999 13.8L7.7071 13.0929L3.56066 8.94644L14 8.94644L14 7.94644L3.56066 7.94644L7.7071 3.8L6.99999 3.0929Z"/>
+                </svg>
+            </div>`,
+            `<div class="vscode_nav">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.00001 13.8871L14 8.8871L14 8.17999L9.00001 3.17999L8.2929 3.8871L12.4393 8.03354L2 8.03354L2 9.03354L12.4393 9.03354L8.2929 13.18L9.00001 13.8871Z"/>
+                </svg>
+            </div>`
+        ];
+        vsArrows.forEach((arr) => {
+            var temp = document.createElement('template');
+            temp.innerHTML = arr;
+            topMenuBar.appendChild(temp.content);
+        });
+
+        // vscode search
+        var vsSearch = document.createElement('div');
+        vsSearch.classList.add('vscode_search');
+        vsSearch.innerHTML = `
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.25 1.02546e-06C13.6605 -0.000791296 12.1046 0.457574 10.7694 1.32007C9.43422 2.18256 8.37657 3.4124 7.72375 4.8617C7.07094 6.31099 6.85077 7.91801 7.0896 9.4895C7.32843 11.061 8.01604 12.5301 9.06995 13.72L1 22.88L2.12 23.88L10.17 14.76C11.2055 15.5693 12.4192 16.1196 13.7103 16.365C15.0014 16.6104 16.3325 16.5437 17.5927 16.1707C18.8528 15.7976 20.0055 15.1288 20.955 14.2201C21.9044 13.3114 22.623 12.1891 23.0509 10.9465C23.4789 9.70396 23.6038 8.37703 23.4153 7.07642C23.2267 5.77581 22.7302 4.53915 21.967 3.46924C21.2039 2.39933 20.1962 1.52711 19.0278 0.925416C17.8595 0.323719 16.5642 0.00991516 15.25 0.0100108V1.02546e-06ZM15.25 15C13.915 15 12.6099 14.6041 11.4999 13.8624C10.3898 13.1207 9.52469 12.0665 9.01379 10.8331C8.5029 9.59973 8.36919 8.24248 8.62964 6.93311C8.89009 5.62373 9.53305 4.42106 10.4771 3.47705C11.4211 2.53305 12.6237 1.89009 13.9331 1.62964C15.2425 1.36919 16.5997 1.5029 17.8331 2.01379C19.0665 2.52469 20.1207 3.38985 20.8624 4.49988C21.6041 5.60991 22 6.91498 22 8.25C22 10.0402 21.2888 11.7571 20.0229 13.023C18.7571 14.2888 17.0402 15 15.25 15Z"/>
+            </svg>
+            <span class="vscode_search_hint">microsoft-vscode</span>
+        `;
+        topMenuBar.appendChild(vsSearch);
+        // vscode window actions
+        var vsWinActions = [
+            // chrome-minimize
+            `<div class="vscode_chrome_button vscode_right">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 7.99994V8.99994H3V7.99994H14Z" fill="#C5C5C5"/>
+                </svg>
+            </div>`,
+            // chrome-restore
+            `<div class="vscode_chrome_button">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 5V14H12V5H3ZM11 13H4V6H11V13Z" fill="#C5C5C5"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M5 5H6V4H13V11H12V12H14V5V3H12H5V5Z" fill="#C5C5C5"/>
+                </svg>
+            </div>`,
+            // chrome-close
+            `<div class="vscode_chrome_button">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#999" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.1161 7.99992L2.55804 12.558L3.44193 13.4419L7.99999 8.88381L12.558 13.4419L13.4419 12.558L8.88387 7.99992L13.4419 3.44187L12.558 2.55798L7.99999 7.11604L3.44193 2.55798L2.55804 3.44187L7.1161 7.99992Z"/>
+                </svg>
+            </div>`
+        ];
+        vsWinActions.forEach((act) => {
+            var temp = document.createElement('template');
+            temp.innerHTML = act;
+            topMenuBar.appendChild(temp.content);
+        });
+
+        // add to main window
         var mainInner = document.getElementsByClassName('main_inner')[0];
         mainInner.insertBefore(topMenuBar, mainInner.getElementsByClassName('panel give_me')[0]);
     }
