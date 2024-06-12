@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         WeChat Web App with VS Code Style
+// @name         WeChat Web with VS Code UI
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.10.4
-// @description  Change style to VS Code-alike
+// @version      0.10.5
+// @description  VS Code style for WeChat Web application
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
 // @icon         https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico
@@ -298,6 +298,7 @@
              ['emoji1f6ba', 'Women'],
              ['emoji2b55', 'O'],
              ['emoji2716', 'X'],
+             ['emoji274c', 'X'], // extra
              ['emojia9', 'Copyright'],
              ['emojiae', 'RegisteredTM'],
              ['emoji2122', 'Trademark'],
@@ -336,7 +337,7 @@
 
     //https://github.com/ikatyang/emoji-cheat-sheet
     const special_emoji_map = new Map(
-        [['🥺', 'pleading_face'], ['🤣', 'rofl'], ['😬', 'grimacing'], ['🤑', 'money_mouth_face'],
+        [['🥺', 'pleading_face'], ['🤣', 'rofl'], ['😬', 'grimacing'], ['🤑', 'money_mouth_face'], ['🤫', 'shushing_face'], ['🥰', 'smiling_face_with_three_hearts'],
          ['0️⃣', 'zero'], ['1️⃣', 'one'], ['2️⃣', 'two'], ['3️⃣', 'three'], ['4️⃣', 'four'],
          ['5️⃣', 'five'], ['6️⃣', 'six'], ['7️⃣', 'seven'], ['8️⃣', 'eight'], ['9️⃣', 'nine'],
          ['🌎', 'earth_americas'], ['🌍', 'earth_africa'], ['🌏', 'earth_asia'],
@@ -367,7 +368,7 @@
         }
         .main_inner {
             max-width: 100%;
-            color: #D4D4D4;
+            color: #CCC;
         }
         .button_primary {
             background-color:#0E639C !important;
@@ -440,7 +441,7 @@
         }
         .panel {
             background-color: #252526;
-            width: 220px;
+            width: 265px;
         }
         .panel.give_me .nav_view {
             top: 40px;
@@ -477,6 +478,9 @@
         }
         .chat_item.active {
             background:#37373D;
+        }
+        .chat_item .info .nickname {
+            color: #CCC;
         }
         .web_wechat_reddot {
             background:url(https://img2.imgtp.com/2024/04/18/vNEgsIni.png) no-repeat;
@@ -706,6 +710,7 @@
         }
         .box_hd .title .title_name {
             color: white;
+            margin: 0 6px;
         }
         .chat .box_bd {
             bottom: 260px;
@@ -958,7 +963,11 @@
     // login page
     ////////////////////////////////////////////
     if (document.getElementsByClassName('login').length > 0) {
-        var loginAvatarInterval = setInterval(function() {
+        var checkLoginAvatar = setInterval(function() {
+            var displayName = document.querySelector('.header .info .nickname .display_name');
+            if (displayName.innerHTML) {
+                clearInterval(checkLoginAvatar);
+            }
             var association = document.getElementsByClassName('association')[0];
             var associationImg = association.getElementsByClassName('img')[0];
             if (associationImg.src != vscode_favico) {
@@ -970,11 +979,6 @@
             }
         }, 500);
     }
-    // clear intervals after 10 mins
-    setTimeout(function() {
-        clearInterval(loginAvatarInterval);
-        console.log('cleared interval: loginAvatarInterval');
-    }, 600000);
 
 
     ////////////////////////////////////////////
@@ -1150,6 +1154,9 @@
         setInterval(function() {
             var names = document.querySelectorAll(".chat_item .info .nickname_text");
             for (let i = 0; i < names.length; i++) {
+                if (names[i].innerHTML == 'File Transfer') {
+                    continue;
+                }
                 if (names[i].innerHTML != maskedNames[i]) {
                     names[i].innerHTML = maskedNames[i];
                 }
@@ -1166,15 +1173,6 @@
             }
         }, 1000);
         // vscode tab close button
-        /*
-        var close = document.createElement('span');
-        close.setAttribute('id', 'vscode_close');
-        close.innerHTML = `
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="#FFF" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.00004 8.70711L11.6465 12.3536L12.3536 11.6465L8.70714 8.00001L12.3536 4.35356L11.6465 3.64645L8.00004 7.2929L4.35359 3.64645L3.64648 4.35356L7.29293 8.00001L3.64648 11.6465L4.35359 12.3536L8.00004 8.70711Z"/>
-            </svg>
-        `;
-        document.getElementsByClassName('title poi')[0].appendChild(close);*/
         var template = document.createElement('template');
         template.innerHTML = `
             <svg id="vscode_close" width="16" height="16" viewBox="0 0 16 16" fill="#FFF" xmlns="http://www.w3.org/2000/svg">
@@ -1386,8 +1384,16 @@
         }
         return text;
     }
-    function maskSpecialCharaters(text) {
-        return text.replaceAll(' ', '_') + '.js';
+
+    function removeMyNameInQuotedMessage(text) {
+        var displayName;
+        var checkDisplayName = setInterval(function() {
+            displayName = document.querySelector('.header .info .nickname .display_name');
+            if (displayName.innerHTML) {
+                clearInterval(checkDisplayName);
+            }
+        }, 500);
+        return text.replace(displayName.innerHTML, '');
     }
 
     function translateIntoEnglish(text) {
@@ -1416,10 +1422,12 @@
         var vscodeSideBar = document.createElement('div');
         vscodeSideBar.classList.add('vscode_side_bar');
         vscodeSideBar.innerHTML = `
-    	    <svg role="img" class="vscode_side_bar_icon vscode_side_bar_icon_active" width="24" height="24" viewBox="0 0 24 24" fill="#FFF" xmlns="http://www.w3.org/2000/svg">
-                <title>Explorer</title>
-            	<path d="M17.5 0H8.5L7 1.5V6H2.5L1 7.5V22.5699L2.5 24H14.5699L16 22.5699V18H20.7L22 16.5699V4.5L17.5 0ZM17.5 2.12L19.88 4.5H17.5V2.12ZM14.5 22.5H2.5V7.5H7V16.5699L8.5 18H14.5V22.5ZM20.5 16.5H8.5V1.5H16V6H20.5V16.5Z"/>
-            </svg>
+    	    <a href="https://wx2.qq.com/?&lang=en">
+                <svg role="img" class="vscode_side_bar_icon vscode_side_bar_icon_active" width="24" height="24" viewBox="0 0 24 24" fill="#FFF" xmlns="http://www.w3.org/2000/svg">
+                    <title>Explorer</title>
+            	    <path d="M17.5 0H8.5L7 1.5V6H2.5L1 7.5V22.5699L2.5 24H14.5699L16 22.5699V18H20.7L22 16.5699V4.5L17.5 0ZM17.5 2.12L19.88 4.5H17.5V2.12ZM14.5 22.5H2.5V7.5H7V16.5699L8.5 18H14.5V22.5ZM20.5 16.5H8.5V1.5H16V6H20.5V16.5Z"/>
+                </svg>
+            </a>
             <svg role="img" class="vscode_side_bar_icon" width="24" height="24" viewBox="0 0 24 24" fill="#888" xmlns="http://www.w3.org/2000/svg">
                 <title>Search</title>
             	<path d="M15.25 1.02546e-06C13.6605 -0.000791296 12.1046 0.457574 10.7694 1.32007C9.43422 2.18256 8.37657 3.4124 7.72375 4.8617C7.07094 6.31099 6.85077 7.91801 7.0896 9.4895C7.32843 11.061 8.01604 12.5301 9.06995 13.72L1 22.88L2.12 23.88L10.17 14.76C11.2055 15.5693 12.4192 16.1196 13.7103 16.365C15.0014 16.6104 16.3325 16.5437 17.5927 16.1707C18.8528 15.7976 20.0055 15.1288 20.955 14.2201C21.9044 13.3114 22.623 12.1891 23.0509 10.9465C23.4789 9.70396 23.6038 8.37703 23.4153 7.07642C23.2267 5.77581 22.7302 4.53915 21.967 3.46924C21.2039 2.39933 20.1962 1.52711 19.0278 0.925416C17.8595 0.323719 16.5642 0.00991516 15.25 0.0100108V1.02546e-06ZM15.25 15C13.915 15 12.6099 14.6041 11.4999 13.8624C10.3898 13.1207 9.52469 12.0665 9.01379 10.8331C8.5029 9.59973 8.36919 8.24248 8.62964 6.93311C8.89009 5.62373 9.53305 4.42106 10.4771 3.47705C11.4211 2.53305 12.6237 1.89009 13.9331 1.62964C15.2425 1.36919 16.5997 1.5029 17.8331 2.01379C19.0665 2.52469 20.1207 3.38985 20.8624 4.49988C21.6041 5.60991 22 6.91498 22 8.25C22 10.0402 21.2888 11.7571 20.0229 13.023C18.7571 14.2888 17.0402 15 15.25 15Z"/>
@@ -1539,8 +1547,9 @@
         var topMenuBar = document.createElement('div');
         topMenuBar.setAttribute('id', 'vscode_top_menu_bar');
         // vscode logo
-        var logo = document.createElement('div');
+        var logo = document.createElement('a');
         logo.setAttribute('id', 'vscode_logo');
+        logo.setAttribute('href', 'https://code.visualstudio.com/');
         logo.innerHTML = `
             <svg width="16" height="16" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
     	   	    <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
