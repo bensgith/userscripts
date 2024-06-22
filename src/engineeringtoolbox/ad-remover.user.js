@@ -12,7 +12,6 @@
 (function() {
     'use strict';
 
-
     var css = `
         #right,
         .noPrint,
