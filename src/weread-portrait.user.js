@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeRead for Portrait Screen
 // @namespace    https://github.com/bensgith/tampermonkey-scripts/
-// @version      0.0.1
+// @version      0.0.2
 // @description  WeRead Enhancement for Portrait Screen
 // @author       Benjamin L
 // @match        https://weread.qq.com/*
@@ -14,16 +14,20 @@
 
     let css = `
     .readerContent .app_content {
-        max-width: 1062px;
+        max-width: 1062px; /* 760px */
     }
 
     .readerTopBar {
-        max-width: 1062px;
+        max-width: 1062px; /* 760px */
     }
 
     .readerControls {
-        margin-left: 480px;
-    }`;
+        margin-left: 480px; /* 428px */
+    }
+    .readerCatalog {
+        margin-left: -50px; /* -140px */
+    }
+    `;
 
     GM_addStyle(css);
 })();
