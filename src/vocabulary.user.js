@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Vocabulary Ehancement
 // @namespace    https://github.com/bensgith/tampermonkey-scripts/
-// @version      0.0.1
+// @version      0.0.2
 // @description  Remove / hide unecessary infomation
 // @author       Benjamin L
 // @match        https://www.vocabulary.com/dictionary/*
@@ -15,7 +15,9 @@
     let css = `
         .dictionary_home .box-subscribe,
         .sign-up-tile-area,
-        .page-footer {
+        .page-footer,
+        .wordPage .vcom_progress,
+        .wordPage .col-2 .vocab-trainer-background {
             display: none;
         }
         .promote-subscribe-dictionary {
