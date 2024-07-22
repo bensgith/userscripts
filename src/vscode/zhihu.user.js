@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ZhiHu with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.4.1
+// @version      0.4.2
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://www.zhihu.com/*
@@ -49,7 +49,7 @@
     GM_addElement(document.getElementById('test-tab'), 'a', {
         class: 'Tabs-link AppHeader-TabsLink css-1fb8pjf',
         tabindex: '0',
-        href: '#',
+        href: '//www.zhihu.com/people/benbxl',
         textContent: '民主'
     });
     var tabs_links = app_header_tablist.children;
@@ -66,18 +66,17 @@
     if (document.getElementsByClassName('Topstory').length > 0) {
         var cssTopstory = `
             /* top story container */
-            .PageHeader,
             .Topstory-tabCard,
             .TopstoryItem--advertCard,
             .Button--withIcon /* "Comments, Share, Favorite, Like, More" options */ {
-                display:none;
+                display: none;
             }
             .Topstory-container,
             .Topstory-mainColumn {
-                width:1050px;
+                width: 1050px;
             }
             .Topstory-mainColumnCard .Card {
-                border-bottom-color:#414141 !important;
+                border-bottom-color: #414141 !important;
             }
         `;
         GM_addStyle(cssTopstory);
@@ -89,39 +88,45 @@
     if (document.getElementsByClassName('QuestionPage').length > 0) {
         var cssQuestionPage = `
             /* question details page */
+            .QuestionHeader-footer,
+            .QuestionHeader-side,
             .Pc-word, /* advertisement */
             .Reward /* reward option */ {
-                display:none;
+                display: none;
             }
             .QuestionHeader,
             .QuestionHeader-footer {
-                background-color:#1E1E1E;
-                color:#D4D4D4;
+                background-color: #1E1E1E;
+                color: #D4D4D4;
             }
             .QuestionHeader-title,
             .NumberBoard-itemValue {
-                color:white;
+                color: white;
             }
             .Question-mainColumn {
-                width:1000px;
+                width: 1000px;
+            }
+            .QuestionHeader-main {
+                width: unset;
+                padding-left: 0;
             }
             .InputButton {
-                background-color:#1E1E1E;
+                background-color: #1E1E1E;
             }
             .AuthorInfo {
-                max-width:none;
+                max-width: none;
             }
             .AuthorInfo-content {
-                margin-left:0;
+                margin-left: 0;
             }
             /* article separator line */
             .List-item+.List-item:after {
-                border-bottom-color:#414141;
+                border-bottom-color: #414141;
             }
             /* Yanxuan special column meta info */
             .KfeCollection-IntroCard-newStyle-mobile,
             .KfeCollection-IntroCard-newStyle-pc {
-                background-color:#414141;
+                background-color: #414141;
             }
         `;
         GM_addStyle(cssQuestionPage);
@@ -135,11 +140,11 @@
             /* Search result page */
             .SearchTabs,
             .css-knqde /* right side panel */ {
-                display:none;
+                display: none;
             }
             .Search-container,
             .SearchMain {
-                width:1050px;
+                width: 1050px;
             }
         `;
         GM_addStyle(cssSearch);
@@ -151,56 +156,58 @@
     var css = `
         /* common elements */
         body {
-            background-color:#333333;
+            background-color: #333333;
         }
         a,
         a:hover,
         input.Input {
-            color:white !important;
+            color: white !important;
         }
 
 
         /* navigation header */
+        .PageHeader,
         .SearchBar-askButton,
         .AppHeader-userInfo,
+        .FollowButton,
         .css-1qyytj7 /* right panel */ {
-            display:none;
+            display: none;
         }
         .css-17rnw55 /* app header background */ {
-            background-color:#323233;
-            color:white;
+            background-color: #323233;
+            color: white;
         }
         .SearchBar {
-            max-width:670px;
+            max-width: 670px;
         }
         .SearchBar-input {
-            background-color:#3C3C3D !important;
+            background-color: #3C3C3D !important;
         }
 
         /* article common */
         .Card {
-            background-color:#1E1E1E;
-            color:#D4D4D4;
+            background-color: #1E1E1E;
+            color: #D4D4D4;
         }
         .ContentItem-actions {
-            background-color:#1E1E1E;
+            background-color: #1E1E1E;
         }
         .Button--blue {
-            background-color:#0E639C !important;
-            color:white !important;
+            background-color: #0E639C !important;
+            color: white !important;
         }
         .css-1503iqi, /* collapse comment button */
         .css-1503iqi:hover,
         .VoteButton,
         .CornerButton {
-            background-color:#0E639C;
-            color:white
+            background-color: #0E639C;
+            color: white;
         }
 
 
         /* comments area */
         .Avatar {
-            display:none;
+            display: none;
         }
         .css-1jpzztt{
             color:#D4D4D4;
@@ -208,13 +215,15 @@
         .css-kt4t4n,
         .css-7wvdjh, /* reply content in reply box in comments */
         .css-1e7fksk /* reply list in reply box in comments */ {
-            background-color:#1E1E1E;
+            background-color: #1E1E1E;
         }
+
         /* input box border in comments */
         .css-14zbeoe,
         .css-u76jt1 {
             border-color: #414141;
         }
+
         /* timeline font color in story topic */
         .css-13brsx3 {
             color: white;
