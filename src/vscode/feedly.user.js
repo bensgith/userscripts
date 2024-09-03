@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Feedly with VS Code Style
 // @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.2.1
+// @version      0.2.2
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://feedly.com/*
@@ -61,7 +61,11 @@
 
         /* article title */
         .EntryTitle, .Article__title {
-            color:white;
+            color: white;
+        }
+        /* article title, collapsed, unread */
+        .swkr6ktlVGRSyOHsfX0t {
+            color: unset;
         }
 
         /* article body */
