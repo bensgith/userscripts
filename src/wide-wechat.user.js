@@ -65,6 +65,9 @@
         .panel.give_me .nav_view {
             top: 64px;
         }
+        .panel.give_me .nav_view .chat_list .chat_item {
+            padding: 6px 18px 7px;
+        }
 
         /* message box */
         #chatArea .box_hd,
@@ -75,7 +78,9 @@
         #chatArea .box_bd .message .custom_emoji,
         #chatArea .box_bd .message .qqemoji,
         #chatArea .box_bd .message .content .nickname .emoji,
-        #chatArea .box_bd .message .content .bubble .bubble_cont .app .cover {
+        #chatArea .box_bd .message .content .bubble .bubble_cont .app .cover,
+        #chatArea .box_bd .message .content .bubble .bubble_cont .card .card_avatar,
+        #chatArea .box_bd .message .content .bubble .bubble_cont .card:after {
             display: none;
         }
         #chatArea {
@@ -92,6 +97,9 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .plain {
             padding: 4px 0px;
         }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .picture {
+            padding: 4px 0px;
+        }
         #chatArea .box_bd .message .content .bubble .bubble_cont .picture img {
             max-width: 35px;
             max-height: 24px;
@@ -105,15 +113,37 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .app .title {
             color: #CCC;
         }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .card {
+            padding: 4px;
+            margin: 0px;
+            background-color: #2D2D2D;
+        }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .card .card_hd {
+            padding: 0px;
+        }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .video {
+            padding: 4px 0px;
+        }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .video img {
+            max-width: 40px;
+            max-height: 30px;
+        }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .video .web_wechat_paly {
+            margin-top: -16px;
+            margin-left: -16px;
+            width: 30px;
+            height: 30px;
+            background-position: -410px -224px;
+            -webkit-background-size: 461px 449px;
+            background-size: 461px 449px;
+        }
 
         /* chat box */
         .chat .box_ft .content {
             color: #CCC;
         }
-
-
-
     `;
+
     GM_addStyle(css);
 
     let vscodeFavico = 'https://code.visualstudio.com/favicon.ico';
