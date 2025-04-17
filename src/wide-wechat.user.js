@@ -75,12 +75,14 @@
         #chatArea .box_bd .chat_bd .avatar,
         #chatArea .box_ft .action,
         #chatArea .box_bd .message .content .bubble:after,
-        #chatArea .box_bd .message .custom_emoji,
-        #chatArea .box_bd .message .qqemoji,
         #chatArea .box_bd .message .content .nickname .emoji,
+        #chatArea .box_bd .message .content .emoticon .custom_emoji,
+        #chatArea .box_bd .message .content .bubble .bubble_cont .card .emoji,
         #chatArea .box_bd .message .content .bubble .bubble_cont .app .cover,
         #chatArea .box_bd .message .content .bubble .bubble_cont .card .card_avatar,
-        #chatArea .box_bd .message .content .bubble .bubble_cont .card:after {
+        #chatArea .box_bd .message .content .bubble .bubble_cont .card:after,
+        #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_noread,
+        #chatArea .box_bd .message_system {
             display: none;
         }
         #chatArea {
@@ -88,6 +90,15 @@
         }
         #chatArea .box_bd .message {
             margin-bottom: 0px;
+        }
+        #chatArea .box_bd .message .content .emoticon {
+            padding: 2px 11px;
+        }
+        /* custom emojis are hidden use text instead */
+        #chatArea .box_bd .message .content .emoticon::after {
+            color: #CCC;
+            font-size: 14px;
+            content: "[custom_emoji]";
         }
         #chatArea .box_bd .message .content .bubble {
             color: #CCC;
@@ -97,12 +108,20 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .plain {
             padding: 4px 0px;
         }
+        /* replace emoji with "wechat face" in message */
+        #chatArea .box_bd .message .content .bubble .bubble_cont .plain .emoji,
+        #chatArea .box_bd .message .content .bubble .bubble_cont .plain .qqemoji {
+            background: url(//res.wx.qq.com/t/wx_fed/webwx/res/static/css/5af37c4a880a95586cd41c5b251d5562@1x.png) no-repeat;
+            background-position: -342px -338px;
+            -webkit-background-size: 408px 389px;
+            background-size: 408px 389px;
+        }
         #chatArea .box_bd .message .content .bubble .bubble_cont .picture {
             padding: 4px 0px;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .picture img {
-            max-width: 35px;
-            max-height: 24px;
+            max-width: 25px;
+            max-height: 25px;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .app {
             padding: 4px;
@@ -124,18 +143,38 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .video {
             padding: 4px 0px;
         }
+        /* smaller size of video message */
         #chatArea .box_bd .message .content .bubble .bubble_cont .video img {
-            max-width: 40px;
+            max-width: 30px;
             max-height: 30px;
         }
+        /* smaller size of video play icon */
         #chatArea .box_bd .message .content .bubble .bubble_cont .video .web_wechat_paly {
             margin-top: -16px;
             margin-left: -16px;
             width: 30px;
             height: 30px;
-            background-position: -410px -224px;
-            -webkit-background-size: 461px 449px;
-            background-size: 461px 449px;
+            background-position: -246px -120px;
+            -webkit-background-size: 284px 254px;
+            background-size: 283px 254px;
+        }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .voice {
+            padding: 4px 0px;
+        }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_voice_gray {
+            background: none;
+            border-left: solid #ccc 2px;
+        }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_voice_green {
+            background: none;
+            border-right: solid #ccc 2px;
+        }
+        #chatArea .box_bd .message .message_system {
+            margin: 0px auto;
+        }
+        #chatArea .box_bd .message .message_system .content {
+            padding: 4px 0px;
+            color: #4f4f4f;
         }
 
         /* chat box */
@@ -145,6 +184,7 @@
     `;
 
     GM_addStyle(css);
+
 
     let vscodeFavico = 'https://code.visualstudio.com/favicon.ico';
     let vscodeName = 'Microsoft VS Code';
