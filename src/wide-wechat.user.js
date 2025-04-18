@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.0.2
+// @version      0.0.3
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -56,21 +56,29 @@
         .chat_item .avatar .img,
         .chat_item .nickname .emoji,
         .chat_item .ext,
+        .chat_item .info .nickname_text,
         .chat_item .info .msg {
             display: none;
         }
+        .header {
+            padding: 10px 18px;
+        }
         .panel {
             background-color: #252526;
+            width: 200px; /* origin 280px */
         }
         .panel.give_me .nav_view {
-            top: 64px;
+            top: 50px;
         }
         .panel.give_me .nav_view .chat_list .chat_item {
             padding: 6px 18px 7px;
         }
+        .panel.give_me .nav_view .chat_list .chat_item .info .nickname::after {
+            content: "📄 README.md >>";
+        }
 
         /* message box */
-        #chatArea .box_hd,
+        #chatArea .box_hd .title .title_name .emoji,
         #chatArea .box_bd .chat_bd .message_empty,
         #chatArea .box_bd .chat_bd .avatar,
         #chatArea .box_ft .action,
@@ -87,6 +95,18 @@
         }
         #chatArea {
             background-color: #1E1E1E;
+        }
+        #chatArea .box_hd .title_wrap {
+            background-color: #1E1E1E;
+            border-bottom: none;
+            color: #fff;
+            text-align: left;
+            margin: 0 28px;
+        }
+        #chatArea .box_hd .title_wrap .title .title_name {
+            color: #fff;
+            width: 80px;
+            overflow: hidden;
         }
         #chatArea .box_bd .message {
             margin-bottom: 0px;
