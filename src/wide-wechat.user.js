@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.0.1
+// @version      0.0.2
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
