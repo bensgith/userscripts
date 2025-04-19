@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.0.3
+// @version      0.0.4
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -79,6 +79,7 @@
 
         /* message box */
         #chatArea .box_hd .title .title_name .emoji,
+        #chatArea .box_hd .title_wrap .title .title_count,
         #chatArea .box_bd .chat_bd .message_empty,
         #chatArea .box_bd .chat_bd .avatar,
         #chatArea .box_ft .action,
@@ -90,6 +91,7 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .card .card_avatar,
         #chatArea .box_bd .message .content .bubble .bubble_cont .card:after,
         #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_noread,
+        #chatArea .box_bd .message .content .bubble.bubble_primary.right.arrow_primary:before,
         #chatArea .box_bd .message_system {
             display: none;
         }
