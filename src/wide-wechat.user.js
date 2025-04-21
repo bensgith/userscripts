@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.0.4
+// @version      0.1.0
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -12,7 +12,7 @@
 (function() {
     'use strict';
 
-    var css = `
+    GM_addStyle(`
         /* login page */
         .login .web_wechat_login_logo,
         .login .login_box .qrcode .sub_title,
@@ -56,7 +56,6 @@
         .chat_item .avatar .img,
         .chat_item .nickname .emoji,
         .chat_item .ext,
-        .chat_item .info .nickname_text,
         .chat_item .info .msg {
             display: none;
         }
@@ -65,7 +64,6 @@
         }
         .panel {
             background-color: #252526;
-            width: 200px; /* origin 280px */
         }
         .panel.give_me .nav_view {
             top: 50px;
@@ -73,13 +71,9 @@
         .panel.give_me .nav_view .chat_list .chat_item {
             padding: 6px 18px 7px;
         }
-        .panel.give_me .nav_view .chat_list .chat_item .info .nickname::after {
-            content: "📄 README.md >>";
-        }
 
         /* message box */
         #chatArea .box_hd .title .title_name .emoji,
-        #chatArea .box_hd .title_wrap .title .title_count,
         #chatArea .box_bd .chat_bd .message_empty,
         #chatArea .box_bd .chat_bd .avatar,
         #chatArea .box_ft .action,
@@ -91,7 +85,6 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .card .card_avatar,
         #chatArea .box_bd .message .content .bubble .bubble_cont .card:after,
         #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_noread,
-        #chatArea .box_bd .message .content .bubble.bubble_primary.right.arrow_primary:before,
         #chatArea .box_bd .message_system {
             display: none;
         }
@@ -107,8 +100,6 @@
         }
         #chatArea .box_hd .title_wrap .title .title_name {
             color: #fff;
-            width: 80px;
-            overflow: hidden;
         }
         #chatArea .box_bd .message {
             margin-bottom: 0px;
@@ -129,14 +120,6 @@
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .plain {
             padding: 4px 0px;
-        }
-        /* replace emoji with "wechat face" in message */
-        #chatArea .box_bd .message .content .bubble .bubble_cont .plain .emoji,
-        #chatArea .box_bd .message .content .bubble .bubble_cont .plain .qqemoji {
-            background: url(//res.wx.qq.com/t/wx_fed/webwx/res/static/css/5af37c4a880a95586cd41c5b251d5562@1x.png) no-repeat;
-            background-position: -342px -338px;
-            -webkit-background-size: 408px 389px;
-            background-size: 408px 389px;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .picture {
             padding: 4px 0px;
@@ -199,13 +182,42 @@
             color: #4f4f4f;
         }
 
+
         /* chat box */
         .chat .box_ft .content {
             color: #CCC;
         }
-    `;
+    `);
 
-    GM_addStyle(css);
+    // Private Mode
+    // - if enabled: nicknames, group names, emojis are hidden or masked
+    // - if disabled: nicknames, group names, emojis are shown
+    let privateMode = true;
+    if (privateMode) {
+        GM_addStyle(`
+            .panel {
+                width: 200px;
+            }
+            .chat_item .info .nickname_text {
+                display: none;
+            }
+            .panel.give_me .nav_view .chat_list .chat_item .info .nickname::after {
+                content: "📄 README.md >>";
+            }
+            #chatArea .box_hd .title_wrap .title .title_name {
+                max-width: 80px;
+                overflow: hidden;
+            }
+            /* replace emoji with "wechat face" in message */
+            #chatArea .box_bd .message .content .bubble .bubble_cont .plain .emoji,
+            #chatArea .box_bd .message .content .bubble .bubble_cont .plain .qqemoji {
+                background: url(//res.wx.qq.com/t/wx_fed/webwx/res/static/css/5af37c4a880a95586cd41c5b251d5562@1x.png) no-repeat;
+                background-position: -342px -338px;
+                -webkit-background-size: 408px 389px;
+                background-size: 408px 389px;
+            }
+        `);
+    }
 
 
     let vscodeFavico = 'https://code.visualstudio.com/favicon.ico';
