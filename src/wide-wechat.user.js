@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.1.0
+// @version      0.1.1
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -51,8 +51,10 @@
         .header .avatar,
         .header .info .nickname .display_name,
         #search_bar,
-        .tab,
         .download_entry,
+        .read_item .ext,
+        .read_item_hd .avatar,
+        .contact_list .contact_item .avatar,
         .chat_item .avatar .img,
         .chat_item .nickname .emoji,
         .chat_item .ext,
@@ -66,10 +68,40 @@
             background-color: #252526;
         }
         .panel.give_me .nav_view {
-            top: 50px;
+            top: 80px;
+        }
+        .web_wechat_tab_chat,
+        .web_wechat_tab_public,
+        .web_wechat_tab_friends {
+            background: none;
+            color: #4f4f4f;
+        }
+        .web_wechat_tab_chat_hl,
+        .web_wechat_tab_public_hl,
+        .web_wechat_tab_friends_hl {
+            background: none;
+            color: #FFF;
+        }
+        .nav_view .read_item_hd {
+            padding: 2px 12px;
+        }
+        .nav_view .read_item {
+            padding: 4px 12px 4px;
+        }
+        .contact_list .contact_item {
+            padding: 4px 18px 4px;
         }
         .panel.give_me .nav_view .chat_list .chat_item {
             padding: 6px 18px 7px;
+        }
+        .box,
+        .box .box_hd .title_wrap {
+            color: #FFF;
+            background-color: #1E1E1E;
+            border-bottom: none;
+        }
+        .box .box_bd .web_wechat_no_contect {
+            display: none;
         }
 
         /* message box */
@@ -182,7 +214,6 @@
             color: #4f4f4f;
         }
 
-
         /* chat box */
         .chat .box_ft .content {
             color: #CCC;
@@ -195,14 +226,15 @@
     let privateMode = true;
     if (privateMode) {
         GM_addStyle(`
+            .chat_item .info .nickname_text,
+            #chatArea .box_hd .title_wrap .title .title_count {
+                display: none;
+            }
             .panel {
                 width: 200px;
             }
-            .chat_item .info .nickname_text {
-                display: none;
-            }
             .panel.give_me .nav_view .chat_list .chat_item .info .nickname::after {
-                content: "📄 README.md >>";
+                content: "📄 README.md";
             }
             #chatArea .box_hd .title_wrap .title .title_name {
                 max-width: 80px;
@@ -230,5 +262,9 @@
        is being used to trick the app that window is always "focused" */
     document.getElementsByTagName('title')[0].innerHTML = vscodeName;
 
+    // replace tab icons with text
+    document.getElementsByClassName('web_wechat_tab_chat')[0].innerHTML = 'C';
+    document.getElementsByClassName('web_wechat_tab_public')[0].innerHTML = 'P';
+    document.getElementsByClassName('web_wechat_tab_friends')[0].innerHTML = 'F';
 
 })();
