@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.1.1
+// @version      0.1.2
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -80,7 +80,17 @@
         .web_wechat_tab_public_hl,
         .web_wechat_tab_friends_hl {
             background: none;
-            color: #FFF;
+            color: #FFFFFF;
+        }
+        /* replace tab icons with text */
+        .web_wechat_tab_chat::after {
+            content: "C";
+        }
+        .web_wechat_tab_public::after {
+            content: "P";
+        }
+        .web_wechat_tab_friends::after {
+            content: "F";
         }
         .nav_view .read_item_hd {
             padding: 2px 12px;
@@ -96,12 +106,16 @@
         }
         .box,
         .box .box_hd .title_wrap {
-            color: #FFF;
+            color: #FFFFFF;
             background-color: #1E1E1E;
             border-bottom: none;
         }
         .box .box_bd .web_wechat_no_contect {
             display: none;
+        }
+        .box .box_bd .profile .button {
+            color: #000000;
+            background-color: #CCCCCC;
         }
 
         /* message box */
@@ -126,12 +140,12 @@
         #chatArea .box_hd .title_wrap {
             background-color: #1E1E1E;
             border-bottom: none;
-            color: #fff;
+            color: #FFFFFF;
             text-align: left;
             margin: 0 28px;
         }
         #chatArea .box_hd .title_wrap .title .title_name {
-            color: #fff;
+            color: #FFFFFF;
         }
         #chatArea .box_bd .message {
             margin-bottom: 0px;
@@ -141,19 +155,19 @@
         }
         /* custom emojis are hidden use text instead */
         #chatArea .box_bd .message .content .emoticon::after {
-            color: #CCC;
+            color: #CCCCCC;
             font-size: 14px;
             content: "[custom_emoji]";
         }
         #chatArea .box_bd .message .content .bubble {
-            color: #CCC;
+            color: #CCCCCC;
             background-color: #1E1E1E;
             max-width: none;
         }
-        #chatArea .box_bd .message .content .bubble .bubble_cont .plain {
-            padding: 4px 0px;
-        }
-        #chatArea .box_bd .message .content .bubble .bubble_cont .picture {
+        #chatArea .box_bd .message .content .bubble .bubble_cont .plain,
+        #chatArea .box_bd .message .content .bubble .bubble_cont .picture,
+        #chatArea .box_bd .message .content .bubble .bubble_cont .video,
+        #chatArea .box_bd .message .content .bubble .bubble_cont .voice {
             padding: 4px 0px;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .picture img {
@@ -177,9 +191,6 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .card .card_hd {
             padding: 0px;
         }
-        #chatArea .box_bd .message .content .bubble .bubble_cont .video {
-            padding: 4px 0px;
-        }
         /* smaller size of video message */
         #chatArea .box_bd .message .content .bubble .bubble_cont .video img {
             max-width: 30px;
@@ -195,16 +206,10 @@
             -webkit-background-size: 284px 254px;
             background-size: 283px 254px;
         }
-        #chatArea .box_bd .message .content .bubble .bubble_cont .voice {
-            padding: 4px 0px;
-        }
-        #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_voice_gray {
-            background: none;
-            border-left: solid #ccc 2px;
-        }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_voice_gray,
         #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_voice_green {
             background: none;
-            border-right: solid #ccc 2px;
+            border-left: solid #ccc 2px;
         }
         #chatArea .box_bd .message .message_system {
             margin: 0px auto;
@@ -216,7 +221,36 @@
 
         /* chat box */
         .chat .box_ft .content {
-            color: #CCC;
+            color: #CCCCCC;
+        }
+        .chat .box_ft .toolbar .web_wechat_face,
+        .chat .box_ft .toolbar .web_wechat_screencut,
+        .chat .box_ft .toolbar .web_wechat_pic {
+            width: 40px;
+            height: 30px;
+            background: none;
+            color: #4f4f4f;
+            text-decoration: none;
+            font-size: 14px;
+            text-align: center;
+            align-content: center;
+        }
+        .chat .box_ft .toolbar .web_wechat_pic .webuploader-pick {
+            opacity: 100;
+            width: 40px;
+            height: 30px;
+            text-align: center;
+            align-content: center;
+        }
+        .chat .box_ft .toolbar .web_wechat_face::after {
+            content: 'FACE';
+        }
+        .chat .box_ft .toolbar .web_wechat_screencut::after {
+            content: 'CUT';
+        }
+        .chat .box_ft .toolbar .web_wechat_pic .webuploader-pick::after {
+            content: 'FILE';
+            color: #4f4f4f;
         }
     `);
 
@@ -261,10 +295,5 @@
        Another user script, named "Always on focus" (https://github.com/daijro/always-on-focus),
        is being used to trick the app that window is always "focused" */
     document.getElementsByTagName('title')[0].innerHTML = vscodeName;
-
-    // replace tab icons with text
-    document.getElementsByClassName('web_wechat_tab_chat')[0].innerHTML = 'C';
-    document.getElementsByClassName('web_wechat_tab_public')[0].innerHTML = 'P';
-    document.getElementsByClassName('web_wechat_tab_friends')[0].innerHTML = 'F';
 
 })();
