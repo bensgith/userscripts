@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.1.5
+// @version      0.1.6
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -53,6 +53,7 @@
         .download_entry,
         .read_item .ext,
         .read_item_hd .avatar,
+        .recommendation .avatar,
         .contact_list .contact_item .avatar,
         .chat_item .avatar .img,
         .chat_item .nickname .emoji,
@@ -66,13 +67,29 @@
         .panel .header .info .nickname::before {
             display: inline-block;
             height: 30px;
-            text-align: center;
             align-content: center;
             color: #CCCCCC;
-            content: "📁 VS CODE";
+            content: "📂 VS CODE";
         }
-        .header .info .nickname .opt {
+        .panel .header .info .nickname .opt {
             float: right;
+        }
+        .panel .search_bar {
+            width: auto;
+            text-align: center;
+        }
+        .panel .search_bar .frm_search {
+            width: 75%;
+        }
+        .panel .search_bar .recommendation {
+            left: 18px;
+            font-size: 13px;
+        }
+        .panel .search_bar .recommendation .contact_item {
+            padding: 6px 9px;
+        }
+        .panel .search_bar .recommendation .info {
+            line-height: 22px;
         }
         .panel {
             background-color: #252526;
@@ -295,6 +312,11 @@
             }
             .panel {
                 width: 200px;
+            }
+            .panel .search_bar .recommendation {
+                left: 0px;
+                width: 200px;
+                font-size: 13px;
             }
             .panel.give_me .nav_view .chat_list .chat_item .info .nickname::after {
                 content: "📄 README.md";
