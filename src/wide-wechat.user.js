@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.1.4
+// @version      0.1.5
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -144,6 +144,7 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .card .card_avatar,
         #chatArea .box_bd .message .content .bubble .bubble_cont .card:after,
         #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_noread,
+        #chatArea .box_bd .message .content .bubble .bubble_cont .location .img,
         #chatArea .box_bd .message_system {
             display: none;
         }
@@ -163,6 +164,9 @@
         #chatArea .box_bd .message {
             margin-bottom: 0px;
         }
+        #chatArea .box_bd .message a {
+            text-decoration: none; /* remove underscore on text link */
+        }
         #chatArea .box_bd .message .content .emoticon {
             padding: 2px 11px;
         }
@@ -180,7 +184,8 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .plain,
         #chatArea .box_bd .message .content .bubble .bubble_cont .picture,
         #chatArea .box_bd .message .content .bubble .bubble_cont .video,
-        #chatArea .box_bd .message .content .bubble .bubble_cont .voice {
+        #chatArea .box_bd .message .content .bubble .bubble_cont .voice,
+        #chatArea .box_bd .message .content .bubble .bubble_cont .location {
             padding: 4px 0px;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .picture img {
@@ -194,7 +199,7 @@
             max-width: none;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .app .title {
-            color: #CCC;
+            color: #CCCCCC;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .card {
             padding: 4px;
@@ -223,6 +228,17 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_voice_green {
             background: none;
             border-left: solid #ccc 2px;
+        }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .location .desc::before {
+            content: "📍: ";
+        }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .location .desc {
+            position: relative;
+            width: auto;
+            overflow: auto;
+            background-color: #2D2D2D;
+            color: #CCCCCC;
+            padding: 4px;
         }
         #chatArea .box_bd .message .message_system {
             margin: 0px auto;
