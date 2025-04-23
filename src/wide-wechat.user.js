@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.1.3
+// @version      0.1.4
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -50,7 +50,6 @@
         /* left sidebar */
         .header .avatar,
         .header .info .nickname .display_name,
-        #search_bar,
         .download_entry,
         .read_item .ext,
         .read_item_hd .avatar,
@@ -70,7 +69,7 @@
             text-align: center;
             align-content: center;
             color: #CCCCCC;
-            content: "🗁 VS CODE";
+            content: "📁 VS CODE";
         }
         .header .info .nickname .opt {
             float: right;
@@ -79,19 +78,22 @@
             background-color: #252526;
         }
         .panel.give_me .nav_view {
-            top: 80px;
+            top: 124px;
         }
         .web_wechat_tab_chat,
         .web_wechat_tab_public,
         .web_wechat_tab_friends {
             background: none;
             color: #4f4f4f;
+            height: 34px;
+            align-content: center;
         }
         .web_wechat_tab_chat_hl,
         .web_wechat_tab_public_hl,
         .web_wechat_tab_friends_hl {
             background: none;
             color: #FFFFFF;
+            height: 34px;
         }
         /* replace tab icons with text */
         .web_wechat_tab_chat::after {
