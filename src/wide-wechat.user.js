@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.1.6
+// @version      0.1.7
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
 // @icon         https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico
 // @grant        GM_addStyle
+// @run-at       document-start
 // ==/UserScript==
 
 (function() {
@@ -79,7 +80,7 @@
             text-align: center;
         }
         .panel .search_bar .frm_search {
-            width: 75%;
+            width: 78%;
         }
         .panel .search_bar .recommendation {
             left: 18px;
@@ -123,16 +124,18 @@
             content: "₣";
         }
         .nav_view .read_item_hd {
-            padding: 2px 12px;
+            padding: 2px 18px;
         }
-        .nav_view .read_item {
-            padding: 4px 12px 4px;
+        .nav_view .chat_list .chat_item .info .nickname,
+        .nav_view .read_item .title,
+        .nav_view .contact_list .contact_item .info .nickname {
+            line-height: 22px;
+            font-weight: normal;
         }
-        .contact_list .contact_item {
-            padding: 4px 18px 4px;
-        }
-        .panel.give_me .nav_view .chat_list .chat_item {
-            padding: 6px 18px 7px;
+        .nav_view .chat_list .chat_item,
+        .nav_view .read_list .read_item,
+        .nav_view .contact_list .contact_item {
+            padding: 6px 18px 6px;
         }
         .box,
         .box .box_hd .title_wrap {
