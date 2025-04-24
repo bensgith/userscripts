@@ -1,13 +1,12 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.1.7
+// @version      0.1.8
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
 // @icon         https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico
 // @grant        GM_addStyle
-// @run-at       document-start
 // ==/UserScript==
 
 (function() {
@@ -47,6 +46,10 @@
             max-width: 100%;
             line-height: 1.35;
         }
+        #vscode_logo {
+            display: table-cell;
+            padding-right: 10px;
+        }
 
         /* left sidebar */
         .header .avatar,
@@ -62,15 +65,12 @@
         .chat_item .info .msg {
             display: none;
         }
-        .header {
-            padding: 10px 18px;
-        }
         .panel .header .info .nickname::before {
             display: inline-block;
             height: 30px;
             align-content: center;
             color: #CCCCCC;
-            content: "📂 VS CODE";
+            content: "VS CODE";
         }
         .panel .header .info .nickname .opt {
             float: right;
@@ -96,7 +96,7 @@
             background-color: #252526;
         }
         .panel.give_me .nav_view {
-            top: 124px;
+            top: 140px;
         }
         .web_wechat_tab_chat,
         .web_wechat_tab_public,
@@ -349,5 +349,15 @@
        Another user script, named "Always on focus" (https://github.com/daijro/always-on-focus),
        is being used to trick the app that window is always "focused" */
     document.getElementsByTagName('title')[0].innerHTML = vscodeName;
+
+    // add vs code logo
+    let divLogo = document.createElement('div');
+    divLogo.setAttribute('id', 'vscode_logo');
+    divLogo.innerHTML = `
+        <img src="https://code.visualstudio.com/favicon.ico"
+            style="width: 30px;height: 30px;vertical-align: middle;">
+    `;
+    let header = document.getElementsByClassName('panel give_me')[0].getElementsByClassName('header')[0];
+    header.insertBefore(divLogo, header.firstElementChild);
 
 })();
