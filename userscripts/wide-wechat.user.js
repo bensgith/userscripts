@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.1.8
+// @version      0.1.9
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -59,10 +59,11 @@
         .read_item_hd .avatar,
         .recommendation .avatar,
         .contact_list .contact_item .avatar,
-        .chat_item .avatar .img,
-        .chat_item .nickname .emoji,
-        .chat_item .ext,
-        .chat_item .info .msg {
+        .contact_list .contact_item .info .nickname .emoji,
+        .chat_list .chat_item .avatar .img,
+        .chat_list .chat_item .nickname .emoji,
+        .chat_list .chat_item .ext,
+        .chat_list .chat_item .info .msg {
             display: none;
         }
         .panel .header .info .nickname::before {
@@ -127,7 +128,7 @@
             padding: 2px 18px;
         }
         .nav_view .chat_list .chat_item .info .nickname,
-        .nav_view .read_item .title,
+        .nav_view .read_list .read_item .title,
         .nav_view .contact_list .contact_item .info .nickname {
             line-height: 22px;
             font-weight: normal;
@@ -137,25 +138,11 @@
         .nav_view .contact_list .contact_item {
             padding: 6px 18px 6px;
         }
-        .box,
-        .box .box_hd .title_wrap {
-            color: #FFFFFF;
-            background-color: #1E1E1E;
-            border-bottom: none;
-        }
-        .box .box_bd .web_wechat_no_contect {
-            display: none;
-        }
-        .box .box_bd .profile .button {
-            color: #000000;
-            background-color: #CCCCCC;
-        }
 
         /* message box */
         #chatArea .box_hd .title .title_name .emoji,
         #chatArea .box_bd .chat_bd .message_empty,
         #chatArea .box_bd .chat_bd .avatar,
-        #chatArea .box_ft .action,
         #chatArea .box_bd .message .content .bubble:after,
         #chatArea .box_bd .message .content .nickname .emoji,
         #chatArea .box_bd .message .content .emoticon .custom_emoji,
@@ -165,16 +152,23 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .card:after,
         #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_noread,
         #chatArea .box_bd .message .content .bubble .bubble_cont .location .img,
-        #chatArea .box_bd .message_system {
+        #chatArea .box_bd .message_system,
+        #chatArea .box_ft .action,
+        .box .box_bd .web_wechat_no_contect {
             display: none;
         }
-        #chatArea {
+        .box,
+        .box .box_bd {
             background-color: #1E1E1E;
+            color: #FFFFFF;
         }
-        #chatArea .box_hd .title_wrap {
+        .box .box_bd .profile .button {
+            color: #000000;
+            background-color: #CCCCCC;
+        }
+        .box .box_hd .title_wrap {
             background-color: #1E1E1E;
             border-bottom: none;
-            color: #FFFFFF;
             text-align: left;
             margin: 0 28px;
         }
@@ -309,7 +303,7 @@
     let privateMode = true;
     if (privateMode) {
         GM_addStyle(`
-            .chat_item .info .nickname_text,
+            .chat_list .chat_item .info .nickname_text,
             #chatArea .box_hd .title_wrap .title .title_count {
                 display: none;
             }
@@ -355,7 +349,7 @@
     divLogo.setAttribute('id', 'vscode_logo');
     divLogo.innerHTML = `
         <img src="https://code.visualstudio.com/favicon.ico"
-            style="width: 30px;height: 30px;vertical-align: middle;">
+            style="width:30px;height:30px;vertical-align:middle;">
     `;
     let header = document.getElementsByClassName('panel give_me')[0].getElementsByClassName('header')[0];
     header.insertBefore(divLogo, header.firstElementChild);
