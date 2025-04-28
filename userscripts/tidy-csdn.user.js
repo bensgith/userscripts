@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tidy CSDN
 // @namespace    https://github.com/bensgith/mytoolbox
-// @version      0.0.1
+// @version      0.0.2
 // @description  Remove annoying bars and boxes
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -22,7 +22,7 @@
         .blog_container_aside {
             display: none;
         }
-
+        .container,
         main {
             width: auto !important;
         }
