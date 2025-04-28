@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.1.9
+// @version      0.1.10
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -27,8 +27,12 @@
         .login .login_box {
             background: #1E1E1E;
         }
-        .login .login_box .avatar .action {
-            color: #FFFFFF;
+        .login .login_box .avatar .action,
+        .login .login_box .association .button.button_primary,
+        .login .login_box .association .button.button_default {
+            color: #000000;
+            border: 1px solid #CCCCCC;
+            background-color: #CCCCCC;
         }
 
         /* Common elements */
@@ -175,6 +179,10 @@
         #chatArea .box_hd .title_wrap .title .title_name {
             color: #FFFFFF;
         }
+        #chatArea .box_hd .members {
+            background-color: #1E1E1E;
+            border-bottom: 1px solid #4f4f4f;
+        }
         #chatArea .box_bd .message {
             margin-bottom: 0px;
         }
@@ -263,6 +271,9 @@
         }
 
         /* chat box */
+        .chat .box_ft {
+            border-top: 1px solid #4f4f4f;
+        }
         .chat .box_ft .content {
             color: #CCCCCC;
         }
