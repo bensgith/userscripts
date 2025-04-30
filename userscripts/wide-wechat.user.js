@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Wide-WeChat
-// @namespace    https://github.com/bensgith/vscode-style-wechat
-// @version      0.1.10
+// @namespace    https://github.com/bensgith/mytoolbox
+// @version      0.1.11
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
 // @icon         https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico
 // @grant        GM_addStyle
+// @run-at       document-idle
 // ==/UserScript==
 
 (function() {
@@ -187,7 +188,8 @@
             margin-bottom: 0px;
         }
         #chatArea .box_bd .message a {
-            text-decoration: none; /* remove underscore on text link */
+            color: #0098FF;
+            text-decoration: none; /* remove underscore */
         }
         #chatArea .box_bd .message .content .emoticon {
             padding: 2px 11px;
@@ -206,8 +208,12 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .plain,
         #chatArea .box_bd .message .content .bubble .bubble_cont .picture,
         #chatArea .box_bd .message .content .bubble .bubble_cont .video,
-        #chatArea .box_bd .message .content .bubble .bubble_cont .voice,
         #chatArea .box_bd .message .content .bubble .bubble_cont .location {
+            padding: 4px 0px;
+        }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .voice {
+            background-color: #CCCCCC;
+            border-radius: 5px;
             padding: 4px 0px;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .picture img {
@@ -249,7 +255,6 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_voice_gray,
         #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_voice_green {
             background: none;
-            border-left: solid #ccc 2px;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .location .desc::before {
             content: "📍: ";
