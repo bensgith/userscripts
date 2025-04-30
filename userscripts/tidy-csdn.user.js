@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         Tidy CSDN
 // @namespace    https://github.com/bensgith/mytoolbox
-// @version      0.0.3
+// @version      0.0.4
 // @description  Remove annoying bars and boxes
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
 // @icon         https://g.csdnimg.cn/static/logo/favicon32.ico
 // @grant        GM_addStyle
-// @run-at       document-end
+// @run-at       document-idle
 // ==/UserScript==
 
 (function() {
