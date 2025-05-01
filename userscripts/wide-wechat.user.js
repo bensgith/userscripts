@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide-WeChat
 // @namespace    https://github.com/bensgith/mytoolbox
-// @version      0.1.11
+// @version      0.1.12
 // @description  Wider window of Wechat web page
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*
@@ -148,7 +148,8 @@
         #chatArea .box_hd .title .title_name .emoji,
         #chatArea .box_bd .chat_bd .message_empty,
         #chatArea .box_bd .chat_bd .avatar,
-        #chatArea .box_bd .message .content .bubble:after,
+        #chatArea .box_bd .message .content .bubble:before, /* left triangle */
+        #chatArea .box_bd .message .content .bubble:after, /* right triangle */
         #chatArea .box_bd .message .content .nickname .emoji,
         #chatArea .box_bd .message .content .emoticon .custom_emoji,
         #chatArea .box_bd .message .content .bubble .bubble_cont .card .emoji,
