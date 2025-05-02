@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/mytoolbox
-// @version      0.1.0
+// @version      0.1.1
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
 // @match        https://www.cnblogs.com/*
+// @match        https://www.reddit.com/*
 // @icon         https://g.csdnimg.cn/static/logo/favicon32.ico
 // @grant        GM_addStyle
 // @run-at       document-idle
@@ -53,6 +54,14 @@
             #mainContent {
                 flex: 0 1 100%;
                 max-width: 100%;
+            }
+        `);
+    }
+
+    if (window.location.href.startsWith("https://www.reddit.com/")) {
+        GM_addStyle(`
+            .promotedlink {
+                display: none;
             }
         `);
     }
