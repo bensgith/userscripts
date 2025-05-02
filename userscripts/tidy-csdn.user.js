@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Tidy CSDN
 // @namespace    https://github.com/bensgith/mytoolbox
-// @version      0.0.4
+// @version      0.0.5
 // @description  Remove annoying bars and boxes
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -19,11 +19,20 @@
         .more-toolbar,
         .recommend-box,
         .csdn-side-toolbar,
-        .blog_container_aside {
+        .blog_container_aside,
+        #csdn-toolbar .toolbar-menus,
+        #csdn-toolbar .toolbar-container .toolbar-container-right {
             display: none;
         }
-        .container,
-        main {
+        body,
+        #csdn-toolbar .toolbar-container {
+            min-width: auto;
+        }
+        #csdn-toolbar .toolbar-inside.exp3 .toolbar-container-middle .toolbar-search {
+            max-width: none;
+        }
+        main,
+        .container {
             width: auto !important;
         }
     `);
