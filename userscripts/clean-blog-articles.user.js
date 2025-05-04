@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/mytoolbox
-// @version      0.1.2
+// @version      0.1.3
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
 // @match        https://www.cnblogs.com/*
 // @match        https://www.reddit.com/*
+// @match        https://juejin.cn/*
 // @icon         https://g.csdnimg.cn/static/logo/favicon32.ico
 // @grant        GM_addStyle
 // @run-at       document-idle
@@ -64,6 +65,30 @@
         GM_addStyle(`
             .promotedlink {
                 display: none;
+            }
+        `);
+    }
+
+    if (window.location.href.startsWith("https://juejin.cn/")) {
+        GM_addStyle(`
+            #sidebar-container,
+            .article-suspended-panel,
+            .comment-box-common,
+            .recommended-area,
+            .bottom-login-guide {
+                display: none;
+            }
+            .main-area {
+                width: auto !important;
+                margin: 20px;
+            }
+
+            .container.main-container {
+                width: auto !important;
+                max-width: 100% !important;
+            }
+            .column-view {
+                padding-bottom: 0rem !important;
             }
         `);
     }
