@@ -1,9 +1,10 @@
 // ==UserScript==
-// @name         Wide-WeChat
+// @name         Wide Black WeChat
 // @namespace    https://github.com/bensgith/mytoolbox
-// @version      0.1.12
-// @description  Wider window of Wechat web page
+// @version      0.1.13
+// @description  Enable fullscreen window of Web Wechat, black mode style
 // @author       Benjamin L
+// @match        https://wx.qq.com/*
 // @match        https://wx2.qq.com/*
 // @icon         https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico
 // @grant        GM_addStyle
@@ -20,6 +21,7 @@
         .login .login_box .qrcode .sub_desc,
         .login .login_box .avatar .img,
         .login .login_box .association .img,
+        .login .login_box .association .waiting_confirm,
         .login .login_box .broken_network,
         .login .lang,
         .login .copyright {
