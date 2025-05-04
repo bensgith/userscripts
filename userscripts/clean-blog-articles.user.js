@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/mytoolbox
-// @version      0.1.1
+// @version      0.1.2
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -24,7 +24,8 @@
             .csdn-side-toolbar,
             .blog_container_aside,
             #csdn-toolbar .toolbar-menus,
-            #csdn-toolbar .toolbar-container .toolbar-container-right {
+            #csdn-toolbar .toolbar-container .toolbar-container-right,
+            #rightAside {
                 display: none;
             }
             body,
@@ -37,6 +38,7 @@
             main,
             .container {
                 width: 100% !important;
+                margin-right: unset !important;
             }
         `);
     }
