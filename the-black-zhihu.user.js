@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         The Black ZhiHu
-// @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.0.1
+// @namespace    https://github.com/bensgith/userscripts
+// @version      0.0.2
 // @description  Dark theme style for ZhiHu
 // @author       Benjamin L
 // @match        https://www.zhihu.com/*

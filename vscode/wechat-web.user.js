@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Web with VS Code UI
-// @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.10.5
+// @namespace    https://github.com/bensgith/userscripts
+// @version      0.10.6
 // @description  VS Code style for WeChat Web application
 // @author       Benjamin L
 // @match        https://wx2.qq.com/*

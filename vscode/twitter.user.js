@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         X with VS Code Style
-// @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.0.2
+// @namespace    https://github.com/bensgith/userscripts
+// @version      0.0.3
 // @description  try to take over the world!
 // @author       Benjamin L
 // @match        https://x.com/home*

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
-// @namespace    https://github.com/bensgith/mytoolbox
-// @version      0.1.5
+// @namespace    https://github.com/bensgith/userscripts
+// @version      0.1.6
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*

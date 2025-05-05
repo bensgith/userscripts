@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeChat Article with VS Code Style
-// @namespace    https://github.com/bensgith/tampermonkey-scripts
-// @version      0.2.0
+// @namespace    https://github.com/bensgith/userscripts
+// @version      0.2.1
 // @description  Change style to VS Code-alike
 // @author       Benjamin L
 // @match        https://mp.weixin.qq.com/*

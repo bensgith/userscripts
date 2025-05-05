@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide Black WeChat
-// @namespace    https://github.com/bensgith/mytoolbox
-// @version      0.1.13
+// @namespace    https://github.com/bensgith/userscripts
+// @version      0.1.14
 // @description  Enable fullscreen window of Web Wechat, black mode style
 // @author       Benjamin L
 // @match        https://wx.qq.com/*

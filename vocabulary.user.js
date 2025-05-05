@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Vocabulary Ehancement
-// @namespace    https://github.com/bensgith/tampermonkey-scripts/
-// @version      0.0.3
+// @namespace    https://github.com/bensgith/userscripts
+// @version      0.0.4
 // @description  Remove / hide unecessary infomation
 // @author       Benjamin L
 // @match        https://www.vocabulary.com/dictionary/*

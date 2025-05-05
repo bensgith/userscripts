@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         WeRead for Portrait Screen
-// @namespace    https://github.com/bensgith/tampermonkey-scripts/
-// @version      0.0.2
+// @namespace    https://github.com/bensgith/userscripts
+// @version      0.0.3
 // @description  WeRead Enhancement for Portrait Screen
 // @author       Benjamin L
 // @match        https://weread.qq.com/*
