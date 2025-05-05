@@ -1,3 +1,3 @@
-# My Tool Box
+# My User Scripts
 
-Just collections of codes for myself to make life easier.
+Just a collection of user scripts for myself.
