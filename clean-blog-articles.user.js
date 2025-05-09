@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.1.6
+// @version      0.1.7
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -90,6 +90,7 @@
     // cnblogs.com
     if (location.host === "www.cnblogs.com") {
         GM_addStyle(`
+            #leftcontent,
             #sideBar,
             #comment_form {
                 display: none;
@@ -102,6 +103,9 @@
                 flex: 0 1 100%;
                 max-width: 100%;
                 margin-right: 0px;
+            }
+            #centercontent {
+                padding: 0px;
             }
         `);
     }
