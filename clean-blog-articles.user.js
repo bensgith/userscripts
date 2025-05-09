@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.1.7
+// @version      0.2.0
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
 // @match        https://www.cnblogs.com/*
 // @match        https://www.reddit.com/*
 // @match        https://juejin.cn/*
+// @match        https://www.zhihu.com/*
 // @icon         https://g.csdnimg.cn/static/logo/favicon32.ico
 // @grant        GM_addStyle
 // @run-at       document-idle
@@ -140,6 +141,124 @@
             }
             .column-view {
                 padding-bottom: 0rem !important;
+            }
+        `);
+    }
+
+    // zhihu.com
+    if (location.host === "www.zhihu.com") {
+        GM_addStyle(`
+            /* HIDDEN ELEMENTS */
+            .css-1qyytj7, /* right side column */
+            .Pc-Business-Card-PcTopFeedBanner, /* banner ad. */
+            .AppHeader-userInfo,
+            .Pc-word-new, /* timeline ad. */
+            .Pc-feedAd-new /* timeline ad. */ {
+                display: none;
+            }
+    
+            /* MAIN PAGE */
+            a {
+                color: #D4D4D4 !important;
+            }
+            body {
+                background-color: #1E1E1E;
+            }
+            .Topstory-container {
+                padding: 0px;
+            }
+            .Topstory-container .Topstory-mainColumn {
+                width: 100%;
+            }
+            .AppHeader,
+            .Card,
+            .ContentItem-actions {
+                background-color: #1E1E1E;
+            }
+            .Card {
+                color: #D4D4D4;
+            }
+            .Topstory-tabs {
+                border-bottom: 1px solid #ccc;
+            }
+            .Topstory-mainColumnCard .Card:not(.Topstory-tabCard) {
+                border-bottom: 1px solid #333;
+            }
+    
+            /* QUESTION PAGE */
+            .Question-main {
+                padding: 0px;
+            }
+            .Question-main .Question-mainColumn {
+                padding: 0px;
+                width: auto;
+            }
+            .QuestionHeader,
+            .QuestionHeader .QuestionHeader-title,
+            .NumberBoard-itemValue,
+            .CommentContent,
+            .css-r4op92 /* comment section title */ {
+                color: #D4D4D4;
+            }
+            .QuestionHeader,
+            .QuestionHeader .QuestionHeader-footer {
+                background-color: #1E1E1E;
+            }
+            .QuestionMainAction {
+                border-radius: 10px;
+                background-color: #292929;
+            }
+            .AuthorInfo {
+                max-width: unset;
+            }
+            .List-header {
+                border-bottom: 1px solid #ccc;
+            }
+            .List-item+.List-item:after {
+                border-bottom: 1px solid #333;
+            }
+            .css-1yl6ec1 code {
+                background-color: #333;
+            }
+     
+            /* PROFILE PAGE */
+            .Profile-main {
+                width: 100%;
+                padding: 0px;
+            }
+            .Profile-mainColumn {
+                width: 100%;
+            }
+            .ProfileHeader-wrapper {
+                background-color: #1e1e1e;
+            }
+            .ProfileHeader-detail {
+                color: #fff;
+            }
+            /* search */
+            .css-3f82om {
+                background-image: none;
+            }
+            .css-zduc1z {
+                background-color: #1e1e1e;
+            }
+     
+            /* ALL PAGES */
+            /* comment area */
+            .css-14zbeoe,
+            .css-u76jt1 {
+                border: 1px solid #333;
+            }
+            .FeeConsultCard,
+            .css-1yl6ec1 .LinkCard.new,
+            .css-1yl6ec1 .LinkCard.new:hover,
+            .GoodsRecommendCard {
+                background-color: #333;
+            }
+            .FeeConsultCard>div:first-of-type>div:first-child,
+            .css-1yl6ec1 .LinkCard.new .LinkCard-title,
+            .GoodsRecommendCard .CPSCommonCard-title {
+                color: #fff;
             }
         `);
     }
