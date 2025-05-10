@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.2.1
+// @version      0.2.2
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -188,7 +188,10 @@
             }
             .Question-main .Question-mainColumn {
                 padding: 0px;
-                width: auto;
+                width: 100%;
+            }
+            .Question-main .ListShortcut {
+                width: 100%;
             }
             .QuestionHeader,
             .QuestionHeader .QuestionHeader-title,
@@ -256,6 +259,12 @@
             .css-1yl6ec1 .LinkCard.new .LinkCard-title,
             .GoodsRecommendCard .CPSCommonCard-title {
                 color: #fff;
+            }
+            /* reply box */
+            .css-1e7fksk,
+            .css-70t8h2,
+            .css-kt4t4n {
+                background-color: #1e1e1e;
             }
         `);
     }
