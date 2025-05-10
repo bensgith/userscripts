@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.2.0
+// @version      0.2.1
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -161,19 +161,16 @@
             a {
                 color: #D4D4D4 !important;
             }
-            body {
-                background-color: #1E1E1E;
-            }
-            .Topstory-container {
-                padding: 0px;
-            }
-            .Topstory-container .Topstory-mainColumn {
-                width: 100%;
-            }
+            body,
             .AppHeader,
             .Card,
             .ContentItem-actions {
                 background-color: #1E1E1E;
+            }
+            .Topstory-container,
+            .Topstory-container .Topstory-mainColumn {
+                padding: 0px;
+                width: 100%;
             }
             .Card {
                 color: #D4D4D4;
