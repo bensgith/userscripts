@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.2.2
+// @version      0.2.3
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -9,6 +9,7 @@
 // @match        https://www.reddit.com/*
 // @match        https://juejin.cn/*
 // @match        https://www.zhihu.com/*
+// @match        https://www.baeldung.com/*
 // @icon         https://g.csdnimg.cn/static/logo/favicon32.ico
 // @grant        GM_addStyle
 // @run-at       document-idle
@@ -265,6 +266,24 @@
             .css-70t8h2,
             .css-kt4t4n {
                 background-color: #1e1e1e;
+            }
+        `);
+    }
+
+    // baeldung.com
+    if (location.host === "www.baeldung.com") {
+        GM_addStyle(`
+            .aelzmn, /* ad blocker box */
+            .sidebar,
+            .topAdContainer,
+            .before-post-widgets,
+            .after-post-widgets,
+            #footer,
+            #fs-sticky-footer {
+                display: none !important;
+            }
+            #main {
+                width: 100% !important;
             }
         `);
     }
