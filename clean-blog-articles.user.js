@@ -115,8 +115,12 @@
     // reddit.com
     if (location.host === "www.reddit.com") {
         GM_addStyle(`
-            .promotedlink {
+            .promotedlink,
+            #right-sidebar-container {
                 display: none;
+            }
+            .main-container {
+                grid-template-columns: 1fr !important;
             }
         `);
     }
