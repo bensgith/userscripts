@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.2.4
+// @version      0.2.5
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -188,14 +188,9 @@
             }
     
             /* QUESTION PAGE */
-            .Question-main {
-                padding: 0px;
-            }
+            .Question-main,
             .Question-main .Question-mainColumn {
                 padding: 0px;
-                width: 100%;
-            }
-            .Question-main .ListShortcut {
                 width: 100%;
             }
             .QuestionHeader,
