@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.2.6
+// @version      0.2.7
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -153,6 +153,11 @@
     // zhihu.com
     if (location.host === "www.zhihu.com") {
         GM_addStyle(`
+            html {
+                --MapLink: var(--flag-light, #6eaaff) var(--flag-dark, #5271b0); /* 展开全文、展开阅读全文 */
+                --MapInfo: var(--flag-light, #6eaaff) var(--flag-dark, #558eff); /* 赞同 */
+            }
+
             /* HIDDEN ELEMENTS */
             .css-1qyytj7, /* right side column */
             .Pc-Business-Card-PcTopFeedBanner, /* banner ad. */
