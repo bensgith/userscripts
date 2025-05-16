@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.2.5
+// @version      0.2.6
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -172,11 +172,6 @@
             .ContentItem-actions {
                 background-color: #1E1E1E;
             }
-            .Topstory-container,
-            .Topstory-container .Topstory-mainColumn {
-                padding: 0px;
-                width: 100%;
-            }
             .Card {
                 color: #D4D4D4;
             }
@@ -188,11 +183,6 @@
             }
     
             /* QUESTION PAGE */
-            .Question-main,
-            .Question-main .Question-mainColumn {
-                padding: 0px;
-                width: 100%;
-            }
             .QuestionHeader,
             .QuestionHeader .QuestionHeader-title,
             .NumberBoard-itemValue,
@@ -222,13 +212,6 @@
             }
      
             /* PROFILE PAGE */
-            .Profile-main {
-                width: 100%;
-                padding: 0px;
-            }
-            .Profile-mainColumn {
-                width: 100%;
-            }
             .ProfileHeader-wrapper {
                 background-color: #1e1e1e;
             }
@@ -267,6 +250,32 @@
                 background-color: #1e1e1e;
             }
         `);
+
+        var cssForWideScreen =`
+            .Topstory-container,
+            .Topstory-container .Topstory-mainColumn,
+            .Question-main,
+            .Question-main .Question-mainColumn,
+            .Profile-main,
+            .Profile-mainColumn {
+                padding: 0px;
+                width: 1200px;
+            }
+        `
+
+        var cssForPortraitScreen =`
+            .Topstory-container,
+            .Topstory-container .Topstory-mainColumn,
+            .Question-main,
+            .Question-main .Question-mainColumn,
+            .Profile-main,
+            .Profile-mainColumn {
+                padding: 0px;
+                width: 100%;
+            }
+        `
+
+        adjustWidthByWindowSize(cssForWideScreen, cssForPortraitScreen);
     }
 
     // baeldung.com
@@ -285,5 +294,13 @@
                 width: 100% !important;
             }
         `);
+    }
+
+    function adjustWidthByWindowSize(cssForWideScreen, cssForPortraitScreen) {
+        if (window.innerWidth >= 1500) {
+            GM_addStyle(cssForWideScreen);
+        } else {
+            GM_addStyle(cssForPortraitScreen);
+        }
     }
 })();
