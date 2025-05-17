@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.2.8
+// @version      0.2.9
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -9,6 +9,7 @@
 // @match        https://www.reddit.com/*
 // @match        https://juejin.cn/*
 // @match        https://www.zhihu.com/*
+// @match        https://zhuanlan.zhihu.com/*
 // @match        https://www.baeldung.com/*
 // @icon         https://g.csdnimg.cn/static/logo/favicon32.ico
 // @grant        GM_addStyle
@@ -151,12 +152,11 @@
     }
 
     // zhihu.com
-    if (location.host === "www.zhihu.com") {
+    if (location.host === "www.zhihu.com" || location.host === "zhuanlan.zhihu.com") {
         GM_addStyle(`
             html {
                 --MapLink: var(--flag-light, #6eaaff) var(--flag-dark, #5271b0); /* 展开全文、展开阅读全文 */
                 --MapInfo: var(--flag-light, #3a88f5) var(--flag-dark, #558eff); /* 赞同 */
-                --MapUIFrame99A: var(--flag-light,#1e1e1e) var(--flag-dark,#191b1f);
             }
 
             /* HIDDEN ELEMENTS */
@@ -164,7 +164,9 @@
             .Pc-Business-Card-PcTopFeedBanner, /* banner ad. */
             .AppHeader-userInfo,
             .Pc-word-new, /* timeline ad. */
-            .Pc-feedAd-new /* timeline ad. */ {
+            .Pc-feedAd-new, /* timeline ad. */
+            .Topstory-mainColumn .TopstoryItem--advertCard,
+            .TopstoryMain .TopstoryItem--advertCard {
                 display: none;
             }
     
@@ -270,6 +272,16 @@
             .css-70t8h2,
             .css-kt4t4n {
                 background-color: #1e1e1e;
+            }
+
+            /* ZHUANLAN */
+            .ColumnPageHeader {
+                background-color: #292929;
+            }
+            .Post-Row-Content .Post-Row-Content-left {
+                width: 100%;
+                background-color: #1e1e1e;
+                color: #fff;
             }
         `);
 
