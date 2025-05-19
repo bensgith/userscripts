@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.2.9
+// @version      0.2.10
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -163,6 +163,7 @@
             .css-1qyytj7, /* right side column */
             .Pc-Business-Card-PcTopFeedBanner, /* banner ad. */
             .AppHeader-userInfo,
+            .Pc-feedAd-container,
             .Pc-word-new, /* timeline ad. */
             .Pc-feedAd-new, /* timeline ad. */
             .Topstory-mainColumn .TopstoryItem--advertCard,
