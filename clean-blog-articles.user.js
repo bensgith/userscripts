@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.2.10
+// @version      0.2.11
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -95,22 +95,43 @@
         GM_addStyle(`
             #leftcontent,
             #sideBar,
-            #comment_form {
+            #comment_form,
+            #div_digg {
                 display: none;
             }
+            #home {
+                width: fit-content;
+            }
             #main {
-                max-width: 100%;
-                margin: 20px;
+                margin: auto 10px;
             }
             #mainContent {
                 flex: 0 1 100%;
                 max-width: 100%;
-                margin-right: 0px;
+                margin: auto 0px;
+            }
+            #mainContent .forFlow {
+                margin: 0px;
             }
             #centercontent {
                 padding: 0px;
             }
         `);
+
+        var cssForWideScreen =`
+            #main {
+                width: 1200px;
+            }`;
+
+        var cssForPortraitScreen =`
+            #home {
+                min-width: unset;
+            }
+            #main {
+                min-width: fit-content;
+            }`;
+
+        adjustWidthByWindowSize(cssForWideScreen, cssForPortraitScreen);
     }
 
     // reddit.com
