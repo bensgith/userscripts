@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.2.12
+// @version      0.3.0
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -11,6 +11,7 @@
 // @match        https://www.zhihu.com/*
 // @match        https://zhuanlan.zhihu.com/*
 // @match        https://www.baeldung.com/*
+// @match        https://*.medium.com/*
 // @icon         https://g.csdnimg.cn/static/logo/favicon32.ico
 // @grant        GM_addStyle
 // @run-at       document-idle
@@ -356,6 +357,74 @@
                 width: 100% !important;
             }
         `);
+    }
+
+    // medium.com
+    if (location.host.endsWith("medium.com")) {
+        GM_addStyle(`
+            .uk, /* member promotion bar */
+            .st /* member promotion bar */
+            {
+                display: none;
+            }
+
+            body svg path, /* small icons */
+            .kk svg path, /* small icons */
+            .aw path, /* logo */
+            .bc path /* search box arrow */
+            {
+                fill: #fff;
+            }
+
+            .c, /* artical */
+            .bw, /* more recommendation section */
+            .dx /* tags */
+            {
+                background-color: #212121;
+            }
+            .bk {
+                color: #f3f3f3; /* artical font */
+            }
+
+            .bb, /* code block */
+            .cx /* inline code */
+            {
+                background-color: #303030;
+            }
+            .ph {
+                border: 1px solid #676767; /* code block */
+            }
+            .hljs-deletion {
+                background-color: unset; /* code block font */
+            }
+            div[role='separator'] .nh {
+                background-color: #fff; /* separator */
+            }
+            textarea,
+            #searchResults, /* search box */
+            .on::after /* search box triangle */
+            {
+                background-color: #303030;
+                color: #fff;
+            }
+            /* cancel,respond button */
+            .wh:hover {
+                color: black;
+                background-color: #fff;
+            }
+        `);
+
+        let cssForWideScreen =`
+            .ez {
+                max-width: 1200px;
+            }`;
+
+        let cssForPortraitScreen =`
+            .ez {
+                max-width: 100%;
+            }`;
+
+        adjustWidthByWindowSize(cssForWideScreen, cssForPortraitScreen);
     }
 
     function adjustWidthByWindowSize(cssForWideScreen, cssForPortraitScreen) {
