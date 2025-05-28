@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.3.1
+// @version      0.3.2
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -12,6 +12,7 @@
 // @match        https://zhuanlan.zhihu.com/*
 // @match        https://www.baeldung.com/*
 // @match        https://*.medium.com/*
+// @match        https://stackoverflow.com/*
 // @icon         https://g.csdnimg.cn/static/logo/favicon32.ico
 // @grant        GM_addStyle
 // @run-at       document-idle
@@ -119,12 +120,12 @@
             }
         `);
 
-        var cssForWideScreen =`
+        let cssForWideScreen =`
             #main {
                 width: 1200px;
             }`;
 
-        var cssForPortraitScreen =`
+        let cssForPortraitScreen =`
             #home {
                 min-width: unset;
             }
@@ -314,7 +315,7 @@
             }
         `);
 
-        var cssForWideScreen =`
+        let cssForWideScreen =`
             .Topstory-container,
             .Topstory-container .Topstory-mainColumn,
             .Question-main,
@@ -326,7 +327,7 @@
             }
         `
 
-        var cssForPortraitScreen =`
+        let cssForPortraitScreen =`
             .Topstory-container,
             .Topstory-container .Topstory-mainColumn,
             .Question-main,
@@ -427,6 +428,22 @@
         adjustWidthByWindowSize(cssForWideScreen, cssForPortraitScreen);
     }
 
+    // stackoverflow.com
+    if (location.host === "stackoverflow.com") {
+        GM_addStyle(`
+            #left-sidebar,
+            #footer {
+                display: none;
+            }
+            #content {
+                width: 100%;
+            }
+        `);
+    }
+
+    ///////////////////////////////////////////////////////////
+    // Helper functions
+    ////////////////////////////////////////////////////////////
     function adjustWidthByWindowSize(cssForWideScreen, cssForPortraitScreen) {
         if (window.innerWidth >= 1500) {
             GM_addStyle(cssForWideScreen);
