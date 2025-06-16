@@ -308,10 +308,14 @@
                 color: #fff;
             }
             /* code block */
-            .css-1yl6ec1 pre,
-            .css-1yl6ec1 pre code {
+            .css-l1ylws pre,
+            .css-l1ylws pre code {
                 background: #232326;
                 color: #00baba;
+            }
+            /* sticky title */
+            .css-pztcyw {
+                color: #fff;
             }
         `);
 
