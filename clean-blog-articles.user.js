@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.3.2
+// @version      0.3.3
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -308,6 +308,7 @@
                 color: #fff;
             }
             /* code block */
+            .css-l1ylws code,
             .css-l1ylws pre,
             .css-l1ylws pre code {
                 background: #232326;
