@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clean Blog Articles
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.3.3
+// @version      0.3.4
 // @description  Remove annoying side bars, comment blocks, ads, etc.
 // @author       Benjamin L.
 // @match        https://blog.csdn.net/*
@@ -450,7 +450,7 @@
     // Helper functions
     ////////////////////////////////////////////////////////////
     function adjustWidthByWindowSize(cssForWideScreen, cssForPortraitScreen) {
-        if (window.innerWidth >= 1500) {
+        if (window.innerWidth >= 1400) { // with same widnow size, innerWidth has different values in Edage and Chrome
             GM_addStyle(cssForWideScreen);
         } else {
             GM_addStyle(cssForPortraitScreen);
