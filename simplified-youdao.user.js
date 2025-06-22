@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Simplified Youdao
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.0.1
+// @version      0.0.2
 // @description  Remove ads, adjust for displayed on side bar
 // @author       Benjamin L.
 // @match        https://www.youdao.com/*
@@ -55,9 +55,34 @@
         .search_page .small-logo {
             margin: 8px 5px 0 0 !important;
         }
+        .search_page .lang_select-con {
+            width: 80% !important;
+        }
         .search_page .input_con-fixed {
             box-shadow: unset !important;
             padding-bottom: 10px !important;
+        }
+        .search_page #search_input {
+            font-size: 16px !important;
+            padding-left: 8px !important;
+        }
+        .search_page .lang_select,
+        .search_page .multiselect__content-wrapper {
+            width: 65px !important;
+        }
+        .search_page .multiselect__select {
+            right: -2px !important;
+        }
+        .search_page .lang_select .multiselect__tags {
+            padding: 8px 8px 0 8px !important;
+        }
+        .search_page .lang_select .multiselect__single {
+            font-size: 16px !important;
+        }
+        .search_page .multiselect__option {
+            font-size: 16px !important;
+            padding: 6px !important;
+            min-height: unset !important;
         }
     `);
 })();
