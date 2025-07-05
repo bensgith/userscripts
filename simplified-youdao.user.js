@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Simplified Youdao
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.0.2
+// @version      0.0.3
 // @description  Remove ads, adjust for displayed on side bar
 // @author       Benjamin L.
 // @match        https://www.youdao.com/*
@@ -17,7 +17,8 @@
         .header_container,
         .rollNumber-with-banner,
         .product-container,
-        .footer_container {
+        .footer_container,
+        .center_container .contianer {
             display: none;
         }
         .content-cell {
