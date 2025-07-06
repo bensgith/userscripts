@@ -5,6 +5,7 @@
 // @description  More readable for portrait / wide screen
 // @author       Benjamin L.
 // @match        https://www.google.com.hk/*
+// @match        https://www.google.com/*
 // @match        https://cn.bing.com/*
 // @match        https://www.baidu.com/*
 // @icon         https://www.gstatic.com/images/branding/searchlogo/ico/favicon.ico
