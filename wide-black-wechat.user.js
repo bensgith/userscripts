@@ -319,7 +319,7 @@
     // Private Mode
     // - if enabled: nicknames, group names, emojis are hidden or masked
     // - if disabled: nicknames, group names, emojis are shown
-    let privateMode = true;
+    let privateMode = false;
     if (privateMode) {
         GM_addStyle(`
             .chat_list .chat_item .info .nickname_text,
