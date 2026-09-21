@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide Black WeChat
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.1.15
+// @version      0.1.16
 // @description  Enable fullscreen window of Web Wechat, black mode style
 // @author       Benjamin L
 // @match        https://wx.qq.com/*
@@ -110,9 +110,12 @@
         .web_wechat_tab_public,
         .web_wechat_tab_friends {
             background: none;
-            color: #4f4f4f;
+            color: #4F4F4F;
             height: 34px;
             align-content: center;
+            font-size: 0; /* clears the original icon when it is drawn as a glyph */
+            text-align: center;
+            white-space: nowrap;
         }
         .web_wechat_tab_chat_hl,
         .web_wechat_tab_public_hl,
@@ -120,16 +123,27 @@
             background: none;
             color: #FFFFFF;
             height: 34px;
+            font-size: 0;
+            text-align: center;
+            white-space: nowrap;
         }
-        /* replace tab icons with text */
-        .web_wechat_tab_chat::after {
-            content: "₡";
+        /* replace tab icons with the VS Code activity bar labels.
+           The *_hl classes get their own rule because the active tab may swap
+           the class instead of carrying both, which would leave it unlabelled. */
+        .web_wechat_tab_chat::after,
+        .web_wechat_tab_chat_hl::after {
+            content: "EXPLORER";
+            font-size: 11px;
         }
-        .web_wechat_tab_public::after {
-            content: "₱";
+        .web_wechat_tab_public::after,
+        .web_wechat_tab_public_hl::after {
+            content: "SEARCH";
+            font-size: 11px;
         }
-        .web_wechat_tab_friends::after {
-            content: "₣";
+        .web_wechat_tab_friends::after,
+        .web_wechat_tab_friends_hl::after {
+            content: "SCM";
+            font-size: 11px;
         }
         .nav_view .read_item_hd {
             padding: 2px 18px;
@@ -185,10 +199,12 @@
         }
         #chatArea .box_hd .members {
             background-color: #1E1E1E;
-            border-bottom: 1px solid #4f4f4f;
+            border-bottom: 1px solid #4F4F4F;
         }
+        /* keep a gap between messages: the triangles are hidden and the bubble
+           is full width, so at margin 0 a run of long messages reads as one block */
         #chatArea .box_bd .message {
-            margin-bottom: 0px;
+            margin-bottom: 6px;
         }
         #chatArea .box_bd .message a {
             color: #0098FF;
@@ -203,9 +219,11 @@
             font-size: 14px;
             content: "[custom_emoji]";
         }
+        /* slightly lighter than the page background, so a message still reads as
+           a block now that the triangles and the bubble border are gone */
         #chatArea .box_bd .message .content .bubble {
             color: #CCCCCC;
-            background-color: #1E1E1E;
+            background-color: #252526;
             max-width: none;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .plain,
@@ -214,10 +232,18 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .location {
             padding: 4px 0px;
         }
+        /* the waveform sprite is cleared further down, which used to leave a plain
+           grey bar with no icon and no hint of what the message is */
         #chatArea .box_bd .message .content .bubble .bubble_cont .voice {
-            background-color: #CCCCCC;
+            background-color: #2D2D2D;
+            color: #CCCCCC;
             border-radius: 5px;
-            padding: 4px 0px;
+            padding: 4px 8px;
+        }
+        #chatArea .box_bd .message .content .bubble .bubble_cont .voice::after {
+            content: "[voice]";
+            font-size: 13px;
+            padding-left: 6px;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .picture img {
             max-width: 25px;
@@ -252,7 +278,6 @@
             width: 30px;
             height: 30px;
             background-position: -246px -120px;
-            -webkit-background-size: 284px 254px;
             background-size: 283px 254px;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .voice .web_wechat_voice_gray,
@@ -275,12 +300,12 @@
         }
         #chatArea .box_bd .message .message_system .content {
             padding: 4px 0px;
-            color: #4f4f4f;
+            color: #4F4F4F;
         }
 
         /* chat box */
         .chat .box_ft {
-            border-top: 1px solid #4f4f4f;
+            border-top: 1px solid #4F4F4F;
         }
         .chat .box_ft .content {
             color: #CCCCCC;
@@ -291,14 +316,14 @@
             width: 40px;
             height: 30px;
             background: none;
-            color: #4f4f4f;
+            color: #4F4F4F;
             text-decoration: none;
             font-size: 14px;
             text-align: center;
             align-content: center;
         }
         .chat .box_ft .toolbar .web_wechat_pic .webuploader-pick {
-            opacity: 100;
+            opacity: 1;
             width: 40px;
             height: 30px;
             text-align: center;
@@ -312,7 +337,7 @@
         }
         .chat .box_ft .toolbar .web_wechat_pic .webuploader-pick::after {
             content: 'FILE';
-            color: #4f4f4f;
+            color: #4F4F4F;
         }
     `);
 
@@ -347,7 +372,6 @@
             #chatArea .box_bd .message .content .bubble .bubble_cont .plain .qqemoji {
                 background: url(//res.wx.qq.com/t/wx_fed/webwx/res/static/css/5af37c4a880a95586cd41c5b251d5562@1x.png) no-repeat;
                 background-position: -342px -338px;
-                -webkit-background-size: 408px 389px;
                 background-size: 408px 389px;
             }
         `);
