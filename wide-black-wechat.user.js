@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide Black WeChat
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.1.14
+// @version      0.1.15
 // @description  Enable fullscreen window of Web Wechat, black mode style
 // @author       Benjamin L
 // @match        https://wx.qq.com/*
@@ -323,7 +323,8 @@
     if (privateMode) {
         GM_addStyle(`
             .chat_list .chat_item .info .nickname_text,
-            #chatArea .box_hd .title_wrap .title .title_count {
+            #chatArea .box_hd .title_wrap .title .title_count,
+            #chatArea .box_bd .message .content .nickname {
                 display: none;
             }
             .panel {
@@ -356,21 +357,56 @@
     let vscodeFavico = 'https://code.visualstudio.com/favicon.ico';
     let vscodeName = 'Microsoft VS Code';
 
+    // Wait until the element exists, then run the callback.
+    // At document-start nothing is rendered yet, and the main UI does not exist while the
+    // login page is shown. Reading it directly throws TypeError and aborts the whole script,
+    // which fails silently because the CSS has already been injected by then.
+    function onceReady(selector, callback) {
+        const run = () => {
+            const el = document.querySelector(selector);
+            if (el) callback(el);
+            return !!el;
+        };
+        if (run()) return;
+        const root = document.documentElement;
+        if (!root) {
+            document.addEventListener('DOMContentLoaded', () => onceReady(selector, callback), { once: true });
+            return;
+        }
+        const observer = new MutationObserver(() => {
+            if (run()) observer.disconnect();
+        });
+        observer.observe(root, { childList: true, subtree: true });
+    }
+
     // change favicon and title
-    document.getElementsByTagName('link')[0].href = vscodeFavico;
+    // link[0] is not reliable: the first <link> of the page may be a preload or a stylesheet.
+    onceReady('link[rel~="icon"]', (icon) => {
+        icon.href = vscodeFavico;
+    });
+
     /* If window is blur (not focus), page title will be updated once there are new messages.
-       Another user script, named "Always on focus" (https://github.com/daijro/always-on-focus),
-       is being used to trick the app that window is always "focused" */
-    document.getElementsByTagName('title')[0].innerHTML = vscodeName;
+       Watch <title> and write the name back on every change, so this script no longer needs
+       the "Always on focus" (https://github.com/daijro/always-on-focus) user script. */
+    onceReady('title', (titleEl) => {
+        document.title = vscodeName;
+        new MutationObserver(() => {
+            if (document.title !== vscodeName) {
+                document.title = vscodeName;
+            }
+        }).observe(titleEl, { childList: true, characterData: true, subtree: true });
+    });
 
     // add vs code logo
-    let divLogo = document.createElement('div');
-    divLogo.setAttribute('id', 'vscode_logo');
-    divLogo.innerHTML = `
-        <img src="https://code.visualstudio.com/favicon.ico"
-            style="width:30px;height:30px;vertical-align:middle;">
-    `;
-    let header = document.getElementsByClassName('panel give_me')[0].getElementsByClassName('header')[0];
-    header.insertBefore(divLogo, header.firstElementChild);
+    onceReady('.panel.give_me .header', (header) => {
+        if (header.querySelector('#vscode_logo')) return;
+        const divLogo = document.createElement('div');
+        divLogo.id = 'vscode_logo';
+        const img = document.createElement('img');
+        img.src = vscodeFavico;
+        img.style.cssText = 'width:30px;height:30px;vertical-align:middle;';
+        divLogo.appendChild(img);
+        header.insertBefore(divLogo, header.firstElementChild);
+    });
 
 })();
