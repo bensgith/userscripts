@@ -1,0 +1,4 @@
+# Normalize EOL on comparison and checkin.
+# The working tree is CRLF while the index is LF; without this rule every
+# touched file shows up as a full-file rewrite.
+* text=auto
