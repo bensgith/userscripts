@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Wide Black WeChat
 // @namespace    https://github.com/bensgith/userscripts
-// @version      0.1.16
+// @version      0.1.17
 // @description  Enable fullscreen window of Web Wechat, black mode style
 // @author       Benjamin L
 // @match        https://wx.qq.com/*
@@ -201,10 +201,8 @@
             background-color: #1E1E1E;
             border-bottom: 1px solid #4F4F4F;
         }
-        /* keep a gap between messages: the triangles are hidden and the bubble
-           is full width, so at margin 0 a run of long messages reads as one block */
         #chatArea .box_bd .message {
-            margin-bottom: 6px;
+            margin-bottom: 0px;
         }
         #chatArea .box_bd .message a {
             color: #0098FF;
@@ -219,11 +217,10 @@
             font-size: 14px;
             content: "[custom_emoji]";
         }
-        /* slightly lighter than the page background, so a message still reads as
-           a block now that the triangles and the bubble border are gone */
+        /* same as the page background, keeping the editor area flat */
         #chatArea .box_bd .message .content .bubble {
             color: #CCCCCC;
-            background-color: #252526;
+            background-color: #1E1E1E;
             max-width: none;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .plain,
@@ -232,18 +229,13 @@
         #chatArea .box_bd .message .content .bubble .bubble_cont .location {
             padding: 4px 0px;
         }
-        /* the waveform sprite is cleared further down, which used to leave a plain
-           grey bar with no icon and no hint of what the message is */
+        /* the waveform sprite is cleared further down, so this is a plain block;
+           the dark fill replaces the original #CCCCCC that stood out on a dark page */
         #chatArea .box_bd .message .content .bubble .bubble_cont .voice {
             background-color: #2D2D2D;
             color: #CCCCCC;
             border-radius: 5px;
             padding: 4px 8px;
-        }
-        #chatArea .box_bd .message .content .bubble .bubble_cont .voice::after {
-            content: "[voice]";
-            font-size: 13px;
-            padding-left: 6px;
         }
         #chatArea .box_bd .message .content .bubble .bubble_cont .picture img {
             max-width: 25px;
